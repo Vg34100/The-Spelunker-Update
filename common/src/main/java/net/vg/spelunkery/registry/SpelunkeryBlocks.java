@@ -124,6 +124,16 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
+    public static final RegistrySupplier<Block> TOPAZ_BLOCK = registerBlock(
+            "topaz_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD)
+                    .strength(1.5F, 1.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 5))
+    );
+
     private static boolean initialized;
 
     private SpelunkeryBlocks() {

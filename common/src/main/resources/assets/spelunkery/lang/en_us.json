@@ -11,10 +11,12 @@
   "block.spelunkery.deepslate_silver_ore": "Deepslate Silver Ore",
   "block.spelunkery.raw_silver_block": "Block of Raw Silver",
   "block.spelunkery.silver_block": "Block of Silver",
+  "block.spelunkery.topaz_block": "Topaz Block",
   "item.spelunkery.raw_tin": "Raw Tin",
   "item.spelunkery.tin_ingot": "Tin Ingot",
   "item.spelunkery.raw_nickel": "Raw Nickel",
   "item.spelunkery.nickel_ingot": "Nickel Ingot",
   "item.spelunkery.raw_silver": "Raw Silver",
-  "item.spelunkery.silver_ingot": "Silver Ingot"
+  "item.spelunkery.silver_ingot": "Silver Ingot",
+  "item.spelunkery.topaz_shard": "Topaz Shard"
 }

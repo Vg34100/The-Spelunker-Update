@@ -26,5 +26,10 @@ public final class SpelunkeryFabric implements ModInitializer {
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 SpelunkeryWorldgen.SILVER_ORE_PLACED
         );
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                SpelunkeryWorldgen.TOPAZ_GEODE_PLACED
+        );
     }
 }
