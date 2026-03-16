@@ -5,6 +5,7 @@ import net.vg.spelunkery.registry.SpelunkeryBlockEntities;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
+import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
 
 public final class Spelunkery {
     public static final String MOD_ID = "spelunkery";
@@ -13,6 +14,7 @@ public final class Spelunkery {
         SpelunkeryBlocks.init();
         SpelunkeryItems.init();
         SpelunkeryBlockEntities.init();
+        SpelunkeryMenuTypes.init();
         SpelunkeryCreativeTabs.init();
     }
 
