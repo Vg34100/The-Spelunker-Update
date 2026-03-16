@@ -194,7 +194,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-        return new FoundryMenu(containerId, playerInventory, this, data);
+        return new FoundryMenu(containerId, playerInventory, this);
     }
 
     public boolean hasHeat() {
