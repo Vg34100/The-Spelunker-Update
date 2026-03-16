@@ -13,13 +13,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CrucibleBlock extends Block {
     public static final MapCodec<CrucibleBlock> CODEC = simpleCodec(CrucibleBlock::new);
-    public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_CAULDRON;
+    public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 3);
     private static final int MAX_LAVA_USES = 3;
 
     public CrucibleBlock(BlockBehaviour.Properties properties) {
