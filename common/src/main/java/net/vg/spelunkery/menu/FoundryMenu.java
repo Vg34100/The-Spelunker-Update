@@ -131,6 +131,11 @@ public class FoundryMenu extends AbstractContainerMenu {
         return maxProgress > 0 && progress > 0 ? progress * 24 / maxProgress : 0;
     }
 
+    public int getScaledHeatLevel() {
+        int lava = data.get(3);
+        return lava > 0 ? lava * 12 / 3 : 0;
+    }
+
     private static Container getContainer(Inventory inventory, BlockPos pos) {
         if (inventory.player.level().getBlockEntity(pos) instanceof FoundryBlockEntity foundry) {
             return new FoundryContainer(foundry);

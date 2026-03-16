@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "bottom": "spelunkery:block/crucible_bottom",
-    "side": "spelunkery:block/crucible_side",
+    "side": "spelunkery:block/crucible_side_low",
     "top": "spelunkery:block/crucible_top_low"
   }
 }

@@ -8,13 +8,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.vg.spelunkery.menu.FoundryMenu;
 
 public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("spelunkery", "textures/gui/foundry.png");
 
     public FoundryScreen(FoundryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         imageWidth = 176;
         imageHeight = 166;
         inventoryLabelY = imageHeight - 94;
+        titleLabelX = 8;
+        titleLabelY = 10;
     }
 
     @Override
@@ -23,16 +25,16 @@ public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> {
         int top = topPos;
         guiGraphics.blit(TEXTURE, left, top, 0, 0, imageWidth, imageHeight);
 
-        if (menu.hasHeat()) {
-            guiGraphics.blit(TEXTURE, left + 56, top + 36, 176, 0, 14, 14);
+        int heat = menu.getScaledHeatLevel();
+        if (heat > 0) {
+            guiGraphics.blit(TEXTURE, left + 74, top + 55 + (12 - heat), 176, 17 + (12 - heat), 14, heat + 2);
         }
 
         int progress = menu.getScaledProgress();
         if (progress > 0) {
-            guiGraphics.blit(TEXTURE, left + 79, top + 34, 176, 14, progress + 1, 16);
+            guiGraphics.blit(TEXTURE, left + 63, top + 35, 176, 0, progress, 16);
         }
-
-        guiGraphics.drawString(font, Component.literal("Heat: " + menu.getLavaLevel()), left + 90, top + 18, 0x404040, false);
+        guiGraphics.drawString(font, Component.literal("Lava: " + menu.getLavaLevel()), left + 60, top + 56, 0x3b3024, false);
     }
 
     @Override
