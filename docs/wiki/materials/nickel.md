@@ -8,7 +8,12 @@ Nickel is a deeper, rarer overworld metal focused on reinforcement, plating, and
 
 - Generates in the overworld.
 - Appears as `Nickel Ore` in stone and `Deepslate Nickel Ore` in deepslate.
-- Intended to generate deeper and rarer than tin.
+- Generation range:
+  - minimum: `y=-48`
+  - maximum: `y=20`
+  - most common around: `y=-14`
+- Vein size: up to `6`
+- Placement attempts: `7` per chunk
 
 ## Drops
 

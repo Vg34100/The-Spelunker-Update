@@ -52,6 +52,78 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
+    public static final RegistrySupplier<Block> NICKEL_ORE = registerBlock(
+            "nickel_ore",
+            () -> new DropExperienceBlock(UniformInt.of(1, 4), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(4.0F, 4.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
+    );
+
+    public static final RegistrySupplier<Block> DEEPSLATE_NICKEL_ORE = registerBlock(
+            "deepslate_nickel_ore",
+            () -> new DropExperienceBlock(UniformInt.of(1, 5), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(5.0F, 4.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE))
+    );
+
+    public static final RegistrySupplier<Block> RAW_NICKEL_BLOCK = registerBlock(
+            "raw_nickel_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
+    );
+
+    public static final RegistrySupplier<Block> NICKEL_BLOCK = registerBlock(
+            "nickel_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> SILVER_ORE = registerBlock(
+            "silver_ore",
+            () -> new DropExperienceBlock(UniformInt.of(0, 2), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(3.5F, 3.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
+    );
+
+    public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = registerBlock(
+            "deepslate_silver_ore",
+            () -> new DropExperienceBlock(UniformInt.of(0, 3), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(4.5F, 4.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE))
+    );
+
+    public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = registerBlock(
+            "raw_silver_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
+    );
+
+    public static final RegistrySupplier<Block> SILVER_BLOCK = registerBlock(
+            "silver_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
     private static boolean initialized;
 
     private SpelunkeryBlocks() {

@@ -13,8 +13,12 @@ import java.util.function.Supplier;
 public final class SpelunkeryItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Spelunkery.MOD_ID, Registries.ITEM);
 
-    public static final RegistrySupplier<Item> RAW_TIN = ITEMS.register("raw_tin", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> TIN_INGOT = ITEMS.register("tin_ingot", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> RAW_TIN = registerSimpleItem("raw_tin");
+    public static final RegistrySupplier<Item> TIN_INGOT = registerSimpleItem("tin_ingot");
+    public static final RegistrySupplier<Item> RAW_NICKEL = registerSimpleItem("raw_nickel");
+    public static final RegistrySupplier<Item> NICKEL_INGOT = registerSimpleItem("nickel_ingot");
+    public static final RegistrySupplier<Item> RAW_SILVER = registerSimpleItem("raw_silver");
+    public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
 
     private static boolean initialized;
 
@@ -32,5 +36,9 @@ public final class SpelunkeryItems {
 
     public static void registerBlockItem(String name, Supplier<? extends Block> blockSupplier) {
         ITEMS.register(name, () -> new BlockItem(blockSupplier.get(), new Item.Properties()));
+    }
+
+    private static RegistrySupplier<Item> registerSimpleItem(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 }

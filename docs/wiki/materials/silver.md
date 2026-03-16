@@ -8,7 +8,12 @@ Silver is an overworld precious metal with combat and utility uses tied to undea
 
 - Generates in the overworld.
 - Appears as `Silver Ore` in stone and `Deepslate Silver Ore` in deepslate.
-- Intended to be rarer than tin.
+- Generation range:
+  - minimum: `y=-32`
+  - maximum: `y=48`
+  - most common around: `y=8`
+- Vein size: up to `7`
+- Placement attempts: `9` per chunk
 
 ## Drops
 

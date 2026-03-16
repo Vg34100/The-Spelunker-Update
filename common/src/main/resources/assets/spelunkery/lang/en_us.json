@@ -3,6 +3,18 @@
   "block.spelunkery.deepslate_tin_ore": "Deepslate Tin Ore",
   "block.spelunkery.raw_tin_block": "Block of Raw Tin",
   "block.spelunkery.tin_block": "Block of Tin",
+  "block.spelunkery.nickel_ore": "Nickel Ore",
+  "block.spelunkery.deepslate_nickel_ore": "Deepslate Nickel Ore",
+  "block.spelunkery.raw_nickel_block": "Block of Raw Nickel",
+  "block.spelunkery.nickel_block": "Block of Nickel",
+  "block.spelunkery.silver_ore": "Silver Ore",
+  "block.spelunkery.deepslate_silver_ore": "Deepslate Silver Ore",
+  "block.spelunkery.raw_silver_block": "Block of Raw Silver",
+  "block.spelunkery.silver_block": "Block of Silver",
   "item.spelunkery.raw_tin": "Raw Tin",
-  "item.spelunkery.tin_ingot": "Tin Ingot"
+  "item.spelunkery.tin_ingot": "Tin Ingot",
+  "item.spelunkery.raw_nickel": "Raw Nickel",
+  "item.spelunkery.nickel_ingot": "Nickel Ingot",
+  "item.spelunkery.raw_silver": "Raw Silver",
+  "item.spelunkery.silver_ingot": "Silver Ingot"
 }

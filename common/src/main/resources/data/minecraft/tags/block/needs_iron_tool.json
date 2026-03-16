@@ -1,10 +1,6 @@
 {
   "replace": false,
   "values": [
-    "spelunkery:tin_ore",
-    "spelunkery:deepslate_tin_ore",
-    "spelunkery:raw_tin_block",
-    "spelunkery:tin_block",
     "spelunkery:nickel_ore",
     "spelunkery:deepslate_nickel_ore",
     "spelunkery:raw_nickel_block",

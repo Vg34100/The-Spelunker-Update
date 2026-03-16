@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "spelunkery:nickel_ore"
+  },
+  "result": {
+    "id": "spelunkery:nickel_ingot"
+  }
+}
