@@ -1,6 +1,5 @@
 package net.vg.spelunkery.registry;
 
-import dev.architectury.registry.CreativeTabOutput;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -40,7 +39,7 @@ public final class SpelunkeryCreativeTabs {
         initialized = true;
         TABS.register();
 
-        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.NATURAL_BLOCKS, (flags, output, hasPermissions) -> {
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.NATURAL_BLOCKS), (flags, output, hasPermissions) -> {
             output.acceptAfter(Blocks.DEEPSLATE_COPPER_ORE, SpelunkeryBlocks.TIN_ORE.get());
             output.acceptAfter(SpelunkeryBlocks.TIN_ORE.get(), SpelunkeryBlocks.DEEPSLATE_TIN_ORE.get());
             output.acceptAfter(Blocks.DEEPSLATE_GOLD_ORE, SpelunkeryBlocks.SILVER_ORE.get());
@@ -52,7 +51,7 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.CRUCIBLE.get(), SpelunkeryBlocks.FOUNDRY.get());
         });
 
-        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.INGREDIENTS, (flags, output, hasPermissions) -> {
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.INGREDIENTS), (flags, output, hasPermissions) -> {
             output.acceptAfter(Items.RAW_COPPER, SpelunkeryItems.RAW_TIN.get());
             output.acceptAfter(SpelunkeryItems.RAW_TIN.get(), SpelunkeryItems.TIN_INGOT.get());
             output.acceptAfter(SpelunkeryItems.TIN_INGOT.get(), SpelunkeryItems.RAW_SILVER.get());
@@ -63,7 +62,7 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.NICKEL_INGOT.get(), SpelunkeryItems.BRONZE_INGOT.get());
         });
 
-        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.BUILDING_BLOCKS, (flags, output, hasPermissions) -> {
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.BUILDING_BLOCKS), (flags, output, hasPermissions) -> {
             output.acceptAfter(Blocks.CUT_COPPER, SpelunkeryBlocks.TIN_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.TIN_BLOCK.get(), SpelunkeryBlocks.RAW_TIN_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.RAW_TIN_BLOCK.get(), SpelunkeryBlocks.SILVER_BLOCK.get());
@@ -74,7 +73,7 @@ public final class SpelunkeryCreativeTabs {
         });
     }
 
-    private static void addBlockEntries(CreativeTabOutput output) {
+    private static void addBlockEntries(CreativeModeTab.Output output) {
         output.accept(SpelunkeryBlocks.TIN_ORE.get());
         output.accept(SpelunkeryBlocks.DEEPSLATE_TIN_ORE.get());
         output.accept(SpelunkeryBlocks.RAW_TIN_BLOCK.get());
@@ -93,7 +92,7 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.FOUNDRY.get());
     }
 
-    private static void addIngredientEntries(CreativeTabOutput output) {
+    private static void addIngredientEntries(CreativeModeTab.Output output) {
         output.accept(SpelunkeryItems.RAW_TIN.get());
         output.accept(SpelunkeryItems.TIN_INGOT.get());
         output.accept(SpelunkeryItems.RAW_SILVER.get());
