@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "spelunkery:block/crucible_bottom",
     "side": "spelunkery:block/crucible_side",
-    "top": "spelunkery:block/crucible_top_filled"
+    "top": "spelunkery:block/crucible_top_low"
   }
 }

@@ -1,10 +1,16 @@
 {
   "variants": {
-    "lit=false": {
+    "level=0": {
       "model": "spelunkery:block/crucible"
     },
-    "lit=true": {
-      "model": "spelunkery:block/crucible_filled"
+    "level=1": {
+      "model": "spelunkery:block/crucible_low"
+    },
+    "level=2": {
+      "model": "spelunkery:block/crucible_mid"
+    },
+    "level=3": {
+      "model": "spelunkery:block/crucible_full"
     }
   }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "spelunkery:block/crucible_bottom",
+    "side": "spelunkery:block/crucible_side",
+    "top": "spelunkery:block/crucible_top_full"
+  }
+}
