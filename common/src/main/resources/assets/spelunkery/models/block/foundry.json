@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "spelunkery:block/foundry_bottom",
+    "side": "spelunkery:block/foundry_side",
+    "top": "spelunkery:block/foundry_top"
+  }
+}

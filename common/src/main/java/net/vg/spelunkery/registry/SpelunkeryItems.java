@@ -20,6 +20,7 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> RAW_SILVER = registerSimpleItem("raw_silver");
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
+    public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");
 
     private static boolean initialized;
 

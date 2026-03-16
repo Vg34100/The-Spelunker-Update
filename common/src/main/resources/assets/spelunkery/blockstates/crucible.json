@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "spelunkery:block/crucible"
+    },
+    "lit=true": {
+      "model": "spelunkery:block/crucible_filled"
+    }
+  }
+}

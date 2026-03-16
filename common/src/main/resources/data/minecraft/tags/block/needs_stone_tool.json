@@ -4,6 +4,9 @@
     "spelunkery:tin_ore",
     "spelunkery:deepslate_tin_ore",
     "spelunkery:raw_tin_block",
-    "spelunkery:tin_block"
+    "spelunkery:tin_block",
+    "spelunkery:bronze_block",
+    "spelunkery:crucible",
+    "spelunkery:foundry"
   ]
 }

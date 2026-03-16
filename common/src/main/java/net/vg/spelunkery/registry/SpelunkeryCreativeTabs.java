@@ -48,6 +48,8 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Blocks.DEEPSLATE_REDSTONE_ORE, SpelunkeryBlocks.NICKEL_ORE.get());
             output.acceptAfter(SpelunkeryBlocks.NICKEL_ORE.get(), SpelunkeryBlocks.DEEPSLATE_NICKEL_ORE.get());
             output.acceptAfter(Blocks.AMETHYST_BLOCK, SpelunkeryBlocks.TOPAZ_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.TOPAZ_BLOCK.get(), SpelunkeryBlocks.CRUCIBLE.get());
+            output.acceptAfter(SpelunkeryBlocks.CRUCIBLE.get(), SpelunkeryBlocks.FOUNDRY.get());
         });
 
         CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.INGREDIENTS, (flags, output, hasPermissions) -> {
@@ -58,6 +60,7 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.SILVER_INGOT.get(), SpelunkeryItems.RAW_NICKEL.get());
             output.acceptAfter(SpelunkeryItems.RAW_NICKEL.get(), SpelunkeryItems.NICKEL_INGOT.get());
             output.acceptAfter(Items.AMETHYST_SHARD, SpelunkeryItems.TOPAZ_SHARD.get());
+            output.acceptAfter(SpelunkeryItems.NICKEL_INGOT.get(), SpelunkeryItems.BRONZE_INGOT.get());
         });
 
         CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.BUILDING_BLOCKS, (flags, output, hasPermissions) -> {
@@ -67,6 +70,7 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.SILVER_BLOCK.get(), SpelunkeryBlocks.RAW_SILVER_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.RAW_SILVER_BLOCK.get(), SpelunkeryBlocks.NICKEL_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.NICKEL_BLOCK.get(), SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.RAW_NICKEL_BLOCK.get(), SpelunkeryBlocks.BRONZE_BLOCK.get());
         });
     }
 
@@ -84,6 +88,9 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
         output.accept(SpelunkeryBlocks.NICKEL_BLOCK.get());
         output.accept(SpelunkeryBlocks.TOPAZ_BLOCK.get());
+        output.accept(SpelunkeryBlocks.BRONZE_BLOCK.get());
+        output.accept(SpelunkeryBlocks.CRUCIBLE.get());
+        output.accept(SpelunkeryBlocks.FOUNDRY.get());
     }
 
     private static void addIngredientEntries(CreativeTabOutput output) {
@@ -94,5 +101,6 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.RAW_NICKEL.get());
         output.accept(SpelunkeryItems.NICKEL_INGOT.get());
         output.accept(SpelunkeryItems.TOPAZ_SHARD.get());
+        output.accept(SpelunkeryItems.BRONZE_INGOT.get());
     }
 }

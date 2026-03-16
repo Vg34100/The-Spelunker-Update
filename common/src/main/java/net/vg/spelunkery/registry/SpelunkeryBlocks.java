@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.vg.spelunkery.Spelunkery;
+import net.vg.spelunkery.block.CrucibleBlock;
+import net.vg.spelunkery.block.FoundryBlock;
 
 import java.util.function.Supplier;
 
@@ -132,6 +134,33 @@ public final class SpelunkeryBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> 5))
+    );
+
+    public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(
+            "bronze_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> CRUCIBLE = registerBlock(
+            "crucible",
+            () -> new CrucibleBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
+    );
+
+    public static final RegistrySupplier<Block> FOUNDRY = registerBlock(
+            "foundry",
+            () -> new FoundryBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(4.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE))
     );
 
     private static boolean initialized;

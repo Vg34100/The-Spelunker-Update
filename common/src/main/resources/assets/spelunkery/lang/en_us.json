@@ -13,11 +13,15 @@
   "block.spelunkery.raw_silver_block": "Block of Raw Silver",
   "block.spelunkery.silver_block": "Block of Silver",
   "block.spelunkery.topaz_block": "Topaz Block",
+  "block.spelunkery.bronze_block": "Block of Bronze",
+  "block.spelunkery.crucible": "Crucible",
+  "block.spelunkery.foundry": "Foundry",
   "item.spelunkery.raw_tin": "Raw Tin",
   "item.spelunkery.tin_ingot": "Tin Ingot",
   "item.spelunkery.raw_nickel": "Raw Nickel",
   "item.spelunkery.nickel_ingot": "Nickel Ingot",
   "item.spelunkery.raw_silver": "Raw Silver",
   "item.spelunkery.silver_ingot": "Silver Ingot",
-  "item.spelunkery.topaz_shard": "Topaz Shard"
+  "item.spelunkery.topaz_shard": "Topaz Shard",
+  "item.spelunkery.bronze_ingot": "Bronze Ingot"
 }

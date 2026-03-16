@@ -13,6 +13,9 @@
     "spelunkery:deepslate_silver_ore",
     "spelunkery:raw_silver_block",
     "spelunkery:silver_block",
-    "spelunkery:topaz_block"
+    "spelunkery:topaz_block",
+    "spelunkery:bronze_block",
+    "spelunkery:crucible",
+    "spelunkery:foundry"
   ]
 }
