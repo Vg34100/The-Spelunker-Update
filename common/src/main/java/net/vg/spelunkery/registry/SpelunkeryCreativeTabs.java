@@ -62,6 +62,10 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.NICKEL_INGOT.get(), SpelunkeryItems.BRONZE_INGOT.get());
         });
 
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.TOOLS_AND_UTILITIES), (flags, output, hasPermissions) -> {
+            output.acceptAfter(Items.COMPASS, SpelunkeryItems.BRONZE_COMPASS.get());
+        });
+
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.BUILDING_BLOCKS), (flags, output, hasPermissions) -> {
             output.acceptAfter(Blocks.CUT_COPPER, SpelunkeryBlocks.TIN_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.TIN_BLOCK.get(), SpelunkeryBlocks.RAW_TIN_BLOCK.get());
@@ -101,5 +105,6 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.NICKEL_INGOT.get());
         output.accept(SpelunkeryItems.TOPAZ_SHARD.get());
         output.accept(SpelunkeryItems.BRONZE_INGOT.get());
+        output.accept(SpelunkeryItems.BRONZE_COMPASS.get());
     }
 }

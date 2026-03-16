@@ -7,6 +7,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.vg.spelunkery.Spelunkery;
+import net.vg.spelunkery.item.BronzeCompassItem;
 
 import java.util.function.Supplier;
 
@@ -21,6 +22,7 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
     public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");
+    public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
 
     private static boolean initialized;
 
