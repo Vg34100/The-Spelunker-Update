@@ -1,0 +1,98 @@
+package net.vg.spelunkery.registry;
+
+import dev.architectury.registry.CreativeTabOutput;
+import dev.architectury.registry.CreativeTabRegistry;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.vg.spelunkery.Spelunkery;
+
+public final class SpelunkeryCreativeTabs {
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Spelunkery.MOD_ID, Registries.CREATIVE_MODE_TAB);
+
+    public static final RegistrySupplier<CreativeModeTab> SPELUNKERY_TAB = TABS.register(
+            "spelunkery",
+            () -> CreativeTabRegistry.create(builder -> builder
+                    .title(Component.translatable("itemGroup.spelunkery"))
+                    .icon(() -> new ItemStack(SpelunkeryBlocks.TOPAZ_BLOCK.get()))
+                    .displayItems((parameters, output) -> {
+                        addBlockEntries(output);
+                        addIngredientEntries(output);
+                    }))
+    );
+
+    private static boolean initialized;
+
+    private SpelunkeryCreativeTabs() {
+    }
+
+    public static void init() {
+        if (initialized) {
+            return;
+        }
+
+        initialized = true;
+        TABS.register();
+
+        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.NATURAL_BLOCKS, (flags, output, hasPermissions) -> {
+            output.acceptAfter(Blocks.DEEPSLATE_COPPER_ORE, SpelunkeryBlocks.TIN_ORE.get());
+            output.acceptAfter(SpelunkeryBlocks.TIN_ORE.get(), SpelunkeryBlocks.DEEPSLATE_TIN_ORE.get());
+            output.acceptAfter(Blocks.DEEPSLATE_GOLD_ORE, SpelunkeryBlocks.SILVER_ORE.get());
+            output.acceptAfter(SpelunkeryBlocks.SILVER_ORE.get(), SpelunkeryBlocks.DEEPSLATE_SILVER_ORE.get());
+            output.acceptAfter(Blocks.DEEPSLATE_REDSTONE_ORE, SpelunkeryBlocks.NICKEL_ORE.get());
+            output.acceptAfter(SpelunkeryBlocks.NICKEL_ORE.get(), SpelunkeryBlocks.DEEPSLATE_NICKEL_ORE.get());
+            output.acceptAfter(Blocks.AMETHYST_BLOCK, SpelunkeryBlocks.TOPAZ_BLOCK.get());
+        });
+
+        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.INGREDIENTS, (flags, output, hasPermissions) -> {
+            output.acceptAfter(Items.RAW_COPPER, SpelunkeryItems.RAW_TIN.get());
+            output.acceptAfter(SpelunkeryItems.RAW_TIN.get(), SpelunkeryItems.TIN_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.TIN_INGOT.get(), SpelunkeryItems.RAW_SILVER.get());
+            output.acceptAfter(SpelunkeryItems.RAW_SILVER.get(), SpelunkeryItems.SILVER_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.SILVER_INGOT.get(), SpelunkeryItems.RAW_NICKEL.get());
+            output.acceptAfter(SpelunkeryItems.RAW_NICKEL.get(), SpelunkeryItems.NICKEL_INGOT.get());
+            output.acceptAfter(Items.AMETHYST_SHARD, SpelunkeryItems.TOPAZ_SHARD.get());
+        });
+
+        CreativeTabRegistry.modifyBuiltin(CreativeModeTabs.BUILDING_BLOCKS, (flags, output, hasPermissions) -> {
+            output.acceptAfter(Blocks.CUT_COPPER, SpelunkeryBlocks.TIN_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.TIN_BLOCK.get(), SpelunkeryBlocks.RAW_TIN_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.RAW_TIN_BLOCK.get(), SpelunkeryBlocks.SILVER_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.SILVER_BLOCK.get(), SpelunkeryBlocks.RAW_SILVER_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.RAW_SILVER_BLOCK.get(), SpelunkeryBlocks.NICKEL_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.NICKEL_BLOCK.get(), SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
+        });
+    }
+
+    private static void addBlockEntries(CreativeTabOutput output) {
+        output.accept(SpelunkeryBlocks.TIN_ORE.get());
+        output.accept(SpelunkeryBlocks.DEEPSLATE_TIN_ORE.get());
+        output.accept(SpelunkeryBlocks.RAW_TIN_BLOCK.get());
+        output.accept(SpelunkeryBlocks.TIN_BLOCK.get());
+        output.accept(SpelunkeryBlocks.SILVER_ORE.get());
+        output.accept(SpelunkeryBlocks.DEEPSLATE_SILVER_ORE.get());
+        output.accept(SpelunkeryBlocks.RAW_SILVER_BLOCK.get());
+        output.accept(SpelunkeryBlocks.SILVER_BLOCK.get());
+        output.accept(SpelunkeryBlocks.NICKEL_ORE.get());
+        output.accept(SpelunkeryBlocks.DEEPSLATE_NICKEL_ORE.get());
+        output.accept(SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
+        output.accept(SpelunkeryBlocks.NICKEL_BLOCK.get());
+        output.accept(SpelunkeryBlocks.TOPAZ_BLOCK.get());
+    }
+
+    private static void addIngredientEntries(CreativeTabOutput output) {
+        output.accept(SpelunkeryItems.RAW_TIN.get());
+        output.accept(SpelunkeryItems.TIN_INGOT.get());
+        output.accept(SpelunkeryItems.RAW_SILVER.get());
+        output.accept(SpelunkeryItems.SILVER_INGOT.get());
+        output.accept(SpelunkeryItems.RAW_NICKEL.get());
+        output.accept(SpelunkeryItems.NICKEL_INGOT.get());
+        output.accept(SpelunkeryItems.TOPAZ_SHARD.get());
+    }
+}

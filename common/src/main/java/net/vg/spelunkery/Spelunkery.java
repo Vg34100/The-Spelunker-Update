@@ -2,6 +2,7 @@ package net.vg.spelunkery;
 
 import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
+import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 public final class Spelunkery {
@@ -10,6 +11,7 @@ public final class Spelunkery {
     public static void init() {
         SpelunkeryBlocks.init();
         SpelunkeryItems.init();
+        SpelunkeryCreativeTabs.init();
     }
 
     public static ResourceLocation id(String path) {
