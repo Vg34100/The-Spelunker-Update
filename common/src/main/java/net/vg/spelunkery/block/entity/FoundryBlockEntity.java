@@ -13,15 +13,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vg.spelunkery.block.CrucibleBlock;
 import net.vg.spelunkery.menu.FoundryMenu;
 import net.vg.spelunkery.recipe.FoundryRecipe;
-import net.vg.spelunkery.recipe.SpelunkeryFoundryRecipes;
+import net.vg.spelunkery.recipe.FoundryRecipeInput;
 import net.vg.spelunkery.registry.SpelunkeryBlockEntities;
+import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
@@ -33,7 +36,6 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
     private static final int[] SIDE_SLOTS = new int[]{0, 1, 2};
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
-    private final SimpleContainer recipeInput = new SimpleContainer(INPUT_SLOT_COUNT);
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
@@ -78,7 +80,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
             return;
         }
 
-        Optional<FoundryRecipe> match = getMatchingRecipe();
+        Optional<RecipeHolder<FoundryRecipe>> match = getMatchingRecipe();
         if (match.isEmpty() || !hasHeat()) {
             if (progress != 0) {
                 progress = 0;
@@ -87,7 +89,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
             return;
         }
 
-        FoundryRecipe recipe = match.get();
+        FoundryRecipe recipe = match.get().value();
         maxProgress = recipe.processTime();
         progress++;
 
@@ -222,9 +224,20 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
         return maxProgress > 0 && progress > 0 ? progress * pixels / maxProgress : 0;
     }
 
-    private Optional<FoundryRecipe> getMatchingRecipe() {
-        copyInputs();
-        return SpelunkeryFoundryRecipes.findMatch(recipeInput, items.get(OUTPUT_SLOT));
+    private Optional<RecipeHolder<FoundryRecipe>> getMatchingRecipe() {
+        if (level == null) {
+            return Optional.empty();
+        }
+
+        FoundryRecipeInput input = new FoundryRecipeInput(List.of(
+                items.get(0).copy(),
+                items.get(1).copy(),
+                items.get(2).copy()
+        ));
+
+        return level.getRecipeManager()
+                .getRecipeFor(SpelunkeryRecipeTypes.FOUNDRY_TYPE.get(), input, level)
+                .filter(holder -> holder.value().canOutput(items.get(OUTPUT_SLOT)));
     }
 
     private void craft(FoundryRecipe recipe) {
@@ -246,12 +259,6 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
             items.set(OUTPUT_SLOT, result);
         } else {
             output.grow(result.getCount());
-        }
-    }
-
-    private void copyInputs() {
-        for (int slot = 0; slot < INPUT_SLOT_COUNT; slot++) {
-            recipeInput.setItem(slot, items.get(slot));
         }
     }
 
