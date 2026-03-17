@@ -13,6 +13,14 @@ allprojects {
     version = rootProject.mod_version
 }
 
+def externalBuildRoot = System.getenv("SPELUNKERY_BUILD_ROOT")
+if (externalBuildRoot) {
+    allprojects {
+        def projectPathPart = project.path == ":" ? "root" : project.path.substring(1).replace(':', '/')
+        layout.buildDirectory.set(file("${externalBuildRoot}/${projectPathPart}"))
+    }
+}
+
 subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
