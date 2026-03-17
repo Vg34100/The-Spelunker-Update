@@ -22,5 +22,10 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 ResourceLocation.withDefaultNamespace("pulling"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
         );
+        FabricModelPredicateProviderRegistry.register(
+                SpelunkeryItems.BRONZE_SHIELD.get(),
+                ResourceLocation.withDefaultNamespace("blocking"),
+                (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+        );
     }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "b": {
+      "item": "spelunkery:bronze_ingot"
+    },
+    "p": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "bpb",
+    "bbb",
+    " b "
+  ],
+  "result": {
+    "count": 1,
+    "id": "spelunkery:bronze_shield"
+  }
+}

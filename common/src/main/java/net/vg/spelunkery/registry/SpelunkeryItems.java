@@ -11,6 +11,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.item.BronzeCompassItem;
+import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.ElectrumBowItem;
 import net.vg.spelunkery.item.ProspectorLensItem;
 import net.vg.spelunkery.item.SilverArrowItem;
@@ -34,6 +35,7 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> ROSE_GOLD_INGOT = registerSimpleItem("rose_gold_ingot");
     public static final RegistrySupplier<Item> ELECTRUM_INGOT = registerSimpleItem("electrum_ingot");
     public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> BRONZE_SHIELD = ITEMS.register("bronze_shield", () -> new BronzeShieldItem(new Item.Properties().durability(448)));
     public static final RegistrySupplier<Item> PROSPECTOR_LENS = ITEMS.register("prospector_lens", () -> new ProspectorLensItem(new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register(
             "silver_sword",

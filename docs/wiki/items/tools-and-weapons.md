@@ -6,6 +6,13 @@
 - Use it to read your current `Y` level
 - Intended as the first bronze cave survey tool
 
+## Bronze Shield
+
+- Crafted from `Bronze Ingots` and wooden planks
+- Blocks like a normal shield
+- If you block while moving into a melee attacker, it performs a short knockback bash
+- Best used to create space in tight caves rather than as a raw damage tool
+
 ## Silver Sword
 
 - Crafted from `Silver Ingots`

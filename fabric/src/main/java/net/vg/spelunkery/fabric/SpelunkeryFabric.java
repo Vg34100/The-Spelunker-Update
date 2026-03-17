@@ -4,13 +4,24 @@ import net.vg.spelunkery.Spelunkery;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
 
 public final class SpelunkeryFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Spelunkery.init();
+        ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+            if (!blocked) {
+                return;
+            }
+
+            if (source.getDirectEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) {
+                BronzeShieldItem.tryBash(entity, attacker);
+            }
+        });
         BiomeModifications.addFeature(
                 BiomeSelectors.foundInOverworld(),
                 GenerationStep.Decoration.UNDERGROUND_ORES,

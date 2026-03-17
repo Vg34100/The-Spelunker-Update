@@ -25,11 +25,11 @@ It is produced in the foundry using tin and copper ingots and is intended to bec
 ## Current Uses
 
 - `Bronze Compass` reports your current depth
+- `Bronze Shield` can bash attackers back if you brace into the hit
 - `Bronze Lantern` provides decorative cave lighting
 - `Bronze Grate` adds metal industrial detailing
 
 ## Planned Uses
 
-- Bronze shield
 - Bronze cave instruments
 - Utility components and expedition hardware

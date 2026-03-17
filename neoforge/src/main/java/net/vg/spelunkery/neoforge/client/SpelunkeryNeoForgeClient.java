@@ -24,6 +24,7 @@ public final class SpelunkeryNeoForgeClient {
         event.enqueueWork(() -> {
             SpelunkeryClient.init();
             registerBowPredicates();
+            registerShieldPredicates();
         });
     }
 
@@ -38,6 +39,14 @@ public final class SpelunkeryNeoForgeClient {
         registerPredicate(
                 SpelunkeryItems.ELECTRUM_BOW.get(),
                 ResourceLocation.withDefaultNamespace("pulling"),
+                (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+        );
+    }
+
+    private static void registerShieldPredicates() {
+        registerPredicate(
+                SpelunkeryItems.BRONZE_SHIELD.get(),
+                ResourceLocation.withDefaultNamespace("blocking"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
         );
     }
