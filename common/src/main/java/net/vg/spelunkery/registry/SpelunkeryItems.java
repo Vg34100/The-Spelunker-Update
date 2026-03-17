@@ -3,6 +3,7 @@ package net.vg.spelunkery.registry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +21,8 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> NICKEL_INGOT = registerSimpleItem("nickel_ingot");
     public static final RegistrySupplier<Item> RAW_SILVER = registerSimpleItem("raw_silver");
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
+    public static final RegistrySupplier<Item> SILVER_BOTTLE = registerSimpleItem("silver_bottle");
+    public static final RegistrySupplier<Item> SILVER_ARROW = ITEMS.register("silver_arrow", () -> new ArrowItem(new Item.Properties()));
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
     public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");
     public static final RegistrySupplier<Item> INVAR_INGOT = registerSimpleItem("invar_ingot");
