@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "b": {
+      "item": "spelunkery:bronze_ingot"
+    }
+  },
+  "pattern": [
+    "b",
+    "b",
+    "b"
+  ],
+  "result": {
+    "count": 3,
+    "id": "spelunkery:bronze_chain"
+  }
+}

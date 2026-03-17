@@ -5,7 +5,9 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -163,6 +165,26 @@ public final class SpelunkeryBlocks {
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> BRONZE_BARS = registerBlock(
+            "bronze_bars",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.CHAIN)
+                    .noOcclusion())
+    );
+
+    public static final RegistrySupplier<Block> BRONZE_CHAIN = registerBlock(
+            "bronze_chain",
+            () -> new ChainBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.CHAIN)
+                    .noOcclusion())
     );
 
     public static final RegistrySupplier<Block> BRONZE_LANTERN = registerBlock(

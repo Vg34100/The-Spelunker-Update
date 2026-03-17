@@ -28,6 +28,7 @@ It is produced in the foundry using tin and copper ingots and is intended to bec
 - `Bronze Shield` can bash attackers back if you brace into the hit
 - `Bronze Lantern` provides decorative cave lighting
 - `Bronze Grate` adds metal industrial detailing
+- `Bronze Bars` and `Bronze Chain` expand bronze into cave building hardware
 
 ## Planned Uses
 
