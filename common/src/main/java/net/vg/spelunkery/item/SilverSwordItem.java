@@ -18,6 +18,7 @@ public class SilverSwordItem extends SwordItem {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean hurt = super.hurtEnemy(stack, target, attacker);
         if (target.getType().is(EntityTypeTags.UNDEAD)) {
+            target.invulnerableTime = 0;
             DamageSource source = attacker instanceof Player player
                     ? attacker.damageSources().playerAttack(player)
                     : attacker.damageSources().mobAttack(attacker);
