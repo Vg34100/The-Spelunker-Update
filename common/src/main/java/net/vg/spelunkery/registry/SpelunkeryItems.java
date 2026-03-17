@@ -14,7 +14,6 @@ import net.vg.spelunkery.item.BronzeCompassItem;
 import net.vg.spelunkery.item.ElectrumBowItem;
 import net.vg.spelunkery.item.ProspectorLensItem;
 import net.vg.spelunkery.item.SilverArrowItem;
-import net.vg.spelunkery.item.SilverBottleItem;
 import net.vg.spelunkery.item.SilverSwordItem;
 
 import java.util.function.Supplier;
@@ -28,7 +27,6 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> NICKEL_INGOT = registerSimpleItem("nickel_ingot");
     public static final RegistrySupplier<Item> RAW_SILVER = registerSimpleItem("raw_silver");
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
-    public static final RegistrySupplier<Item> SILVER_BOTTLE = ITEMS.register("silver_bottle", () -> new SilverBottleItem(new Item.Properties().stacksTo(16)));
     public static final RegistrySupplier<Item> SILVER_ARROW = ITEMS.register("silver_arrow", () -> new SilverArrowItem(new Item.Properties()));
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
     public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");

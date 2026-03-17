@@ -37,7 +37,6 @@ Implement the Spelunkery update in playable phases, starting with core ore and a
 - Add silver weapons with double damage to undead.
 - Add silver arrows.
 - Add silver lining or plating with full wither immunity.
-- Add silver bottle for potion crafting with 25% longer potion duration.
 
 ## Phase 4: Build the Alloying System
 

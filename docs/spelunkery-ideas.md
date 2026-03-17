@@ -58,7 +58,6 @@ The focus is on making caves more rewarding, more readable, and more mechanicall
 - Silver weapons deal double damage to undead by default.
 - Silver arrows should be added.
 - Silver lining or plating grants full wither immunity.
-- Silver bottles are used in potion crafting and increase potion duration by 25%.
 
 ## Feature C: Alloying
 

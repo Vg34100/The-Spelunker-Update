@@ -56,7 +56,6 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.RAW_TIN.get(), SpelunkeryItems.TIN_INGOT.get());
             output.acceptAfter(SpelunkeryItems.TIN_INGOT.get(), SpelunkeryItems.RAW_SILVER.get());
             output.acceptAfter(SpelunkeryItems.RAW_SILVER.get(), SpelunkeryItems.SILVER_INGOT.get());
-            output.acceptAfter(SpelunkeryItems.SILVER_INGOT.get(), SpelunkeryItems.SILVER_BOTTLE.get());
             output.acceptAfter(SpelunkeryItems.SILVER_INGOT.get(), SpelunkeryItems.RAW_NICKEL.get());
             output.acceptAfter(SpelunkeryItems.RAW_NICKEL.get(), SpelunkeryItems.NICKEL_INGOT.get());
             output.acceptAfter(Items.AMETHYST_SHARD, SpelunkeryItems.TOPAZ_SHARD.get());
@@ -70,7 +69,6 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Items.COMPASS, SpelunkeryItems.BRONZE_COMPASS.get());
             output.acceptAfter(SpelunkeryItems.BRONZE_COMPASS.get(), SpelunkeryItems.PROSPECTOR_LENS.get());
             output.acceptAfter(SpelunkeryItems.PROSPECTOR_LENS.get(), SpelunkeryItems.ELECTRUM_BOW.get());
-            output.acceptAfter(Items.GLASS_BOTTLE, SpelunkeryItems.SILVER_BOTTLE.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.COMBAT), (flags, output, hasPermissions) -> {
@@ -134,7 +132,6 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.TIN_INGOT.get());
         output.accept(SpelunkeryItems.RAW_SILVER.get());
         output.accept(SpelunkeryItems.SILVER_INGOT.get());
-        output.accept(SpelunkeryItems.SILVER_BOTTLE.get());
         output.accept(SpelunkeryItems.SILVER_ARROW.get());
         output.accept(SpelunkeryItems.RAW_NICKEL.get());
         output.accept(SpelunkeryItems.NICKEL_INGOT.get());
