@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " rg",
+    " sr",
+    "r  "
+  ],
+  "key": {
+    "r": {
+      "item": "spelunkery:rose_gold_ingot"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "s": {
+      "item": "minecraft:spyglass"
+    }
+  },
+  "result": {
+    "id": "spelunkery:prospector_lens",
+    "count": 1
+  }
+}

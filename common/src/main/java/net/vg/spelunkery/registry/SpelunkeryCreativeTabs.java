@@ -68,7 +68,8 @@ public final class SpelunkeryCreativeTabs {
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.TOOLS_AND_UTILITIES), (flags, output, hasPermissions) -> {
             output.acceptAfter(Items.COMPASS, SpelunkeryItems.BRONZE_COMPASS.get());
-            output.acceptAfter(SpelunkeryItems.BRONZE_COMPASS.get(), SpelunkeryItems.ELECTRUM_BOW.get());
+            output.acceptAfter(SpelunkeryItems.BRONZE_COMPASS.get(), SpelunkeryItems.PROSPECTOR_LENS.get());
+            output.acceptAfter(SpelunkeryItems.PROSPECTOR_LENS.get(), SpelunkeryItems.ELECTRUM_BOW.get());
             output.acceptAfter(Items.GLASS_BOTTLE, SpelunkeryItems.SILVER_BOTTLE.get());
         });
 
@@ -143,6 +144,7 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.ROSE_GOLD_INGOT.get());
         output.accept(SpelunkeryItems.ELECTRUM_INGOT.get());
         output.accept(SpelunkeryItems.BRONZE_COMPASS.get());
+        output.accept(SpelunkeryItems.PROSPECTOR_LENS.get());
         output.accept(SpelunkeryItems.SILVER_SWORD.get());
         output.accept(SpelunkeryItems.ELECTRUM_BOW.get());
     }
