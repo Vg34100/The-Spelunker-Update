@@ -6,6 +6,12 @@
 - Use it to read your current `Y` level
 - Intended as the first bronze cave survey tool
 
+## Silver Bottle
+
+- Crafted from `Silver Ingots` and glass
+- Now behaves like a real bottle item for water collection
+- The planned longer-duration brewing bonus is not wired in yet
+
 ## Silver Sword
 
 - Crafted from `Silver Ingots`

@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.vg.spelunkery.Spelunkery;
@@ -13,6 +14,7 @@ import net.vg.spelunkery.item.BronzeCompassItem;
 import net.vg.spelunkery.item.ElectrumBowItem;
 import net.vg.spelunkery.item.ProspectorLensItem;
 import net.vg.spelunkery.item.SilverArrowItem;
+import net.vg.spelunkery.item.SilverBottleItem;
 import net.vg.spelunkery.item.SilverSwordItem;
 
 import java.util.function.Supplier;
@@ -26,7 +28,7 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> NICKEL_INGOT = registerSimpleItem("nickel_ingot");
     public static final RegistrySupplier<Item> RAW_SILVER = registerSimpleItem("raw_silver");
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
-    public static final RegistrySupplier<Item> SILVER_BOTTLE = ITEMS.register("silver_bottle", () -> new Item(new Item.Properties().stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)));
+    public static final RegistrySupplier<Item> SILVER_BOTTLE = ITEMS.register("silver_bottle", () -> new SilverBottleItem(new Item.Properties().stacksTo(16)));
     public static final RegistrySupplier<Item> SILVER_ARROW = ITEMS.register("silver_arrow", () -> new SilverArrowItem(new Item.Properties()));
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
     public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");
@@ -35,7 +37,15 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> ELECTRUM_INGOT = registerSimpleItem("electrum_ingot");
     public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Item> PROSPECTOR_LENS = ITEMS.register("prospector_lens", () -> new ProspectorLensItem(new Item.Properties().stacksTo(1)));
-    public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register("silver_sword", () -> new SilverSwordItem(Tiers.IRON, new Item.Properties()));
+    public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register(
+            "silver_sword",
+            () -> new SilverSwordItem(
+                    Tiers.IRON,
+                    new Item.Properties()
+                            .durability(Tiers.IRON.getUses())
+                            .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4F))
+            )
+    );
     public static final RegistrySupplier<Item> ELECTRUM_BOW = ITEMS.register("electrum_bow", () -> new ElectrumBowItem(new Item.Properties().durability(512)));
 
     private static boolean initialized;
