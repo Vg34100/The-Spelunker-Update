@@ -12,9 +12,10 @@ import net.vg.spelunkery.registry.SpelunkeryItems;
 
 public class BronzeShieldItem extends ShieldItem {
     private static final int BASH_COOLDOWN_TICKS = 20;
-    private static final double MIN_HORIZONTAL_SPEED_SQUARED = 0.01D;
-    private static final double BASH_ALIGNMENT_THRESHOLD = 0.35D;
-    private static final double BASH_STRENGTH = 0.9D;
+    private static final double MIN_HORIZONTAL_SPEED_SQUARED = 0.0025D;
+    private static final double MOVEMENT_ALIGNMENT_THRESHOLD = 0.2D;
+    private static final double LOOK_ALIGNMENT_THRESHOLD = 0.6D;
+    private static final double BASH_STRENGTH = 1.35D;
 
     public BronzeShieldItem(Properties properties) {
         super(properties);
@@ -25,18 +26,23 @@ public class BronzeShieldItem extends ShieldItem {
             return;
         }
 
-        Vec3 movement = blocker.getDeltaMovement();
-        Vec3 horizontalMovement = new Vec3(movement.x, 0.0D, movement.z);
-        if (horizontalMovement.lengthSqr() < MIN_HORIZONTAL_SPEED_SQUARED) {
-            return;
-        }
-
         Vec3 toAttacker = new Vec3(attacker.getX() - blocker.getX(), 0.0D, attacker.getZ() - blocker.getZ());
         if (toAttacker.lengthSqr() < 1.0E-4D) {
             return;
         }
+        Vec3 toAttackerDirection = toAttacker.normalize();
 
-        if (horizontalMovement.normalize().dot(toAttacker.normalize()) < BASH_ALIGNMENT_THRESHOLD) {
+        Vec3 movement = blocker.getDeltaMovement();
+        Vec3 horizontalMovement = new Vec3(movement.x, 0.0D, movement.z);
+        boolean movingIntoAttacker = horizontalMovement.lengthSqr() >= MIN_HORIZONTAL_SPEED_SQUARED
+                && horizontalMovement.normalize().dot(toAttackerDirection) >= MOVEMENT_ALIGNMENT_THRESHOLD;
+
+        Vec3 lookVector = blocker.getLookAngle();
+        Vec3 horizontalLook = new Vec3(lookVector.x, 0.0D, lookVector.z);
+        boolean facingAttacker = horizontalLook.lengthSqr() > 1.0E-4D
+                && horizontalLook.normalize().dot(toAttackerDirection) >= LOOK_ALIGNMENT_THRESHOLD;
+
+        if (!movingIntoAttacker && !facingAttacker) {
             return;
         }
 
@@ -51,8 +57,10 @@ public class BronzeShieldItem extends ShieldItem {
         double zKnockback = blocker.getZ() - attacker.getZ();
         if (attacker instanceof LivingEntity livingAttacker) {
             livingAttacker.knockback(BASH_STRENGTH, xKnockback, zKnockback);
+            livingAttacker.push(0.0D, 0.1D, 0.0D);
+            livingAttacker.hurtMarked = true;
         } else {
-            attacker.push(-xKnockback * 0.1D, 0.15D, -zKnockback * 0.1D);
+            attacker.push(-xKnockback * 0.2D, 0.2D, -zKnockback * 0.2D);
             attacker.hurtMarked = true;
         }
 

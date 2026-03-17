@@ -18,7 +18,10 @@ public final class SpelunkeryNeoForge {
             return;
         }
 
-        if (event.getDamageSource().getDirectEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) {
+        net.minecraft.world.entity.Entity sourceEntity = event.getDamageSource().getDirectEntity() != null
+                ? event.getDamageSource().getDirectEntity()
+                : event.getDamageSource().getEntity();
+        if (sourceEntity instanceof net.minecraft.world.entity.LivingEntity attacker) {
             BronzeShieldItem.tryBash(event.getEntity(), attacker);
         }
     }

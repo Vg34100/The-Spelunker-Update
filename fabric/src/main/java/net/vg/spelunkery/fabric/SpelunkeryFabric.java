@@ -18,7 +18,8 @@ public final class SpelunkeryFabric implements ModInitializer {
                 return;
             }
 
-            if (source.getDirectEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) {
+            net.minecraft.world.entity.Entity sourceEntity = source.getDirectEntity() != null ? source.getDirectEntity() : source.getEntity();
+            if (sourceEntity instanceof net.minecraft.world.entity.LivingEntity attacker) {
                 BronzeShieldItem.tryBash(entity, attacker);
             }
         });
