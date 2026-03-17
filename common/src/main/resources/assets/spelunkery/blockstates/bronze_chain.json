@@ -1,14 +1,16 @@
 {
   "variants": {
     "axis=x": {
-      "model": "spelunkery:block/bronze_chain_horizontal",
+      "model": "spelunkery:block/bronze_chain",
+      "x": 90,
       "y": 90
     },
     "axis=y": {
       "model": "spelunkery:block/bronze_chain"
     },
     "axis=z": {
-      "model": "spelunkery:block/bronze_chain_horizontal"
+      "model": "spelunkery:block/bronze_chain",
+      "x": 90
     }
   }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "spelunkery:block/bronze_lantern"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spelunkery:item/bronze_lantern"
+  }
 }

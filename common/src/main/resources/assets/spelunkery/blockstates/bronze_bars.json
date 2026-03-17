@@ -2,47 +2,26 @@
   "multipart": [
     {
       "apply": {
+        "model": "spelunkery:block/bronze_bars_post_ends"
+      }
+    },
+    {
+      "apply": {
         "model": "spelunkery:block/bronze_bars_post"
-      }
-    },
-    {
-      "when": {
-        "north": true
       },
-      "apply": {
-        "model": "spelunkery:block/bronze_bars_side"
+      "when": {
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "west": "false"
       }
     },
     {
       "when": {
-        "east": true
-      },
-      "apply": {
-        "model": "spelunkery:block/bronze_bars_side",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "south": true
-      },
-      "apply": {
-        "model": "spelunkery:block/bronze_bars_side",
-        "y": 180
-      }
-    },
-    {
-      "when": {
-        "west": true
-      },
-      "apply": {
-        "model": "spelunkery:block/bronze_bars_side",
-        "y": 270
-      }
-    },
-    {
-      "when": {
-        "north": false
+        "east": "false",
+        "north": "true",
+        "south": "false",
+        "west": "false"
       },
       "apply": {
         "model": "spelunkery:block/bronze_bars_cap"
@@ -50,7 +29,10 @@
     },
     {
       "when": {
-        "east": false
+        "east": "true",
+        "north": "false",
+        "south": "false",
+        "west": "false"
       },
       "apply": {
         "model": "spelunkery:block/bronze_bars_cap",
@@ -59,20 +41,59 @@
     },
     {
       "when": {
-        "south": false
+        "east": "false",
+        "north": "false",
+        "south": "true",
+        "west": "false"
       },
       "apply": {
-        "model": "spelunkery:block/bronze_bars_cap",
-        "y": 180
+        "model": "spelunkery:block/bronze_bars_cap_alt"
       }
     },
     {
       "when": {
-        "west": false
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "west": "true"
       },
       "apply": {
-        "model": "spelunkery:block/bronze_bars_cap",
-        "y": 270
+        "model": "spelunkery:block/bronze_bars_cap_alt",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "spelunkery:block/bronze_bars_side"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "spelunkery:block/bronze_bars_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "spelunkery:block/bronze_bars_side_alt"
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "spelunkery:block/bronze_bars_side_alt",
+        "y": 90
       }
     }
   ]

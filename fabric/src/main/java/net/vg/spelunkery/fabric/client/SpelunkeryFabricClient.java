@@ -1,15 +1,24 @@
 package net.vg.spelunkery.fabric.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 public final class SpelunkeryFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SpelunkeryClient.init();
+        BlockRenderLayerMap.INSTANCE.putBlocks(
+                RenderType.cutout(),
+                SpelunkeryBlocks.BRONZE_BARS.get(),
+                SpelunkeryBlocks.BRONZE_CHAIN.get(),
+                SpelunkeryBlocks.BRONZE_LANTERN.get()
+        );
         FabricModelPredicateProviderRegistry.register(
                 SpelunkeryItems.ELECTRUM_BOW.get(),
                 ResourceLocation.withDefaultNamespace("pull"),

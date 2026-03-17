@@ -2,6 +2,8 @@ package net.vg.spelunkery.neoforge.client;
 
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -10,6 +12,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 import java.lang.reflect.Method;
@@ -23,6 +26,9 @@ public final class SpelunkeryNeoForgeClient {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             SpelunkeryClient.init();
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_BARS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_CHAIN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_LANTERN.get(), RenderType.cutout());
             registerBowPredicates();
             registerShieldPredicates();
         });
