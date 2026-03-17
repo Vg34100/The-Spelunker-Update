@@ -1,0 +1,6 @@
+{
+  "parent": "spelunkery:item/electrum_bow",
+  "textures": {
+    "layer0": "spelunkery:item/electrum_bow_pulling_1"
+  }
+}

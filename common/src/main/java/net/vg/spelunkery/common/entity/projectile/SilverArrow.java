@@ -17,7 +17,7 @@ public class SilverArrow extends Arrow {
         super.onHitEntity(result);
         if (result.getEntity() instanceof LivingEntity target && target.getType().is(EntityTypeTags.UNDEAD)) {
             DamageSource source = this.damageSources().arrow(this, this.getOwner() == null ? this : this.getOwner());
-            target.hurt(source, 4.0F);
+            target.hurt(source, (float) this.getBaseDamage());
         }
     }
 }

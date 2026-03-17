@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "spelunkery:block/bronze_lantern"
+    },
+    "hanging=true": {
+      "model": "spelunkery:block/bronze_lantern_hanging"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " si",
+    "s i",
+    " si"
+  ],
+  "key": {
+    "i": {
+      "item": "spelunkery:electrum_ingot"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "id": "spelunkery:electrum_bow",
+    "count": 1
+  }
+}

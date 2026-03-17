@@ -6,10 +6,13 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.item.BronzeCompassItem;
+import net.vg.spelunkery.item.ElectrumBowItem;
 import net.vg.spelunkery.item.SilverArrowItem;
+import net.vg.spelunkery.item.SilverSwordItem;
 
 import java.util.function.Supplier;
 
@@ -30,6 +33,8 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> ROSE_GOLD_INGOT = registerSimpleItem("rose_gold_ingot");
     public static final RegistrySupplier<Item> ELECTRUM_INGOT = registerSimpleItem("electrum_ingot");
     public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register("silver_sword", () -> new SilverSwordItem(Tiers.IRON, new Item.Properties()));
+    public static final RegistrySupplier<Item> ELECTRUM_BOW = ITEMS.register("electrum_bow", () -> new ElectrumBowItem(new Item.Properties().durability(512)));
 
     private static boolean initialized;
 

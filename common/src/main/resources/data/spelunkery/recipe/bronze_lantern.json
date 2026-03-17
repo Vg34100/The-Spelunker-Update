@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    "iti",
+    " i "
+  ],
+  "key": {
+    "i": {
+      "item": "spelunkery:bronze_ingot"
+    },
+    "t": {
+      "item": "minecraft:torch"
+    }
+  },
+  "result": {
+    "id": "spelunkery:bronze_lantern",
+    "count": 1
+  }
+}

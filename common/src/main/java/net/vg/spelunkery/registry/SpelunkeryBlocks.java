@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -153,6 +154,26 @@ public final class SpelunkeryBlocks {
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> BRONZE_GRATE = registerBlock(
+            "bronze_grate",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> BRONZE_LANTERN = registerBlock(
+            "bronze_lantern",
+            () -> new LanternBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(3.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.LANTERN)
+                    .noOcclusion()
+                    .lightLevel(state -> 15))
     );
 
     public static final RegistrySupplier<Block> INVAR_BLOCK = registerBlock(

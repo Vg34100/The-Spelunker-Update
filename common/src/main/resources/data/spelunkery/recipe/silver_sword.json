@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    " i ",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "item": "spelunkery:silver_ingot"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "spelunkery:silver_sword",
+    "count": 1
+  }
+}

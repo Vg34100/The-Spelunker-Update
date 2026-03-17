@@ -30,7 +30,14 @@ Silver is an overworld precious metal with combat and utility uses tied to undea
 ## Planned Uses
 
 - Weapons that excel against undead
+- Silver sword
 - Silver arrows
 - Silver lining with wither immunity
 - Silver bottles that extend potion duration
 - Later alloying input for electrum
+
+## Current Uses
+
+- `Silver Sword` deals bonus damage to undead
+- `Silver Arrow` deals bonus damage to undead
+- `Silver Bottle` is available as a brewing material for later potion expansion
