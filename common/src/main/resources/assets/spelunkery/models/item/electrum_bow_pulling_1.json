@@ -1,5 +1,5 @@
 {
-  "parent": "spelunkery:item/electrum_bow",
+  "parent": "minecraft:item/bow",
   "textures": {
     "layer0": "spelunkery:item/electrum_bow_pulling_1"
   }
