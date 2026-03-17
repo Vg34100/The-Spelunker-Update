@@ -6,6 +6,11 @@
     "spelunkery:raw_tin_block",
     "spelunkery:tin_block",
     "spelunkery:bronze_block",
+    "spelunkery:bronze_tiles",
+    "spelunkery:rose_gold_block",
+    "spelunkery:rose_gold_tiles",
+    "spelunkery:electrum_block",
+    "spelunkery:electrum_tiles",
     "spelunkery:crucible",
     "spelunkery:foundry"
   ]

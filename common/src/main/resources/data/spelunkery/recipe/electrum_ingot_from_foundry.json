@@ -1,0 +1,23 @@
+{
+  "type": "spelunkery:foundry",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "spelunkery:silver_ingot"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "spelunkery:electrum_ingot",
+    "count": 2
+  },
+  "process_time": 220,
+  "lava_cost": 1
+}

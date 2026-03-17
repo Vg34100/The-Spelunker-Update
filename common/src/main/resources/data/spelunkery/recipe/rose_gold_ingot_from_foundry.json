@@ -1,0 +1,23 @@
+{
+  "type": "spelunkery:foundry",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:copper_ingot"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "spelunkery:rose_gold_ingot",
+    "count": 3
+  },
+  "process_time": 220,
+  "lava_cost": 1
+}

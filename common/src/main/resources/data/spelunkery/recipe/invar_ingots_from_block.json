@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "spelunkery:invar_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "spelunkery:invar_ingot"
+  }
+}

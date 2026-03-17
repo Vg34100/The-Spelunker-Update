@@ -60,6 +60,9 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.RAW_NICKEL.get(), SpelunkeryItems.NICKEL_INGOT.get());
             output.acceptAfter(Items.AMETHYST_SHARD, SpelunkeryItems.TOPAZ_SHARD.get());
             output.acceptAfter(SpelunkeryItems.NICKEL_INGOT.get(), SpelunkeryItems.BRONZE_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.BRONZE_INGOT.get(), SpelunkeryItems.INVAR_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.INVAR_INGOT.get(), SpelunkeryItems.ROSE_GOLD_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.ROSE_GOLD_INGOT.get(), SpelunkeryItems.ELECTRUM_INGOT.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.TOOLS_AND_UTILITIES), (flags, output, hasPermissions) -> {
@@ -74,6 +77,13 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.RAW_SILVER_BLOCK.get(), SpelunkeryBlocks.NICKEL_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.NICKEL_BLOCK.get(), SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.RAW_NICKEL_BLOCK.get(), SpelunkeryBlocks.BRONZE_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.BRONZE_BLOCK.get(), SpelunkeryBlocks.BRONZE_TILES.get());
+            output.acceptAfter(SpelunkeryBlocks.BRONZE_TILES.get(), SpelunkeryBlocks.INVAR_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.INVAR_BLOCK.get(), SpelunkeryBlocks.INVAR_TILES.get());
+            output.acceptAfter(SpelunkeryBlocks.INVAR_TILES.get(), SpelunkeryBlocks.ROSE_GOLD_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.ROSE_GOLD_BLOCK.get(), SpelunkeryBlocks.ROSE_GOLD_TILES.get());
+            output.acceptAfter(SpelunkeryBlocks.ROSE_GOLD_TILES.get(), SpelunkeryBlocks.ELECTRUM_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.ELECTRUM_BLOCK.get(), SpelunkeryBlocks.ELECTRUM_TILES.get());
         });
     }
 
@@ -92,6 +102,13 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.NICKEL_BLOCK.get());
         output.accept(SpelunkeryBlocks.TOPAZ_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_BLOCK.get());
+        output.accept(SpelunkeryBlocks.BRONZE_TILES.get());
+        output.accept(SpelunkeryBlocks.INVAR_BLOCK.get());
+        output.accept(SpelunkeryBlocks.INVAR_TILES.get());
+        output.accept(SpelunkeryBlocks.ROSE_GOLD_BLOCK.get());
+        output.accept(SpelunkeryBlocks.ROSE_GOLD_TILES.get());
+        output.accept(SpelunkeryBlocks.ELECTRUM_BLOCK.get());
+        output.accept(SpelunkeryBlocks.ELECTRUM_TILES.get());
         output.accept(SpelunkeryBlocks.CRUCIBLE.get());
         output.accept(SpelunkeryBlocks.FOUNDRY.get());
     }
@@ -105,6 +122,9 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.NICKEL_INGOT.get());
         output.accept(SpelunkeryItems.TOPAZ_SHARD.get());
         output.accept(SpelunkeryItems.BRONZE_INGOT.get());
+        output.accept(SpelunkeryItems.INVAR_INGOT.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_INGOT.get());
+        output.accept(SpelunkeryItems.ELECTRUM_INGOT.get());
         output.accept(SpelunkeryItems.BRONZE_COMPASS.get());
     }
 }

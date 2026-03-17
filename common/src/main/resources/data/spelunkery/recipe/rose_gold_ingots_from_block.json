@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "spelunkery:rose_gold_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "spelunkery:rose_gold_ingot"
+  }
+}

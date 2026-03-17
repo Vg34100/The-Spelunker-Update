@@ -9,6 +9,8 @@
     "spelunkery:deepslate_silver_ore",
     "spelunkery:raw_silver_block",
     "spelunkery:silver_block",
-    "spelunkery:topaz_block"
+    "spelunkery:topaz_block",
+    "spelunkery:invar_block",
+    "spelunkery:invar_tiles"
   ]
 }

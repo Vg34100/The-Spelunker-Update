@@ -14,6 +14,13 @@
   "block.spelunkery.silver_block": "Block of Silver",
   "block.spelunkery.topaz_block": "Topaz Block",
   "block.spelunkery.bronze_block": "Block of Bronze",
+  "block.spelunkery.bronze_tiles": "Bronze Tiles",
+  "block.spelunkery.invar_block": "Block of Invar",
+  "block.spelunkery.invar_tiles": "Invar Tiles",
+  "block.spelunkery.rose_gold_block": "Block of Rose Gold",
+  "block.spelunkery.rose_gold_tiles": "Rose Gold Tiles",
+  "block.spelunkery.electrum_block": "Block of Electrum",
+  "block.spelunkery.electrum_tiles": "Electrum Tiles",
   "block.spelunkery.crucible": "Crucible",
   "block.spelunkery.foundry": "Foundry",
   "item.spelunkery.raw_tin": "Raw Tin",
@@ -24,5 +31,8 @@
   "item.spelunkery.silver_ingot": "Silver Ingot",
   "item.spelunkery.topaz_shard": "Topaz Shard",
   "item.spelunkery.bronze_ingot": "Bronze Ingot",
+  "item.spelunkery.invar_ingot": "Invar Ingot",
+  "item.spelunkery.rose_gold_ingot": "Rose Gold Ingot",
+  "item.spelunkery.electrum_ingot": "Electrum Ingot",
   "item.spelunkery.bronze_compass": "Bronze Compass"
 }

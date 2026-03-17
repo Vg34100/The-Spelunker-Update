@@ -145,6 +145,69 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
+    public static final RegistrySupplier<Block> BRONZE_TILES = registerBlock(
+            "bronze_tiles",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> INVAR_BLOCK = registerBlock(
+            "invar_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(5.5F, 6.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> INVAR_TILES = registerBlock(
+            "invar_tiles",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(5.5F, 6.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> ROSE_GOLD_BLOCK = registerBlock(
+            "rose_gold_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PINK)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> ROSE_GOLD_TILES = registerBlock(
+            "rose_gold_tiles",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PINK)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> ELECTRUM_BLOCK = registerBlock(
+            "electrum_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> ELECTRUM_TILES = registerBlock(
+            "electrum_tiles",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL))
+    );
+
     public static final RegistrySupplier<Block> CRUCIBLE = registerBlock(
             "crucible",
             () -> new CrucibleBlock(BlockBehaviour.Properties.of()

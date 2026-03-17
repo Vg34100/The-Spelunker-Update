@@ -15,6 +15,13 @@
     "spelunkery:silver_block",
     "spelunkery:topaz_block",
     "spelunkery:bronze_block",
+    "spelunkery:bronze_tiles",
+    "spelunkery:invar_block",
+    "spelunkery:invar_tiles",
+    "spelunkery:rose_gold_block",
+    "spelunkery:rose_gold_tiles",
+    "spelunkery:electrum_block",
+    "spelunkery:electrum_tiles",
     "spelunkery:crucible",
     "spelunkery:foundry"
   ]

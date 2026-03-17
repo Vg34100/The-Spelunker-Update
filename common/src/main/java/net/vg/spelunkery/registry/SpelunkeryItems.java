@@ -22,6 +22,9 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> SILVER_INGOT = registerSimpleItem("silver_ingot");
     public static final RegistrySupplier<Item> TOPAZ_SHARD = registerSimpleItem("topaz_shard");
     public static final RegistrySupplier<Item> BRONZE_INGOT = registerSimpleItem("bronze_ingot");
+    public static final RegistrySupplier<Item> INVAR_INGOT = registerSimpleItem("invar_ingot");
+    public static final RegistrySupplier<Item> ROSE_GOLD_INGOT = registerSimpleItem("rose_gold_ingot");
+    public static final RegistrySupplier<Item> ELECTRUM_INGOT = registerSimpleItem("electrum_ingot");
     public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
 
     private static boolean initialized;
