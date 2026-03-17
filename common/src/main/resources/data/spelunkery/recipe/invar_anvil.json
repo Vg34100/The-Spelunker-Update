@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "spelunkery:invar_block"
+    },
+    "I": {
+      "item": "spelunkery:invar_ingot"
+    }
+  },
+  "pattern": [
+    "BBB",
+    " I ",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "spelunkery:invar_anvil"
+  }
+}

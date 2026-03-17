@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_anvil",
+  "textures": {
+    "top": "spelunkery:block/invar_anvil_top",
+    "body": "spelunkery:block/invar_block",
+    "particle": "spelunkery:block/invar_block"
+  }
+}

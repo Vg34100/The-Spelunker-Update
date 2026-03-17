@@ -12,6 +12,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.block.CrucibleBlock;
 import net.vg.spelunkery.block.FoundryBlock;
+import net.vg.spelunkery.block.InvarAnvilBlock;
 
 import java.util.function.Supplier;
 
@@ -170,6 +171,15 @@ public final class SpelunkeryBlocks {
                     .strength(5.5F, 6.5F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL))
+    );
+
+    public static final RegistrySupplier<Block> INVAR_ANVIL = registerBlock(
+            "invar_anvil",
+            () -> new InvarAnvilBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(6.0F, 1200.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.ANVIL))
     );
 
     public static final RegistrySupplier<Block> ROSE_GOLD_BLOCK = registerBlock(

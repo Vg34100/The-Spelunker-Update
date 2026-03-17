@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "spelunkery:block/invar_anvil",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "spelunkery:block/invar_anvil",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "spelunkery:block/invar_anvil"
+    },
+    "facing=west": {
+      "model": "spelunkery:block/invar_anvil",
+      "y": 90
+    }
+  }
+}
