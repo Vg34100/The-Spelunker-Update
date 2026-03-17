@@ -20,6 +20,8 @@
   "block.spelunkery.invar_block": "Block of Invar",
   "block.spelunkery.invar_tiles": "Invar Tiles",
   "block.spelunkery.invar_anvil": "Invar Anvil",
+  "block.spelunkery.chipped_invar_anvil": "Chipped Invar Anvil",
+  "block.spelunkery.damaged_invar_anvil": "Damaged Invar Anvil",
   "block.spelunkery.rose_gold_block": "Block of Rose Gold",
   "block.spelunkery.rose_gold_tiles": "Rose Gold Tiles",
   "block.spelunkery.electrum_block": "Block of Electrum",

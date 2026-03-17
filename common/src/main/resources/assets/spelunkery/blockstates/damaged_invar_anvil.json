@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "spelunkery:block/damaged_invar_anvil" },
+    "facing=south": { "model": "spelunkery:block/damaged_invar_anvil", "y": 180 },
+    "facing=west": { "model": "spelunkery:block/damaged_invar_anvil", "y": 270 },
+    "facing=east": { "model": "spelunkery:block/damaged_invar_anvil", "y": 90 }
+  }
+}

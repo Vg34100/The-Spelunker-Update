@@ -21,6 +21,8 @@
     "spelunkery:invar_block",
     "spelunkery:invar_tiles",
     "spelunkery:invar_anvil",
+    "spelunkery:chipped_invar_anvil",
+    "spelunkery:damaged_invar_anvil",
     "spelunkery:rose_gold_block",
     "spelunkery:rose_gold_tiles",
     "spelunkery:electrum_block",

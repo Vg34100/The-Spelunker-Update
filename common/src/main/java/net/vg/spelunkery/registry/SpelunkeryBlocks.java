@@ -194,13 +194,31 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
+    public static final RegistrySupplier<Block> DAMAGED_INVAR_ANVIL = registerBlock(
+            "damaged_invar_anvil",
+            () -> new InvarAnvilBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(6.0F, 1200.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.ANVIL), null)
+    );
+
+    public static final RegistrySupplier<Block> CHIPPED_INVAR_ANVIL = registerBlock(
+            "chipped_invar_anvil",
+            () -> new InvarAnvilBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(6.0F, 1200.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.ANVIL), DAMAGED_INVAR_ANVIL::get)
+    );
+
     public static final RegistrySupplier<Block> INVAR_ANVIL = registerBlock(
             "invar_anvil",
             () -> new InvarAnvilBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(6.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.ANVIL))
+                    .sound(SoundType.ANVIL), CHIPPED_INVAR_ANVIL::get)
     );
 
     public static final RegistrySupplier<Block> ROSE_GOLD_BLOCK = registerBlock(

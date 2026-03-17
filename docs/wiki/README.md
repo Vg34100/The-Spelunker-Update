@@ -10,6 +10,7 @@ Each page should describe what the material or feature is, where it appears, wha
 
 - [Bronze](./materials/bronze.md)
 - [Electrum](./materials/electrum.md)
+- [Invar](./materials/invar.md)
 - [Tin](./materials/tin.md)
 - [Nickel](./materials/nickel.md)
 - [Rose Gold](./materials/rose-gold.md)

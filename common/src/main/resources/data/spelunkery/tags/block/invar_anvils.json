@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "spelunkery:invar_anvil",
+    "spelunkery:chipped_invar_anvil",
+    "spelunkery:damaged_invar_anvil"
+  ]
+}
