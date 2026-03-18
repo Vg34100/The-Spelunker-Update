@@ -39,3 +39,5 @@ Silver is an overworld precious metal with combat and utility uses tied to undea
 
 - `Silver Sword` deals bonus damage to undead
 - `Silver Arrow` deals bonus damage to undead
+- `Silver Lining` upgrades iron armor into `Silver-Lined Iron Armor`
+- Any silver-lined armor piece grants full wither immunity while worn

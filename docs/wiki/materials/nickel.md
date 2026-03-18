@@ -32,3 +32,8 @@ Nickel is a deeper, rarer overworld metal focused on reinforcement, plating, and
 - Reinforcement and plating systems
 - Later alloying input for invar
 - Durable expedition hardware
+
+## Current Uses
+
+- `Nickel Plating` is used in the smithing table to upgrade iron armor into `Nickel-Plated Iron Armor`
+- Nickel-plated armor is the first durability-focused armor upgrade path

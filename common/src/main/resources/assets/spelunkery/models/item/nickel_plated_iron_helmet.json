@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spelunkery:item/nickel_plated_iron_helmet"
+  }
+}

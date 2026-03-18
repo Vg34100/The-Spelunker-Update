@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spelunkery:item/silver_lined_iron_leggings"
+  }
+}

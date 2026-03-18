@@ -22,6 +22,8 @@ Rose gold is an alloy built around cave instruments and enchantment-adjacent uti
 ## Current Uses
 
 - `Prospector's Lens` scans nearby stone for ore signatures
+- `Rose Gold Filigree` upgrades iron armor into `Rose Gold-Plated Iron Armor`
+- Rose gold-plated armor is the first enchantability-focused armor upgrade path
 
 ## Planned Uses
 

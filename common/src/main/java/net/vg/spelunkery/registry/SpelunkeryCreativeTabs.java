@@ -63,6 +63,9 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.BRONZE_INGOT.get(), SpelunkeryItems.INVAR_INGOT.get());
             output.acceptAfter(SpelunkeryItems.INVAR_INGOT.get(), SpelunkeryItems.ROSE_GOLD_INGOT.get());
             output.acceptAfter(SpelunkeryItems.ROSE_GOLD_INGOT.get(), SpelunkeryItems.ELECTRUM_INGOT.get());
+            output.acceptAfter(SpelunkeryItems.ELECTRUM_INGOT.get(), SpelunkeryItems.NICKEL_PLATING.get());
+            output.acceptAfter(SpelunkeryItems.NICKEL_PLATING.get(), SpelunkeryItems.SILVER_LINING.get());
+            output.acceptAfter(SpelunkeryItems.SILVER_LINING.get(), SpelunkeryItems.ROSE_GOLD_FILIGREE.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.TOOLS_AND_UTILITIES), (flags, output, hasPermissions) -> {
@@ -77,6 +80,18 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Items.IRON_SWORD, SpelunkeryItems.SILVER_SWORD.get());
             output.acceptAfter(Items.SHIELD, SpelunkeryItems.BRONZE_SHIELD.get());
             output.acceptAfter(Items.BOW, SpelunkeryItems.ELECTRUM_BOW.get());
+            output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_HELMET.get());
+            output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_CHESTPLATE.get());
+            output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_LEGGINGS.get());
+            output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_BOOTS.get());
+            output.accept(SpelunkeryItems.SILVER_LINED_IRON_HELMET.get());
+            output.accept(SpelunkeryItems.SILVER_LINED_IRON_CHESTPLATE.get());
+            output.accept(SpelunkeryItems.SILVER_LINED_IRON_LEGGINGS.get());
+            output.accept(SpelunkeryItems.SILVER_LINED_IRON_BOOTS.get());
+            output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_HELMET.get());
+            output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_CHESTPLATE.get());
+            output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_LEGGINGS.get());
+            output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_BOOTS.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.BUILDING_BLOCKS), (flags, output, hasPermissions) -> {
@@ -150,10 +165,25 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.INVAR_INGOT.get());
         output.accept(SpelunkeryItems.ROSE_GOLD_INGOT.get());
         output.accept(SpelunkeryItems.ELECTRUM_INGOT.get());
+        output.accept(SpelunkeryItems.NICKEL_PLATING.get());
+        output.accept(SpelunkeryItems.SILVER_LINING.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_FILIGREE.get());
         output.accept(SpelunkeryItems.BRONZE_COMPASS.get());
         output.accept(SpelunkeryItems.BRONZE_SHIELD.get());
         output.accept(SpelunkeryItems.PROSPECTOR_LENS.get());
         output.accept(SpelunkeryItems.SILVER_SWORD.get());
         output.accept(SpelunkeryItems.ELECTRUM_BOW.get());
+        output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_HELMET.get());
+        output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_LEGGINGS.get());
+        output.accept(SpelunkeryItems.NICKEL_PLATED_IRON_BOOTS.get());
+        output.accept(SpelunkeryItems.SILVER_LINED_IRON_HELMET.get());
+        output.accept(SpelunkeryItems.SILVER_LINED_IRON_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.SILVER_LINED_IRON_LEGGINGS.get());
+        output.accept(SpelunkeryItems.SILVER_LINED_IRON_BOOTS.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_HELMET.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_LEGGINGS.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_PLATED_IRON_BOOTS.get());
     }
 }

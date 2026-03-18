@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {
+    "item": "spelunkery:silver_lining"
+  },
+  "base": {
+    "item": "minecraft:iron_leggings"
+  },
+  "addition": {
+    "item": "spelunkery:silver_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "spelunkery:silver_lined_iron_leggings"
+  }
+}
