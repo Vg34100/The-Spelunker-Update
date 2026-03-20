@@ -17,6 +17,7 @@ Each page should describe what the material or feature is, where it appears, wha
 - [Silver](./materials/silver.md)
 - [Topaz](./materials/topaz.md)
 - [Ruby](./materials/ruby.md)
+- [Marble](./materials/marble.md)
 - [Sapphire](./materials/sapphire.md)
 
 ## Items

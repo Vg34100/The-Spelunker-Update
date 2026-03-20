@@ -12,6 +12,7 @@ public final class SpelunkeryWorldgen {
     public static final ResourceKey<PlacedFeature> TOPAZ_GEODE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Spelunkery.id("topaz_geode"));
     public static final ResourceKey<PlacedFeature> RUBY_POCKET_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Spelunkery.id("ruby_pocket"));
     public static final ResourceKey<PlacedFeature> SAPPHIRE_POCKET_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Spelunkery.id("sapphire_pocket"));
+    public static final ResourceKey<PlacedFeature> MARBLE_PATCH_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Spelunkery.id("marble_patch"));
 
     private SpelunkeryWorldgen() {
     }

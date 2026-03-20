@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 2
+                }
+              ],
+              "name": "spelunkery:marble_tile_slab",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "spelunkery:marble_tile_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spelunkery:marble_tile_slab"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "spelunkery:blocks/marble_tile_slab"
+}

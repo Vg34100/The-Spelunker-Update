@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "spelunkery:marble_patch",
+  "step": "underground_ores"
+}

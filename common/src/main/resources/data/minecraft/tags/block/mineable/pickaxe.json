@@ -32,6 +32,22 @@
     "spelunkery:crucible",
     "spelunkery:foundry",
     "spelunkery:ruby_block",
-    "spelunkery:sapphire_block"
+    "spelunkery:sapphire_block",
+    "spelunkery:marble",
+    "spelunkery:marble_stairs",
+    "spelunkery:marble_slab",
+    "spelunkery:marble_wall",
+    "spelunkery:polished_marble",
+    "spelunkery:polished_marble_stairs",
+    "spelunkery:polished_marble_slab",
+    "spelunkery:polished_marble_wall",
+    "spelunkery:marble_bricks",
+    "spelunkery:marble_brick_stairs",
+    "spelunkery:marble_brick_slab",
+    "spelunkery:marble_brick_wall",
+    "spelunkery:marble_tiles",
+    "spelunkery:marble_tile_stairs",
+    "spelunkery:marble_tile_slab",
+    "spelunkery:marble_tile_wall"
   ]
 }

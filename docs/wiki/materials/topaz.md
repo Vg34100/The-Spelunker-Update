@@ -15,12 +15,12 @@ It is intended to feel more special than a normal ore vein.
 - Vertical range:
   - minimum: `above bottom + 6`
   - maximum: `y=24`
-- Uses a calcite and smooth basalt shell with a topaz interior in the first implementation.
+- Uses a calcite and smooth basalt shell with a topaz interior in the current implementation.
 
 ## Collection
 
 - Topaz geodes contain `Topaz Block` in the interior.
-- Breaking topaz blocks normally drops `Topaz Shards`.
+- Breaking topaz blocks normally drops `2-4 Topaz Shards`, with Fortune increasing the yield.
 - Silk Touch preserves the block itself.
 - Topaz is gathered from the geode interior rather than from a standard ore vein.
 

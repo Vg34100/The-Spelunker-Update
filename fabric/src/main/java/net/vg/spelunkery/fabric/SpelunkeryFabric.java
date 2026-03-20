@@ -47,6 +47,11 @@ public final class SpelunkeryFabric implements ModInitializer {
         );
         BiomeModifications.addFeature(
                 BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.UNDERGROUND_ORES,
+                SpelunkeryWorldgen.MARBLE_PATCH_PLACED
+        );
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
                 GenerationStep.Decoration.LOCAL_MODIFICATIONS,
                 SpelunkeryWorldgen.TOPAZ_GEODE_PLACED
         );

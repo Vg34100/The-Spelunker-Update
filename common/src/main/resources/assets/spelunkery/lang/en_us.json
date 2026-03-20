@@ -53,5 +53,21 @@
   "item.spelunkery.bronze_shield": "Bronze Shield",
   "item.spelunkery.prospector_lens": "Prospector's Lens",
   "item.spelunkery.silver_sword": "Silver Sword",
-  "item.spelunkery.electrum_bow": "Electrum Bow"
+  "item.spelunkery.electrum_bow": "Electrum Bow",
+  "block.spelunkery.marble": "Marble",
+  "block.spelunkery.marble_stairs": "Marble Stairs",
+  "block.spelunkery.marble_slab": "Marble Slab",
+  "block.spelunkery.marble_wall": "Marble Wall",
+  "block.spelunkery.polished_marble": "Polished Marble",
+  "block.spelunkery.polished_marble_stairs": "Polished Marble Stairs",
+  "block.spelunkery.polished_marble_slab": "Polished Marble Slab",
+  "block.spelunkery.polished_marble_wall": "Polished Marble Wall",
+  "block.spelunkery.marble_bricks": "Marble Bricks",
+  "block.spelunkery.marble_brick_stairs": "Marble Brick Stairs",
+  "block.spelunkery.marble_brick_slab": "Marble Brick Slab",
+  "block.spelunkery.marble_brick_wall": "Marble Brick Wall",
+  "block.spelunkery.marble_tiles": "Marble Tiles",
+  "block.spelunkery.marble_tile_stairs": "Marble Tile Stairs",
+  "block.spelunkery.marble_tile_slab": "Marble Tile Slab",
+  "block.spelunkery.marble_tile_wall": "Marble Tile Wall"
 }

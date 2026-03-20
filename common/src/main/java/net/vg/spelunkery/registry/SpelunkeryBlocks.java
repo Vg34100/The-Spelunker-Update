@@ -9,6 +9,9 @@ import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -158,6 +161,90 @@ public final class SpelunkeryBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> 5))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE = registerBlock(
+            "marble",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(1.5F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.TUFF))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_STAIRS = registerBlock(
+            "marble_stairs",
+            () -> new StairBlock(MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_SLAB = registerBlock(
+            "marble_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_WALL = registerBlock(
+            "marble_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_MARBLE = registerBlock(
+            "polished_marble",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.POLISHED_DEEPSLATE))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_MARBLE_STAIRS = registerBlock(
+            "polished_marble_stairs",
+            () -> new StairBlock(POLISHED_MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_MARBLE_SLAB = registerBlock(
+            "polished_marble_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_MARBLE_WALL = registerBlock(
+            "polished_marble_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_BRICKS = registerBlock(
+            "marble_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_BRICKS))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_BRICK_STAIRS = registerBlock(
+            "marble_brick_stairs",
+            () -> new StairBlock(MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_BRICK_SLAB = registerBlock(
+            "marble_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_BRICK_WALL = registerBlock(
+            "marble_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_TILES = registerBlock(
+            "marble_tiles",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_TILES))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_TILE_STAIRS = registerBlock(
+            "marble_tile_stairs",
+            () -> new StairBlock(MARBLE_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_TILE_SLAB = registerBlock(
+            "marble_tile_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> MARBLE_TILE_WALL = registerBlock(
+            "marble_tile_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).forceSolidOn())
     );
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(

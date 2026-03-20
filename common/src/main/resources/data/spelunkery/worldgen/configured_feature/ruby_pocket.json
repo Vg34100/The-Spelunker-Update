@@ -36,14 +36,14 @@
       "outer_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "minecraft:tuff"
+          "Name": "spelunkery:marble"
         }
       }
     },
     "crack": {
       "base_crack_size": 1.6,
       "crack_point_offset": 1,
-      "generate_crack_chance": 0.65
+      "generate_crack_chance": 0.35
     },
     "distribution_points": {
       "type": "minecraft:uniform",
@@ -52,13 +52,13 @@
     },
     "invalid_blocks_threshold": 1,
     "layers": {
-      "filling": 1.2,
-      "inner_layer": 1.8,
-      "middle_layer": 2.5,
-      "outer_layer": 3.3
+      "filling": 1.0,
+      "inner_layer": 1.6,
+      "middle_layer": 2.2,
+      "outer_layer": 3.0
     },
-    "max_gen_offset": 12,
-    "min_gen_offset": -12,
+    "max_gen_offset": 10,
+    "min_gen_offset": -10,
     "noise_multiplier": 0.05,
     "outer_wall_distance": {
       "type": "minecraft:uniform",
