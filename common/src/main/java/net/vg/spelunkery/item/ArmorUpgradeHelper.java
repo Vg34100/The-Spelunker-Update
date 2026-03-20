@@ -1,14 +1,12 @@
 package net.vg.spelunkery.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
 import net.vg.spelunkery.Spelunkery;
 
@@ -62,8 +61,10 @@ public final class ArmorUpgradeHelper {
 
         if (upgrade == ArmorUpgrade.NICKEL) {
             applyNickelDurability(result, original);
+            result.set(DataComponents.ATTRIBUTE_MODIFIERS, buildAttributeModifiers(result, Attributes.ARMOR_TOUGHNESS, NICKEL_TOUGHNESS_ID, 1.0D));
         } else if (upgrade == ArmorUpgrade.ROSE_GOLD) {
             result.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+            result.set(DataComponents.ATTRIBUTE_MODIFIERS, buildAttributeModifiers(result, Attributes.LUCK, ROSE_GOLD_LUCK_ID, 1.0D));
         }
 
         return result;
@@ -73,9 +74,6 @@ public final class ArmorUpgradeHelper {
         if (player.hasEffect(MobEffects.WITHER) && countPieces(player, ArmorUpgrade.SILVER) > 0) {
             player.removeEffect(MobEffects.WITHER);
         }
-
-        updateTransientModifier(player, Attributes.ARMOR_TOUGHNESS, NICKEL_TOUGHNESS_ID, countPieces(player, ArmorUpgrade.NICKEL));
-        updateTransientModifier(player, Attributes.LUCK, ROSE_GOLD_LUCK_ID, countPieces(player, ArmorUpgrade.ROSE_GOLD));
     }
 
     private static int countPieces(Player player, ArmorUpgrade upgrade) {
@@ -88,16 +86,14 @@ public final class ArmorUpgradeHelper {
         return count;
     }
 
-    private static void updateTransientModifier(Player player, Holder<Attribute> attribute, ResourceLocation modifierId, int pieceCount) {
-        AttributeInstance instance = player.getAttribute(attribute);
-        if (instance == null) {
-            return;
+    private static ItemAttributeModifiers buildAttributeModifiers(ItemStack stack, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> extraAttribute, ResourceLocation extraId, double amount) {
+        ItemAttributeModifiers defaults = stack.getItem().getDefaultAttributeModifiers();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        for (ItemAttributeModifiers.Entry entry : defaults.modifiers()) {
+            builder.add(entry.attribute(), entry.modifier(), entry.slot());
         }
-
-        instance.removeModifier(modifierId);
-        if (pieceCount > 0) {
-            instance.addOrUpdateTransientModifier(new AttributeModifier(modifierId, pieceCount, Operation.ADD_VALUE));
-        }
+        builder.add(extraAttribute, new AttributeModifier(extraId, amount, Operation.ADD_VALUE), getSlotGroup(stack));
+        return builder.build().withTooltip(defaults.showInTooltip());
     }
 
     private static void applyNickelDurability(ItemStack result, ItemStack original) {
@@ -120,5 +116,12 @@ public final class ArmorUpgradeHelper {
                 || stack.is(Items.IRON_CHESTPLATE)
                 || stack.is(Items.IRON_LEGGINGS)
                 || stack.is(Items.IRON_BOOTS);
+    }
+
+    private static EquipmentSlotGroup getSlotGroup(ItemStack stack) {
+        if (stack.getItem() instanceof ArmorItem armorItem) {
+            return EquipmentSlotGroup.bySlot(armorItem.getEquipmentSlot());
+        }
+        return EquipmentSlotGroup.ARMOR;
     }
 }
