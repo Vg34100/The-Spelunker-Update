@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
@@ -26,10 +27,7 @@ public final class ArmorUpgradeHelper {
     }
 
     public static boolean isUpgradeableArmor(ItemStack stack) {
-        return stack.is(Items.IRON_HELMET)
-                || stack.is(Items.IRON_CHESTPLATE)
-                || stack.is(Items.IRON_LEGGINGS)
-                || stack.is(Items.IRON_BOOTS);
+        return stack.getItem() instanceof ArmorItem;
     }
 
     public static ArmorUpgrade getUpgrade(ItemStack stack) {
@@ -50,7 +48,7 @@ public final class ArmorUpgradeHelper {
         ItemStack result = original.copy();
 
         CustomData.update(DataComponents.CUSTOM_DATA, result, tag -> tag.putString(UPGRADE_KEY, upgrade.id()));
-        if (isUpgradeableArmor(result)) {
+        if (isUpgradeableArmor(result) && isIronArmor(result)) {
             result.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(upgrade.modelData()));
         }
 
@@ -105,25 +103,26 @@ public final class ArmorUpgradeHelper {
             double amount,
             EquipmentSlotGroup slotGroup
     ) {
-        ItemAttributeModifiers existing = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        ItemAttributeModifiers baseModifiers = stack.getItem().getDefaultAttributeModifiers();
+        ItemAttributeModifiers existing = stack.has(DataComponents.ATTRIBUTE_MODIFIERS)
+                ? stack.get(DataComponents.ATTRIBUTE_MODIFIERS)
+                : baseModifiers;
         stack.set(
                 DataComponents.ATTRIBUTE_MODIFIERS,
                 existing.withModifierAdded(attribute, new AttributeModifier(modifierId, amount, Operation.ADD_VALUE), slotGroup)
         );
     }
 
+    private static boolean isIronArmor(ItemStack stack) {
+        return stack.is(Items.IRON_HELMET)
+                || stack.is(Items.IRON_CHESTPLATE)
+                || stack.is(Items.IRON_LEGGINGS)
+                || stack.is(Items.IRON_BOOTS);
+    }
+
     private static EquipmentSlotGroup getSlotGroup(ItemStack stack) {
-        if (stack.is(Items.IRON_HELMET)) {
-            return EquipmentSlotGroup.HEAD;
-        }
-        if (stack.is(Items.IRON_CHESTPLATE)) {
-            return EquipmentSlotGroup.CHEST;
-        }
-        if (stack.is(Items.IRON_LEGGINGS)) {
-            return EquipmentSlotGroup.LEGS;
-        }
-        if (stack.is(Items.IRON_BOOTS)) {
-            return EquipmentSlotGroup.FEET;
+        if (stack.getItem() instanceof ArmorItem armorItem) {
+            return EquipmentSlotGroup.bySlot(armorItem.getEquipmentSlot());
         }
         return EquipmentSlotGroup.ARMOR;
     }
