@@ -47,7 +47,9 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Blocks.DEEPSLATE_REDSTONE_ORE, SpelunkeryBlocks.NICKEL_ORE.get());
             output.acceptAfter(SpelunkeryBlocks.NICKEL_ORE.get(), SpelunkeryBlocks.DEEPSLATE_NICKEL_ORE.get());
             output.acceptAfter(Blocks.AMETHYST_BLOCK, SpelunkeryBlocks.TOPAZ_BLOCK.get());
-            output.acceptAfter(SpelunkeryBlocks.TOPAZ_BLOCK.get(), SpelunkeryBlocks.CRUCIBLE.get());
+            output.acceptAfter(SpelunkeryBlocks.TOPAZ_BLOCK.get(), SpelunkeryBlocks.RUBY_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.RUBY_BLOCK.get(), SpelunkeryBlocks.SAPPHIRE_BLOCK.get());
+            output.acceptAfter(SpelunkeryBlocks.SAPPHIRE_BLOCK.get(), SpelunkeryBlocks.CRUCIBLE.get());
             output.acceptAfter(SpelunkeryBlocks.CRUCIBLE.get(), SpelunkeryBlocks.FOUNDRY.get());
         });
 
@@ -59,6 +61,8 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.SILVER_INGOT.get(), SpelunkeryItems.RAW_NICKEL.get());
             output.acceptAfter(SpelunkeryItems.RAW_NICKEL.get(), SpelunkeryItems.NICKEL_INGOT.get());
             output.acceptAfter(Items.AMETHYST_SHARD, SpelunkeryItems.TOPAZ_SHARD.get());
+            output.acceptAfter(SpelunkeryItems.TOPAZ_SHARD.get(), SpelunkeryItems.RUBY.get());
+            output.acceptAfter(SpelunkeryItems.RUBY.get(), SpelunkeryItems.SAPPHIRE.get());
             output.acceptAfter(SpelunkeryItems.NICKEL_INGOT.get(), SpelunkeryItems.BRONZE_INGOT.get());
             output.acceptAfter(SpelunkeryItems.BRONZE_INGOT.get(), SpelunkeryItems.INVAR_INGOT.get());
             output.acceptAfter(SpelunkeryItems.INVAR_INGOT.get(), SpelunkeryItems.ROSE_GOLD_INGOT.get());
@@ -121,6 +125,8 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.RAW_NICKEL_BLOCK.get());
         output.accept(SpelunkeryBlocks.NICKEL_BLOCK.get());
         output.accept(SpelunkeryBlocks.TOPAZ_BLOCK.get());
+        output.accept(SpelunkeryBlocks.RUBY_BLOCK.get());
+        output.accept(SpelunkeryBlocks.SAPPHIRE_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_TILES.get());
         output.accept(SpelunkeryBlocks.BRONZE_GRATE.get());
@@ -149,6 +155,8 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.RAW_NICKEL.get());
         output.accept(SpelunkeryItems.NICKEL_INGOT.get());
         output.accept(SpelunkeryItems.TOPAZ_SHARD.get());
+        output.accept(SpelunkeryItems.RUBY.get());
+        output.accept(SpelunkeryItems.SAPPHIRE.get());
         output.accept(SpelunkeryItems.BRONZE_INGOT.get());
         output.accept(SpelunkeryItems.INVAR_INGOT.get());
         output.accept(SpelunkeryItems.ROSE_GOLD_INGOT.get());

@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "spelunkery:sapphire_pocket",
+  "step": "local_modifications"
+}

@@ -50,5 +50,15 @@ public final class SpelunkeryFabric implements ModInitializer {
                 GenerationStep.Decoration.LOCAL_MODIFICATIONS,
                 SpelunkeryWorldgen.TOPAZ_GEODE_PLACED
         );
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                SpelunkeryWorldgen.RUBY_POCKET_PLACED
+        );
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                SpelunkeryWorldgen.SAPPHIRE_POCKET_PLACED
+        );
     }
 }

@@ -12,6 +12,8 @@
     "spelunkery:topaz_block",
     "spelunkery:invar_block",
     "spelunkery:invar_tiles",
-    "spelunkery:invar_anvil"
+    "spelunkery:invar_anvil",
+    "spelunkery:ruby_block",
+    "spelunkery:sapphire_block"
   ]
 }

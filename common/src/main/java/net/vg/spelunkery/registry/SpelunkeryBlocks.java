@@ -140,6 +140,26 @@ public final class SpelunkeryBlocks {
                     .lightLevel(state -> 5))
     );
 
+    public static final RegistrySupplier<Block> RUBY_BLOCK = registerBlock(
+            "ruby_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.7F, 1.8F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 5))
+    );
+
+    public static final RegistrySupplier<Block> SAPPHIRE_BLOCK = registerBlock(
+            "sapphire_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(1.7F, 1.8F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 5))
+    );
+
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(
             "bronze_block",
             () -> new Block(BlockBehaviour.Properties.of()

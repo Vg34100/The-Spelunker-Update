@@ -13,6 +13,8 @@
   "block.spelunkery.raw_silver_block": "Block of Raw Silver",
   "block.spelunkery.silver_block": "Block of Silver",
   "block.spelunkery.topaz_block": "Topaz Block",
+  "block.spelunkery.ruby_block": "Ruby Block",
+  "block.spelunkery.sapphire_block": "Sapphire Block",
   "block.spelunkery.bronze_block": "Block of Bronze",
   "block.spelunkery.bronze_tiles": "Bronze Tiles",
   "block.spelunkery.bronze_grate": "Bronze Grate",
@@ -38,6 +40,8 @@
   "item.spelunkery.silver_ingot": "Silver Ingot",
   "item.spelunkery.silver_arrow": "Silver Arrow",
   "item.spelunkery.topaz_shard": "Topaz Shard",
+  "item.spelunkery.ruby": "Ruby",
+  "item.spelunkery.sapphire": "Sapphire",
   "item.spelunkery.bronze_ingot": "Bronze Ingot",
   "item.spelunkery.invar_ingot": "Invar Ingot",
   "item.spelunkery.rose_gold_ingot": "Rose Gold Ingot",
@@ -49,5 +53,5 @@
   "item.spelunkery.bronze_shield": "Bronze Shield",
   "item.spelunkery.prospector_lens": "Prospector's Lens",
   "item.spelunkery.silver_sword": "Silver Sword",
-  "item.spelunkery.electrum_bow": "Electrum Bow",
+  "item.spelunkery.electrum_bow": "Electrum Bow"
 }

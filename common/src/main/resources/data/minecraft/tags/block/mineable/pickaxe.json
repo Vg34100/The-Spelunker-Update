@@ -30,6 +30,8 @@
     "spelunkery:electrum_block",
     "spelunkery:electrum_tiles",
     "spelunkery:crucible",
-    "spelunkery:foundry"
+    "spelunkery:foundry",
+    "spelunkery:ruby_block",
+    "spelunkery:sapphire_block"
   ]
 }
