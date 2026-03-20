@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.vg.spelunkery.Spelunkery;
+import net.vg.spelunkery.recipe.ArmorUpgradeSmithingRecipe;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 
 public final class SpelunkeryRecipeTypes {
@@ -15,6 +16,10 @@ public final class SpelunkeryRecipeTypes {
     public static final RegistrySupplier<RecipeSerializer<FoundryRecipe>> FOUNDRY_SERIALIZER = RECIPE_SERIALIZERS.register(
             "foundry",
             FoundryRecipe.Serializer::new
+    );
+    public static final RegistrySupplier<RecipeSerializer<ArmorUpgradeSmithingRecipe>> ARMOR_UPGRADE_SMITHING_SERIALIZER = RECIPE_SERIALIZERS.register(
+            "armor_upgrade_smithing",
+            ArmorUpgradeSmithingRecipe.Serializer::new
     );
 
     public static final RegistrySupplier<RecipeType<FoundryRecipe>> FOUNDRY_TYPE = RECIPE_TYPES.register(

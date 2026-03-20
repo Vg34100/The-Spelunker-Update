@@ -5,7 +5,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
 
@@ -13,6 +15,11 @@ public final class SpelunkeryFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Spelunkery.init();
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
+                ArmorUpgradeHelper.clearWitherIfSilverLined(player);
+            }
+        });
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
             if (!blocked) {
                 return;

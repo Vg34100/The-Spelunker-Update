@@ -1,0 +1,13 @@
+{
+  "type": "spelunkery:armor_upgrade_smithing",
+  "template": {
+    "item": "spelunkery:silver_lining"
+  },
+  "base": {
+    "tag": "spelunkery:iron_armor"
+  },
+  "addition": {
+    "item": "spelunkery:silver_ingot"
+  },
+  "upgrade": "silver"
+}

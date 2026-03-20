@@ -1,0 +1,13 @@
+{
+  "type": "spelunkery:armor_upgrade_smithing",
+  "template": {
+    "item": "spelunkery:nickel_plating"
+  },
+  "base": {
+    "tag": "spelunkery:iron_armor"
+  },
+  "addition": {
+    "item": "spelunkery:nickel_ingot"
+  },
+  "upgrade": "nickel"
+}

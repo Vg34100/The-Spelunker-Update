@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/iron_leggings"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "spelunkery:item/nickel_plated_iron_leggings"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "spelunkery:item/silver_lined_iron_leggings"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "spelunkery:item/rose_gold_plated_iron_leggings"
+    }
+  ]
+}
