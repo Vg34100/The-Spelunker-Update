@@ -17,7 +17,7 @@ public final class SpelunkeryFabric implements ModInitializer {
         Spelunkery.init();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
-                ArmorUpgradeHelper.clearWitherIfSilverLined(player);
+                ArmorUpgradeHelper.updateEquippedArmorEffects(player);
             }
         });
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {

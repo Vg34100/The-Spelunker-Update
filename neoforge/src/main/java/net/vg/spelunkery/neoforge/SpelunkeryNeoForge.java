@@ -30,6 +30,6 @@ public final class SpelunkeryNeoForge {
     }
 
     private void onPlayerTick(PlayerTickEvent.Post event) {
-        ArmorUpgradeHelper.clearWitherIfSilverLined(event.getEntity());
+        ArmorUpgradeHelper.updateEquippedArmorEffects(event.getEntity());
     }
 }
