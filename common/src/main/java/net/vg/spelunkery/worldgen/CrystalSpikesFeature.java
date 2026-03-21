@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DripstoneThickness;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -30,8 +31,8 @@ public final class CrystalSpikesFeature extends Feature<NoneFeatureConfiguration
 
         for (int i = 0; i < ATTEMPTS; i++) {
             BlockPos sample = origin.offset(random.nextInt(16) - 8, random.nextInt(12) - 6, random.nextInt(16) - 8);
-            placedAny |= tryPlaceSpike(level, sample, Direction.UP, 2 + random.nextInt(4), pickCrystal(random));
-            placedAny |= tryPlaceSpike(level, sample, Direction.DOWN, 2 + random.nextInt(4), pickCrystal(random));
+            placedAny |= tryPlaceSpike(level, sample, Direction.UP, 3 + random.nextInt(5), pickCrystal(random));
+            placedAny |= tryPlaceSpike(level, sample, Direction.DOWN, 3 + random.nextInt(5), pickCrystal(random));
         }
 
         return placedAny;
@@ -45,7 +46,9 @@ public final class CrystalSpikesFeature extends Feature<NoneFeatureConfiguration
 
         int length = 0;
         BlockPos cursor = root;
-        while (length < desiredLength && level.getBlockState(cursor).canBeReplaced()) {
+        while (length < desiredLength
+                && level.getBlockState(cursor).canBeReplaced()
+                && level.getFluidState(cursor).isEmpty()) {
             length++;
             cursor = cursor.relative(direction);
         }
@@ -65,12 +68,13 @@ public final class CrystalSpikesFeature extends Feature<NoneFeatureConfiguration
     private BlockPos findRoot(WorldGenLevel level, BlockPos sample, Direction direction) {
         for (int offset = -5; offset <= 5; offset++) {
             BlockPos candidate = sample.offset(0, offset, 0);
-            if (!level.getBlockState(candidate).canBeReplaced()) {
+            if (!level.getBlockState(candidate).canBeReplaced() || !level.getFluidState(candidate).isEmpty()) {
                 continue;
             }
 
             BlockPos supportPos = candidate.relative(direction.getOpposite());
-            if (level.getBlockState(supportPos).isSolidRender(level, supportPos)) {
+            if (level.getBlockState(supportPos).isSolidRender(level, supportPos)
+                    && level.getFluidState(supportPos).getType() != Fluids.WATER) {
                 return candidate;
             }
         }

@@ -56,7 +56,7 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
     }
 
     private boolean shouldUseMarbleCaves(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
-        if (vanilla.is(Biomes.DEEP_DARK) || y > 20) {
+        if (vanilla.is(Biomes.DEEP_DARK) || y > 24) {
             return false;
         }
 
@@ -64,7 +64,7 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
         float erosion = Climate.unquantizeCoord(targetPoint.erosion());
         float depth = Climate.unquantizeCoord(targetPoint.depth());
 
-        if (depth < 0.1F || depth > 1.15F || humidity < 0.0F || erosion > 0.28F) {
+        if (depth < 0.1F || depth > 1.15F || humidity < -0.05F || erosion > 0.26F) {
             return false;
         }
 
@@ -72,11 +72,11 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
             return true;
         }
 
-        return matchesBand(x, y, z, 3L, 1L, 3L);
+        return matchesBand(x, z, 7L, 2L, 3L);
     }
 
     private boolean shouldUseCrystalCaverns(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
-        if (vanilla.is(Biomes.DEEP_DARK)) {
+        if (vanilla.is(Biomes.DEEP_DARK) || vanilla.is(Biomes.LUSH_CAVES)) {
             return false;
         }
 
@@ -84,15 +84,17 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
         float erosion = Climate.unquantizeCoord(targetPoint.erosion());
         float depth = Climate.unquantizeCoord(targetPoint.depth());
 
-        if (y > 8 || depth < 0.2F || depth > 1.05F || humidity < -0.1F || humidity > 0.18F || erosion > 0.12F) {
+        if (y > 0 || depth < 0.2F || depth > 1.0F || humidity < -0.08F || humidity > 0.12F || erosion > 0.1F) {
             return false;
         }
 
-        return matchesBand(x, y, z, 5L, 2L, 4L);
+        return matchesBand(x, z, 7L, 1L, 4L);
     }
 
-    private boolean matchesBand(int x, int y, int z, long mask, long threshold, long salt) {
-        long hash = 341873128712L * x + 132897987541L * y + 42317861L * z;
+    private boolean matchesBand(int x, int z, long mask, long threshold, long salt) {
+        int cellX = Math.floorDiv(x, 8);
+        int cellZ = Math.floorDiv(z, 8);
+        long hash = 341873128712L * cellX + 42317861L * cellZ;
         hash += salt * 982451653L;
         hash ^= hash >>> 13;
         hash *= 1274126177L;

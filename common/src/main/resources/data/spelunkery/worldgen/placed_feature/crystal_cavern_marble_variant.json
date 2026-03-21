@@ -1,9 +1,9 @@
 {
-  "feature": "spelunkery:crystal_cavern_marble",
+  "feature": "spelunkery:crystal_cavern_marble_variant",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 40
+      "count": 8
     },
     {
       "type": "minecraft:in_square"
@@ -11,14 +11,13 @@
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:trapezoid",
+        "type": "minecraft:uniform",
         "min_inclusive": {
           "absolute": -48
         },
         "max_inclusive": {
-          "absolute": 80
-        },
-        "plateau": 24
+          "absolute": 24
+        }
       }
     },
     {
