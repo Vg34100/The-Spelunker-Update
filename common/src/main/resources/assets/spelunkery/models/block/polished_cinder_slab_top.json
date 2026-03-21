@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "spelunkery:block/polished_cinder",
+    "top": "spelunkery:block/polished_cinder",
+    "side": "spelunkery:block/polished_cinder"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "spelunkery:block/charred_bones"
+    },
+    "axis=z": {
+      "model": "spelunkery:block/charred_bones_horizontal",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "spelunkery:block/charred_bones_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "spelunkery:block/mycelium_mud_bricks",
+    "top": "spelunkery:block/mycelium_mud_bricks",
+    "side": "spelunkery:block/mycelium_mud_bricks"
+  }
+}

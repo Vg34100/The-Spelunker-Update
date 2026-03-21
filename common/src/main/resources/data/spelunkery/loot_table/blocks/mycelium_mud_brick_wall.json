@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spelunkery:mycelium_mud_brick_wall"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

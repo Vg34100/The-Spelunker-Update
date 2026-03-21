@@ -24,7 +24,9 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 SpelunkeryBlocks.BLUE_CRYSTAL.get(),
                 SpelunkeryBlocks.GREEN_CRYSTAL.get(),
                 SpelunkeryBlocks.RED_CRYSTAL.get(),
-                SpelunkeryBlocks.YELLOW_CRYSTAL.get()
+                SpelunkeryBlocks.YELLOW_CRYSTAL.get(),
+                SpelunkeryBlocks.SCORCHED_DRIPSTONE.get(),
+                SpelunkeryBlocks.GLOWCAP.get()
         );
         FabricModelPredicateProviderRegistry.register(
                 SpelunkeryItems.ELECTRUM_BOW.get(),

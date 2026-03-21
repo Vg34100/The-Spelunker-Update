@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "spelunkery:crystal_caverns",
-    "spelunkery:marble_caves"
+    "spelunkery:marble_caves",
+    "spelunkery:magma_vaults",
+    "spelunkery:fungal_grottos"
   ]
 }

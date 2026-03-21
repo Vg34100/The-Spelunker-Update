@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "spelunkery:block/cinder_rock",
+    "top": "spelunkery:block/cinder_rock",
+    "side": "spelunkery:block/cinder_rock"
+  }
+}

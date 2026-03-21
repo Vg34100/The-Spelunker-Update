@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "spelunkery:block/cinder_tiles",
+    "top": "spelunkery:block/cinder_tiles",
+    "side": "spelunkery:block/cinder_tiles"
+  }
+}

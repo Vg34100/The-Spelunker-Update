@@ -70,5 +70,28 @@
     "spelunkery:green_crystal",
     "spelunkery:red_crystal",
     "spelunkery:yellow_crystal"
+    ,
+    "spelunkery:cinder_rock",
+    "spelunkery:cinder_rock_stairs",
+    "spelunkery:cinder_rock_slab",
+    "spelunkery:cinder_rock_wall",
+    "spelunkery:polished_cinder",
+    "spelunkery:polished_cinder_stairs",
+    "spelunkery:polished_cinder_slab",
+    "spelunkery:polished_cinder_wall",
+    "spelunkery:cinder_bricks",
+    "spelunkery:cinder_brick_stairs",
+    "spelunkery:cinder_brick_slab",
+    "spelunkery:cinder_brick_wall",
+    "spelunkery:cinder_tiles",
+    "spelunkery:cinder_tile_stairs",
+    "spelunkery:cinder_tile_slab",
+    "spelunkery:cinder_tile_wall",
+    "spelunkery:scorched_dripstone",
+    "spelunkery:charred_bones",
+    "spelunkery:mycelium_mud_bricks",
+    "spelunkery:mycelium_mud_brick_stairs",
+    "spelunkery:mycelium_mud_brick_slab",
+    "spelunkery:mycelium_mud_brick_wall"
   ]
 }

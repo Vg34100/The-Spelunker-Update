@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "spelunkery:block/cinder_rock_slab"
+    },
+    "type=top": {
+      "model": "spelunkery:block/cinder_rock_slab_top"
+    },
+    "type=double": {
+      "model": "spelunkery:block/cinder_rock"
+    }
+  }
+}

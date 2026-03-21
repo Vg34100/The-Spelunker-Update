@@ -17,18 +17,30 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
     public static final MapCodec<CrystalCavernsBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             MultiNoiseBiomeSourceParameterList.CODEC.fieldOf("preset").forGetter(source -> source.preset),
             Biome.CODEC.fieldOf("crystal_biome").forGetter(source -> source.crystalBiome),
-            Biome.CODEC.optionalFieldOf("marble_biome").forGetter(source -> java.util.Optional.of(source.marbleBiome))
-    ).apply(instance, (preset, crystalBiome, marbleBiome) -> new CrystalCavernsBiomeSource(preset, crystalBiome, marbleBiome.orElse(crystalBiome))));
+            Biome.CODEC.optionalFieldOf("marble_biome").forGetter(source -> java.util.Optional.of(source.marbleBiome)),
+            Biome.CODEC.optionalFieldOf("magma_biome").forGetter(source -> java.util.Optional.of(source.magmaBiome)),
+            Biome.CODEC.optionalFieldOf("fungal_biome").forGetter(source -> java.util.Optional.of(source.fungalBiome))
+    ).apply(instance, (preset, crystalBiome, marbleBiome, magmaBiome, fungalBiome) -> new CrystalCavernsBiomeSource(
+            preset,
+            crystalBiome,
+            marbleBiome.orElse(crystalBiome),
+            magmaBiome.orElse(crystalBiome),
+            fungalBiome.orElse(crystalBiome)
+    )));
 
     private final Holder<MultiNoiseBiomeSourceParameterList> preset;
     private final Holder<Biome> crystalBiome;
     private final Holder<Biome> marbleBiome;
+    private final Holder<Biome> magmaBiome;
+    private final Holder<Biome> fungalBiome;
     private final MultiNoiseBiomeSource delegate;
 
-    public CrystalCavernsBiomeSource(Holder<MultiNoiseBiomeSourceParameterList> preset, Holder<Biome> crystalBiome, Holder<Biome> marbleBiome) {
+    public CrystalCavernsBiomeSource(Holder<MultiNoiseBiomeSourceParameterList> preset, Holder<Biome> crystalBiome, Holder<Biome> marbleBiome, Holder<Biome> magmaBiome, Holder<Biome> fungalBiome) {
         this.preset = preset;
         this.crystalBiome = crystalBiome;
         this.marbleBiome = marbleBiome;
+        this.magmaBiome = magmaBiome;
+        this.fungalBiome = fungalBiome;
         this.delegate = MultiNoiseBiomeSource.createFromPreset(preset);
     }
 
@@ -39,13 +51,19 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
-        return Stream.concat(this.delegate.possibleBiomes().stream(), Stream.of(this.crystalBiome, this.marbleBiome)).distinct();
+        return Stream.concat(this.delegate.possibleBiomes().stream(), Stream.of(this.crystalBiome, this.marbleBiome, this.magmaBiome, this.fungalBiome)).distinct();
     }
 
     @Override
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
         Climate.TargetPoint targetPoint = sampler.sample(x, y, z);
         Holder<Biome> vanilla = this.delegate.getNoiseBiome(targetPoint);
+        if (shouldUseMagmaVaults(vanilla, targetPoint, x, y, z)) {
+            return this.magmaBiome;
+        }
+        if (shouldUseFungalGrottos(vanilla, targetPoint, x, y, z)) {
+            return this.fungalBiome;
+        }
         if (shouldUseMarbleCaves(vanilla, targetPoint, x, y, z)) {
             return this.marbleBiome;
         }
@@ -69,10 +87,10 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
         }
 
         if (vanilla.is(Biomes.LUSH_CAVES) || vanilla.is(Biomes.DRIPSTONE_CAVES)) {
-            return matchesBand(x, z, 15L, 1L, 3L);
+            return matchesBand(x, z, 10, 15L, 1L, 3L);
         }
 
-        return matchesBand(x, z, 31L, 1L, 3L);
+        return matchesBand(x, z, 10, 31L, 1L, 3L);
     }
 
     private boolean shouldUseCrystalCaverns(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
@@ -88,12 +106,45 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
             return false;
         }
 
-        return matchesBand(x, z, 7L, 1L, 4L);
+        return matchesBand(x, z, 8, 7L, 1L, 4L);
     }
 
-    private boolean matchesBand(int x, int z, long mask, long threshold, long salt) {
-        int cellX = Math.floorDiv(x, 8);
-        int cellZ = Math.floorDiv(z, 8);
+    private boolean shouldUseMagmaVaults(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
+        if (vanilla.is(Biomes.DEEP_DARK) || vanilla.is(Biomes.LUSH_CAVES)) {
+            return false;
+        }
+
+        float humidity = Climate.unquantizeCoord(targetPoint.humidity());
+        float erosion = Climate.unquantizeCoord(targetPoint.erosion());
+        float depth = Climate.unquantizeCoord(targetPoint.depth());
+        float temperature = Climate.unquantizeCoord(targetPoint.temperature());
+
+        if (y > -20 || depth < 0.25F || depth > 1.15F || humidity > -0.05F || erosion > 0.08F || temperature < 0.35F) {
+            return false;
+        }
+
+        return matchesBand(x, z, 8, 31L, 1L, 5L);
+    }
+
+    private boolean shouldUseFungalGrottos(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
+        if (vanilla.is(Biomes.DEEP_DARK) || vanilla.is(Biomes.DRIPSTONE_CAVES)) {
+            return false;
+        }
+
+        float humidity = Climate.unquantizeCoord(targetPoint.humidity());
+        float erosion = Climate.unquantizeCoord(targetPoint.erosion());
+        float depth = Climate.unquantizeCoord(targetPoint.depth());
+
+        if (y > 18 || depth < 0.18F || depth > 1.05F || humidity < 0.18F || erosion > 0.22F) {
+            return false;
+        }
+
+        return matchesBand(x, z, 8, 15L, 1L, 6L);
+    }
+
+    private boolean matchesBand(int x, int z, int scale, long mask, long threshold, long salt) {
+        int cellX = Math.floorDiv(x, scale);
+        int cellZ = Math.floorDiv(z, scale);
         long hash = 341873128712L * cellX + 42317861L * cellZ;
         hash += salt * 982451653L;
         hash ^= hash >>> 13;

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 24,
+    "targets": [
+      {
+        "state": {
+          "Name": "spelunkery:bioluminescent_moss"
+        },
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "spelunkery:mycelium_mud"
+        }
+      },
+      {
+        "state": {
+          "Name": "spelunkery:bioluminescent_moss"
+        },
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "spelunkery:fungal_mat"
+        }
+      },
+      {
+        "state": {
+          "Name": "spelunkery:bioluminescent_moss"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:stone_ore_replaceables"
+        }
+      }
+    ]
+  }
+}

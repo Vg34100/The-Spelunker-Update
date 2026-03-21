@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 2
+            }
+          ],
+          "name": "spelunkery:mycelium_mud_brick_slab",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "spelunkery:mycelium_mud_brick_slab",
+              "properties": {
+                "type": "double"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "spelunkery:mycelium_mud_brick_slab"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

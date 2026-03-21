@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -385,6 +386,173 @@ public final class SpelunkeryBlocks {
                     .randomTicks()
                     .noOcclusion()
                     .lightLevel(state -> 4))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_ROCK = registerBlock(
+            "cinder_rock",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.7F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.TUFF))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_ROCK_STAIRS = registerBlock(
+            "cinder_rock_stairs",
+            () -> new StairBlock(CINDER_ROCK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_ROCK_SLAB = registerBlock(
+            "cinder_rock_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_ROCK_WALL = registerBlock(
+            "cinder_rock_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_CINDER = registerBlock(
+            "polished_cinder",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.POLISHED_DEEPSLATE))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_CINDER_STAIRS = registerBlock(
+            "polished_cinder_stairs",
+            () -> new StairBlock(POLISHED_CINDER.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_CINDER_SLAB = registerBlock(
+            "polished_cinder_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_CINDER_WALL = registerBlock(
+            "polished_cinder_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> CINDER_BRICKS = registerBlock(
+            "cinder_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_BRICKS))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_BRICK_STAIRS = registerBlock(
+            "cinder_brick_stairs",
+            () -> new StairBlock(CINDER_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_BRICK_SLAB = registerBlock(
+            "cinder_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_BRICK_WALL = registerBlock(
+            "cinder_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> CINDER_TILES = registerBlock(
+            "cinder_tiles",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_TILES))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_TILE_STAIRS = registerBlock(
+            "cinder_tile_stairs",
+            () -> new StairBlock(CINDER_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_TILE_SLAB = registerBlock(
+            "cinder_tile_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> CINDER_TILE_WALL = registerBlock(
+            "cinder_tile_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> ASHEN_DIRT = registerBlock(
+            "ashen_dirt",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(0.6F)
+                    .sound(SoundType.ROOTED_DIRT))
+    );
+
+    public static final RegistrySupplier<Block> SCORCHED_DRIPSTONE = registerBlock(
+            "scorched_dripstone",
+            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.5F)
+                    .sound(SoundType.POINTED_DRIPSTONE)
+                    .randomTicks()
+                    .noOcclusion())
+    );
+
+    public static final RegistrySupplier<Block> CHARRED_BONES = registerBlock(
+            "charred_bones",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(2.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.BONE_BLOCK))
+    );
+
+    public static final RegistrySupplier<Block> MYCELIUM_MUD = registerBlock(
+            "mycelium_mud",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(0.6F)
+                    .sound(SoundType.MUD))
+    );
+
+    public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICKS = registerBlock(
+            "mycelium_mud_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD.get()).requiresCorrectToolForDrops().sound(SoundType.MUD_BRICKS))
+    );
+
+    public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_STAIRS = registerBlock(
+            "mycelium_mud_brick_stairs",
+            () -> new StairBlock(MYCELIUM_MUD_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_SLAB = registerBlock(
+            "mycelium_mud_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_WALL = registerBlock(
+            "mycelium_mud_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> FUNGAL_MAT = registerBlock(
+            "fungal_mat",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(0.2F)
+                    .sound(SoundType.MOSS))
+    );
+
+    public static final RegistrySupplier<Block> BIOLUMINESCENT_MOSS = registerBlock(
+            "bioluminescent_moss",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_CYAN)
+                    .strength(0.2F)
+                    .sound(SoundType.MOSS)
+                    .lightLevel(state -> 8))
+    );
+
+    public static final RegistrySupplier<Block> GLOWCAP = registerBlock(
+            "glowcap",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_CYAN)
+                    .noCollission()
+                    .instabreak()
+                    .noOcclusion()
+                    .sound(SoundType.FUNGUS)
+                    .lightLevel(state -> 10))
     );
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(

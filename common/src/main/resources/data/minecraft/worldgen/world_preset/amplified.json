@@ -8,7 +8,9 @@
           "type": "spelunkery:crystal_caverns",
           "preset": "minecraft:overworld",
           "crystal_biome": "spelunkery:crystal_caverns",
-          "marble_biome": "spelunkery:marble_caves"
+          "marble_biome": "spelunkery:marble_caves",
+          "magma_biome": "spelunkery:magma_vaults",
+          "fungal_biome": "spelunkery:fungal_grottos"
         },
         "settings": "minecraft:amplified"
       }

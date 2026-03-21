@@ -34,6 +34,8 @@ public final class SpelunkeryNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.GREEN_CRYSTAL.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.RED_CRYSTAL.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.YELLOW_CRYSTAL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.SCORCHED_DRIPSTONE.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.GLOWCAP.get(), RenderType.cutout());
             registerBowPredicates();
             registerShieldPredicates();
         });

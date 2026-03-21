@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pointed_dripstone",
+  "textures": {
+    "cross": "spelunkery:block/scorched_dripstone_up_middle"
+  }
+}
