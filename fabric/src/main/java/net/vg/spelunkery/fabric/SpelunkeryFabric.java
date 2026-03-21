@@ -6,9 +6,12 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
+import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
 
 public final class SpelunkeryFabric implements ModInitializer {
@@ -16,8 +19,14 @@ public final class SpelunkeryFabric implements ModInitializer {
     public void onInitialize() {
         Spelunkery.init();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);
+                MinerHelmetHelper.updateEquippedHelmet(player);
+            }
+        });
+        PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
+            if (player instanceof ServerPlayer serverPlayer) {
+                MinerHelmetHelper.onBlockMined(serverPlayer, pos, state);
             }
         });
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {

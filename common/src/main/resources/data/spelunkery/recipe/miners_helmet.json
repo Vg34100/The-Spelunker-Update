@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "T T",
+    "TLT"
+  ],
+  "key": {
+    "T": {
+      "item": "spelunkery:tin_ingot"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    }
+  },
+  "result": {
+    "id": "spelunkery:miners_helmet",
+    "count": 1
+  }
+}

@@ -5,6 +5,8 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
@@ -13,6 +15,7 @@ import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.item.BronzeCompassItem;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.ElectrumBowItem;
+import net.vg.spelunkery.item.MinerHelmetItem;
 import net.vg.spelunkery.item.ProspectorLensItem;
 import net.vg.spelunkery.item.SilverArrowItem;
 import net.vg.spelunkery.item.SilverSwordItem;
@@ -42,6 +45,10 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> BRONZE_COMPASS = ITEMS.register("bronze_compass", () -> new BronzeCompassItem(new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Item> BRONZE_SHIELD = ITEMS.register("bronze_shield", () -> new BronzeShieldItem(new Item.Properties().durability(448)));
     public static final RegistrySupplier<Item> PROSPECTOR_LENS = ITEMS.register("prospector_lens", () -> new ProspectorLensItem(new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> MINERS_HELMET = ITEMS.register(
+            "miners_helmet",
+            () -> new MinerHelmetItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1))
+    );
     public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register(
             "silver_sword",
             () -> new SilverSwordItem(

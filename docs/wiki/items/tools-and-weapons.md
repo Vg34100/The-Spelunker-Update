@@ -13,6 +13,17 @@
 - If you block while moving into a melee attacker, it performs a short knockback bash
 - Best used to create space in tight caves rather than as a raw damage tool
 
+## Miner's Helmet
+
+- Crafted from `Tin Ingots` and a `Lantern`
+- Socket it by crafting the helmet with one gem at a time
+- `Ruby`: fire resistance
+- `Sapphire`: night vision
+- `Topaz`: ore pulse
+- `Amethyst`: mob pulse
+- `Emerald`: bonus mining XP from ores and crystal blocks
+- `Diamond`: resistance
+
 ## Silver Sword
 
 - Crafted from `Silver Ingots`
