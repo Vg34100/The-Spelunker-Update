@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 2
+                }
+              ],
+              "name": "spelunkery:polished_prismatic_stone_slab",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "spelunkery:polished_prismatic_stone_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spelunkery:polished_prismatic_stone_slab"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "spelunkery:blocks/polished_prismatic_stone_slab"
+}

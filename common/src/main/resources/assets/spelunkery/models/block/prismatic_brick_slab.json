@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "spelunkery:block/prismatic_bricks",
+    "top": "spelunkery:block/prismatic_bricks",
+    "side": "spelunkery:block/prismatic_bricks"
+  }
+}

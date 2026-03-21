@@ -248,6 +248,91 @@ public final class SpelunkeryBlocks {
             () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).forceSolidOn())
     );
 
+    public static final RegistrySupplier<Block> PRISMATIC_STONE = registerBlock(
+            "prismatic_stone",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(1.8F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 4))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_STONE_STAIRS = registerBlock(
+            "prismatic_stone_stairs",
+            () -> new StairBlock(PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_STONE_SLAB = registerBlock(
+            "prismatic_stone_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_STONE_WALL = registerBlock(
+            "prismatic_stone_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE = registerBlock(
+            "polished_prismatic_stone",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST_CLUSTER))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_STAIRS = registerBlock(
+            "polished_prismatic_stone_stairs",
+            () -> new StairBlock(POLISHED_PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_SLAB = registerBlock(
+            "polished_prismatic_stone_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()))
+    );
+
+    public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_WALL = registerBlock(
+            "polished_prismatic_stone_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_BRICKS = registerBlock(
+            "prismatic_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_BRICK_STAIRS = registerBlock(
+            "prismatic_brick_stairs",
+            () -> new StairBlock(PRISMATIC_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_BRICK_SLAB = registerBlock(
+            "prismatic_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_BRICK_WALL = registerBlock(
+            "prismatic_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_TILES = registerBlock(
+            "prismatic_tiles",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_TILE_STAIRS = registerBlock(
+            "prismatic_tile_stairs",
+            () -> new StairBlock(PRISMATIC_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_TILE_SLAB = registerBlock(
+            "prismatic_tile_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()))
+    );
+
+    public static final RegistrySupplier<Block> PRISMATIC_TILE_WALL = registerBlock(
+            "prismatic_tile_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).forceSolidOn())
+    );
+
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(
             "bronze_block",
             () -> new Block(BlockBehaviour.Properties.of()

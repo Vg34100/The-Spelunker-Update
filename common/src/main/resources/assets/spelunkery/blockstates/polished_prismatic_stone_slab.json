@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom,waterlogged=false": {
+      "model": "spelunkery:block/polished_prismatic_stone_slab"
+    },
+    "type=top,waterlogged=false": {
+      "model": "spelunkery:block/polished_prismatic_stone_slab_top"
+    },
+    "type=double,waterlogged=false": {
+      "model": "spelunkery:block/polished_prismatic_stone"
+    }
+  }
+}

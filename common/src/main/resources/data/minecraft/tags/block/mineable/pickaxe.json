@@ -48,6 +48,22 @@
     "spelunkery:marble_tiles",
     "spelunkery:marble_tile_stairs",
     "spelunkery:marble_tile_slab",
-    "spelunkery:marble_tile_wall"
+    "spelunkery:marble_tile_wall",
+    "spelunkery:prismatic_stone",
+    "spelunkery:prismatic_stone_stairs",
+    "spelunkery:prismatic_stone_slab",
+    "spelunkery:prismatic_stone_wall",
+    "spelunkery:polished_prismatic_stone",
+    "spelunkery:polished_prismatic_stone_stairs",
+    "spelunkery:polished_prismatic_stone_slab",
+    "spelunkery:polished_prismatic_stone_wall",
+    "spelunkery:prismatic_bricks",
+    "spelunkery:prismatic_brick_stairs",
+    "spelunkery:prismatic_brick_slab",
+    "spelunkery:prismatic_brick_wall",
+    "spelunkery:prismatic_tiles",
+    "spelunkery:prismatic_tile_stairs",
+    "spelunkery:prismatic_tile_slab",
+    "spelunkery:prismatic_tile_wall"
   ]
 }

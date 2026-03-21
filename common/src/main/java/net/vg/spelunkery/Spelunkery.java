@@ -2,6 +2,7 @@ package net.vg.spelunkery;
 
 import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.registry.SpelunkeryBlockEntities;
+import net.vg.spelunkery.registry.SpelunkeryBiomeSources;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryEffects;
@@ -13,6 +14,7 @@ public final class Spelunkery {
     public static final String MOD_ID = "spelunkery";
 
     public static void init() {
+        SpelunkeryBiomeSources.init();
         SpelunkeryBlocks.init();
         SpelunkeryEffects.init();
         SpelunkeryItems.init();
