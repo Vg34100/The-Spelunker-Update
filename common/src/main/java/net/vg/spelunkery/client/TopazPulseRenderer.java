@@ -22,6 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public final class TopazPulseRenderer {
+    private static final int PULSE_PERIOD_TICKS = 120;
+    private static final int PULSE_VISIBLE_TICKS = 50;
     private static final List<BlockPos> CACHED_TARGETS = new ArrayList<>();
     private static long lastRefreshTick = Long.MIN_VALUE;
     private static final RenderType ORE_PULSE_LINES = RenderType.create(
@@ -56,8 +58,9 @@ public final class TopazPulseRenderer {
             return;
         }
 
+        long tick = minecraft.level.getGameTime();
         refreshTargets(minecraft);
-        if (CACHED_TARGETS.isEmpty()) {
+        if (CACHED_TARGETS.isEmpty() || tick % PULSE_PERIOD_TICKS >= PULSE_VISIBLE_TICKS) {
             return;
         }
 
@@ -76,7 +79,7 @@ public final class TopazPulseRenderer {
 
     private static void refreshTargets(Minecraft minecraft) {
         long tick = minecraft.level.getGameTime();
-        if (tick == lastRefreshTick || tick % 20 != 0) {
+        if (tick == lastRefreshTick || tick % PULSE_PERIOD_TICKS != 0) {
             return;
         }
 
