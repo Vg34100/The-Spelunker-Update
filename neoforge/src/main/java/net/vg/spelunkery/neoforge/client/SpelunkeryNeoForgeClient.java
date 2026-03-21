@@ -66,4 +66,5 @@ public final class SpelunkeryNeoForgeClient {
             throw new RuntimeException("Failed to register item property " + id, exception);
         }
     }
+
 }
