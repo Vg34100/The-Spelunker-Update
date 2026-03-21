@@ -10,12 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -131,12 +131,13 @@ public final class MinerHelmetHelper {
     }
 
     private static void spawnOreMarker(ServerLevel level, BlockPos orePos) {
-        Slime marker = new Slime(EntityType.SLIME, level);
+        AreaEffectCloud marker = new AreaEffectCloud(EntityType.AREA_EFFECT_CLOUD, level);
         marker.setPos(orePos.getX() + 0.5D, orePos.getY() + 0.5D, orePos.getZ() + 0.5D);
-        marker.setSize(1, true);
+        marker.setRadius(0.1F);
+        marker.setDuration(60);
+        marker.setWaitTime(0);
         marker.setInvisible(true);
         marker.setInvulnerable(true);
-        marker.setNoAi(true);
         marker.setNoGravity(true);
         marker.setSilent(true);
         marker.setGlowingTag(true);
@@ -150,7 +151,7 @@ public final class MinerHelmetHelper {
             return;
         }
 
-        for (Slime marker : level.getEntitiesOfClass(Slime.class, player.getBoundingBox().inflate(20.0D), entity -> entity.getTags().contains(ORE_PULSE_TAG))) {
+        for (AreaEffectCloud marker : level.getEntitiesOfClass(AreaEffectCloud.class, player.getBoundingBox().inflate(20.0D), entity -> entity.getTags().contains(ORE_PULSE_TAG))) {
             if (marker.tickCount > 50) {
                 marker.discard();
             }
