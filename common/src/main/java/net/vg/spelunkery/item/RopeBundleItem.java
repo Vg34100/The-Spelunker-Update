@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 
@@ -21,7 +22,7 @@ public final class RopeBundleItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos().below();
-        BlockState rope = SpelunkeryBlocks.ROPE.get().defaultBlockState();
+        BlockState rope = SpelunkeryBlocks.ROPE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, net.minecraft.core.Direction.Axis.Y);
         int placed = 0;
         while (placed < MAX_DEPLOY && level.getBlockState(pos).canBeReplaced()) {
             level.setBlock(pos, rope, 3);

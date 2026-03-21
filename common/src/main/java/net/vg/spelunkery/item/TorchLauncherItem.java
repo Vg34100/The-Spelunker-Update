@@ -4,7 +4,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public final class TorchLauncherItem extends Item {
     private static final double RANGE = 24.0D;
@@ -44,6 +47,10 @@ public final class TorchLauncherItem extends Item {
 
         BlockPos anchorPos = hitResult.getBlockPos();
         Direction hitDirection = hitResult.getDirection();
+        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+            spawnTrail(serverLevel, player.getEyePosition(), hitResult.getLocation());
+        }
+        level.playSound(null, player.blockPosition(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 0.8F, 1.15F);
 
         if (tryPlaceTorch(level, player, launcher, anchorPos.relative(hitDirection), hitDirection)
                 || tryPlaceTorch(level, player, launcher, anchorPos.above(), Direction.UP)) {
@@ -54,6 +61,19 @@ public final class TorchLauncherItem extends Item {
             player.displayClientMessage(Component.literal("No valid torch spot in range.").withStyle(ChatFormatting.GRAY), true);
         }
         return InteractionResultHolder.fail(launcher);
+    }
+
+    private void spawnTrail(ServerLevel level, Vec3 start, Vec3 end) {
+        Vec3 delta = end.subtract(start);
+        int steps = Math.max(8, (int) (delta.length() * 2.0D));
+        for (int i = 0; i <= steps; i++) {
+            double t = i / (double) steps;
+            Vec3 point = start.add(delta.scale(t));
+            level.sendParticles(ParticleTypes.FLAME, point.x, point.y, point.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+            if (i % 2 == 0) {
+                level.sendParticles(ParticleTypes.SMOKE, point.x, point.y, point.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+            }
+        }
     }
 
     private boolean tryPlaceTorch(Level level, Player player, ItemStack launcher, BlockPos placePos, Direction supportDirection) {

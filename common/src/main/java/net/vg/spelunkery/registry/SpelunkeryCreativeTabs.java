@@ -223,7 +223,6 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.PROSPECTOR_LENS.get());
         output.accept(SpelunkeryItems.TORCH_LAUNCHER.get());
         output.accept(SpelunkeryItems.ROPE_BUNDLE.get());
-        output.accept(SpelunkeryItems.ROPE.get());
         output.accept(SpelunkeryItems.SILVER_SWORD.get());
         output.accept(SpelunkeryItems.BRONZE_SWORD.get());
         output.accept(SpelunkeryItems.BRONZE_PICKAXE.get());

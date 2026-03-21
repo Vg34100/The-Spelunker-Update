@@ -14,8 +14,8 @@ public final class Spelunkery {
 
     public static void init() {
         SpelunkeryBlocks.init();
-        SpelunkeryItems.init();
         SpelunkeryEffects.init();
+        SpelunkeryItems.init();
         SpelunkeryBlockEntities.init();
         SpelunkeryMenuTypes.init();
         SpelunkeryRecipeTypes.init();

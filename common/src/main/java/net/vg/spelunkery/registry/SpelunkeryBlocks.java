@@ -391,8 +391,8 @@ public final class SpelunkeryBlocks {
             "rope",
             () -> new RopeBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOL)
-                    .strength(0.4F)
-                    .sound(SoundType.WOOL)
+                    .strength(0.3F)
+                    .sound(SoundType.CHAIN)
                     .noOcclusion())
     );
 
