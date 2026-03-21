@@ -11,9 +11,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -28,6 +30,7 @@ import java.util.List;
 public final class MinerHelmetHelper {
     private static final String GEM_KEY = "spelunkery_miner_helmet_gem";
     private static final int PASSIVE_DURATION = 220;
+    private static final String ORE_PULSE_TAG = "spelunkery_ore_pulse_marker";
 
     private MinerHelmetHelper() {
     }
@@ -63,6 +66,7 @@ public final class MinerHelmetHelper {
     public static void updateEquippedHelmet(Player player) {
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         MinerHelmetGem gem = getGem(helmet);
+        cleanupPulseMarkers(player);
         if (gem == null) {
             return;
         }
@@ -108,11 +112,7 @@ public final class MinerHelmetHelper {
         ores.sort(Comparator.comparingDouble(pos -> pos.distSqr(center)));
         int shown = 0;
         for (BlockPos orePos : ores) {
-            BlockPos markerPos = findVisiblePulsePosition(level, orePos, center);
-            if (markerPos == null) {
-                continue;
-            }
-            level.sendParticles(ParticleTypes.END_ROD, markerPos.getX() + 0.5D, markerPos.getY() + 0.55D, markerPos.getZ() + 0.5D, 3, 0.12D, 0.12D, 0.12D, 0.0D);
+            spawnOreMarker(level, orePos);
             shown++;
             if (shown >= 12) {
                 break;
@@ -130,30 +130,31 @@ public final class MinerHelmetHelper {
         }
     }
 
-    private static BlockPos findVisiblePulsePosition(ServerLevel level, BlockPos orePos, BlockPos playerPos) {
-        double dx = playerPos.getX() + 0.5D - (orePos.getX() + 0.5D);
-        double dy = playerPos.getY() + 0.5D - (orePos.getY() + 0.5D);
-        double dz = playerPos.getZ() + 0.5D - (orePos.getZ() + 0.5D);
-        double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (length < 0.001D) {
-            return orePos;
+    private static void spawnOreMarker(ServerLevel level, BlockPos orePos) {
+        Slime marker = new Slime(EntityType.SLIME, level);
+        marker.setPos(orePos.getX() + 0.5D, orePos.getY() + 0.5D, orePos.getZ() + 0.5D);
+        marker.setSize(1, true);
+        marker.setInvisible(true);
+        marker.setInvulnerable(true);
+        marker.setNoAi(true);
+        marker.setNoGravity(true);
+        marker.setSilent(true);
+        marker.setGlowingTag(true);
+        marker.addTag(ORE_PULSE_TAG);
+        level.addFreshEntity(marker);
+        level.sendParticles(ParticleTypes.END_ROD, orePos.getX() + 0.5D, orePos.getY() + 0.5D, orePos.getZ() + 0.5D, 4, 0.10D, 0.10D, 0.10D, 0.0D);
+    }
+
+    private static void cleanupPulseMarkers(Player player) {
+        if (!(player.level() instanceof ServerLevel level) || player.tickCount % 10 != 0) {
+            return;
         }
 
-        double stepX = dx / length;
-        double stepY = dy / length;
-        double stepZ = dz / length;
-        for (int step = 1; step <= 6; step++) {
-            BlockPos testPos = BlockPos.containing(
-                    orePos.getX() + 0.5D + stepX * step,
-                    orePos.getY() + 0.5D + stepY * step,
-                    orePos.getZ() + 0.5D + stepZ * step
-            );
-            if (level.getBlockState(testPos).isAir()) {
-                return testPos;
+        for (Slime marker : level.getEntitiesOfClass(Slime.class, player.getBoundingBox().inflate(20.0D), entity -> entity.getTags().contains(ORE_PULSE_TAG))) {
+            if (marker.tickCount > 16) {
+                marker.discard();
             }
         }
-
-        return null;
     }
 
     private static boolean isValuableMinedBlock(BlockState state) {
