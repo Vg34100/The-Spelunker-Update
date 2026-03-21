@@ -1,9 +1,9 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 64,
-    "xz_spread": 6,
-    "y_spread": 2,
+    "tries": 18,
+    "xz_spread": 4,
+    "y_spread": 1,
     "feature": {
       "feature": {
         "type": "minecraft:simple_block",
@@ -20,8 +20,10 @@
         {
           "type": "minecraft:block_predicate_filter",
           "predicate": {
-            "type": "minecraft:matching_blocks",
-            "blocks": "minecraft:air"
+            "type": "minecraft:would_survive",
+            "state": {
+              "Name": "spelunkery:glowcap"
+            }
           }
         }
       ]

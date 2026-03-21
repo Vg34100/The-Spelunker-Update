@@ -20,6 +20,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.block.CrucibleBlock;
 import net.vg.spelunkery.block.FoundryBlock;
+import net.vg.spelunkery.block.GlowcapBlock;
 import net.vg.spelunkery.block.InvarAnvilBlock;
 import net.vg.spelunkery.block.RopeBlock;
 
@@ -546,7 +547,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> GLOWCAP = registerBlock(
             "glowcap",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new GlowcapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_CYAN)
                     .noCollission()
                     .instabreak()

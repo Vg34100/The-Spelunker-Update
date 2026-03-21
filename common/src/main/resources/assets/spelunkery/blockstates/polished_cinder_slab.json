@@ -1,12 +1,21 @@
 {
   "variants": {
-    "type=bottom": {
+    "type=bottom,waterlogged=false": {
       "model": "spelunkery:block/polished_cinder_slab"
     },
-    "type=top": {
+    "type=bottom,waterlogged=true": {
+      "model": "spelunkery:block/polished_cinder_slab"
+    },
+    "type=top,waterlogged=false": {
       "model": "spelunkery:block/polished_cinder_slab_top"
     },
-    "type=double": {
+    "type=top,waterlogged=true": {
+      "model": "spelunkery:block/polished_cinder_slab_top"
+    },
+    "type=double,waterlogged=false": {
+      "model": "spelunkery:block/polished_cinder"
+    },
+    "type=double,waterlogged=true": {
       "model": "spelunkery:block/polished_cinder"
     }
   }
