@@ -21,6 +21,8 @@ import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public final class MinerHelmetHelper {
@@ -90,27 +92,68 @@ public final class MinerHelmetHelper {
     }
 
     private static void pulseOres(Player player) {
-        if (!(player.level() instanceof ServerLevel level) || player.tickCount % 30 != 0) {
+        if (!(player.level() instanceof ServerLevel level) || player.tickCount % 45 != 0) {
             return;
         }
 
         BlockPos center = player.blockPosition();
-        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-8, -5, -8), center.offset(8, 5, 8))) {
+        List<BlockPos> ores = new ArrayList<>();
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-10, -6, -10), center.offset(10, 6, 10))) {
             BlockState state = level.getBlockState(pos);
             if (isValuableMinedBlock(state)) {
-                level.sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5D, pos.getY() + 0.65D, pos.getZ() + 0.5D, 1, 0.08D, 0.08D, 0.08D, 0.0D);
+                ores.add(pos.immutable());
+            }
+        }
+
+        ores.sort(Comparator.comparingDouble(pos -> pos.distSqr(center)));
+        int shown = 0;
+        for (BlockPos orePos : ores) {
+            BlockPos markerPos = findVisiblePulsePosition(level, orePos, center);
+            if (markerPos == null) {
+                continue;
+            }
+            level.sendParticles(ParticleTypes.END_ROD, markerPos.getX() + 0.5D, markerPos.getY() + 0.55D, markerPos.getZ() + 0.5D, 3, 0.12D, 0.12D, 0.12D, 0.0D);
+            shown++;
+            if (shown >= 12) {
+                break;
             }
         }
     }
 
     private static void pulseMobs(Player player) {
-        if (player.tickCount % 40 != 0) {
+        if (player.tickCount % 90 != 0) {
             return;
         }
 
         for (LivingEntity entity : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(12.0D), entity -> entity instanceof Monster && entity.isAlive())) {
-            entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0, true, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 18, 0, true, false, true));
         }
+    }
+
+    private static BlockPos findVisiblePulsePosition(ServerLevel level, BlockPos orePos, BlockPos playerPos) {
+        double dx = playerPos.getX() + 0.5D - (orePos.getX() + 0.5D);
+        double dy = playerPos.getY() + 0.5D - (orePos.getY() + 0.5D);
+        double dz = playerPos.getZ() + 0.5D - (orePos.getZ() + 0.5D);
+        double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (length < 0.001D) {
+            return orePos;
+        }
+
+        double stepX = dx / length;
+        double stepY = dy / length;
+        double stepZ = dz / length;
+        for (int step = 1; step <= 6; step++) {
+            BlockPos testPos = BlockPos.containing(
+                    orePos.getX() + 0.5D + stepX * step,
+                    orePos.getY() + 0.5D + stepY * step,
+                    orePos.getZ() + 0.5D + stepZ * step
+            );
+            if (level.getBlockState(testPos).isAir()) {
+                return testPos;
+            }
+        }
+
+        return null;
     }
 
     private static boolean isValuableMinedBlock(BlockState state) {
