@@ -30,6 +30,11 @@ It is produced in the foundry using tin and copper ingots and is intended to bec
 - `Bronze Grate` adds metal industrial detailing
 - `Bronze Bars` and `Bronze Chain` expand bronze into cave building hardware
 
+## Gear Direction
+
+- Bronze is the first material with a full general-purpose tool and armor set scaffolded for it
+- The intended role is utility-first cave gear rather than endgame combat power
+
 ## Planned Uses
 
 - Bronze cave instruments

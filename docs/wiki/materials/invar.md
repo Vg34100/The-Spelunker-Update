@@ -25,6 +25,11 @@ Invar is a nickel-and-iron alloy built around durability, stability, and premium
 - `Chipped Invar Anvil` and `Damaged Invar Anvil` are intermediate wear states
 - Invar blocks and tiles provide durable industrial building material
 
+## Gear Direction
+
+- Invar is intended to support a sturdier tool and armor set
+- The main identity is stability, durability, and reduced wear rather than flashy damage output
+
 ## Notes
 
 - Invar anvils degrade much more slowly than vanilla anvils

@@ -23,6 +23,7 @@ Each page should describe what the material or feature is, where it appears, wha
 ## Items
 
 - [Tools and Weapons](./items/tools-and-weapons.md)
+- [Expedition Gear](./items/expedition-gear.md)
 - [Armor Upgrades](./items/armor-upgrades.md)
 
 ## Systems

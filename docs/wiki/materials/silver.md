@@ -41,3 +41,8 @@ Silver is an overworld precious metal with combat and utility uses tied to undea
 - `Silver Arrow` deals bonus damage to undead
 - `Silver Lining` upgrades iron armor into `Silver-Lined Iron Armor`
 - Any silver-lined armor piece grants full wither immunity while worn
+
+## Gear Direction
+
+- Silver is intended to support an undead-focused tool and armor set
+- The set should stay specialized rather than becoming a universal combat upgrade

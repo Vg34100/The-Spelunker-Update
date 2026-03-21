@@ -32,6 +32,7 @@ Nickel is a deeper, rarer overworld metal focused on reinforcement, plating, and
 - Reinforcement and plating systems
 - Later alloying input for invar
 - Durable expedition hardware
+- Primarily a reinforcement metal rather than a standalone gear family
 
 ## Current Uses
 

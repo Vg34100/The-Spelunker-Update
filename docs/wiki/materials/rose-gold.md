@@ -25,6 +25,11 @@ Rose gold is an alloy built around cave instruments and enchantment-adjacent uti
 - `Rose Gold Filigree` upgrades iron armor into `Rose Gold-Plated Iron Armor`
 - Rose gold-plated armor is the first enchantability-focused armor upgrade path
 
+## Gear Direction
+
+- Rose gold is intended to support a luckier, more enchantment-friendly tool and armor set
+- The set should lean into refinement and upgrade quality rather than raw toughness
+
 ## Planned Uses
 
 - More cave information tools

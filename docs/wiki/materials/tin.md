@@ -34,3 +34,4 @@ It is intended to support expedition gear and later alloying without being usefu
 - Expedition and cave utility crafting
 - Hardware for traversal and exploration items
 - Later alloying input for bronze
+- A support metal rather than a full armor or tool family
