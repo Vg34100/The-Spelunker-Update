@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/carpet",
   "textures": {
-    "all": "spelunkery:block/fungal_mat"
+    "wool": "spelunkery:block/fungal_mat"
   }
 }

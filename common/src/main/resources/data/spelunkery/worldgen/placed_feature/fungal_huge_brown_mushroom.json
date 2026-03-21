@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 2
+      "count": 4
     },
     {
       "type": "minecraft:in_square"
@@ -29,7 +29,14 @@
       "direction_of_search": "down",
       "max_steps": 12,
       "target_condition": {
-        "type": "minecraft:solid"
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "spelunkery:fungal_turf",
+          "spelunkery:mycelium_mud",
+          "spelunkery:bioluminescent_moss",
+          "minecraft:rooted_dirt",
+          "minecraft:moss_block"
+        ]
       }
     },
     {

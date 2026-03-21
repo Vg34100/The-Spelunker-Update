@@ -55,7 +55,8 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.PRISMATIC_STONE.get(), SpelunkeryBlocks.CINDER_ROCK.get());
             output.acceptAfter(SpelunkeryBlocks.CINDER_ROCK.get(), SpelunkeryBlocks.ASHEN_DIRT.get());
             output.acceptAfter(SpelunkeryBlocks.ASHEN_DIRT.get(), SpelunkeryBlocks.MYCELIUM_MUD.get());
-            output.acceptAfter(SpelunkeryBlocks.MYCELIUM_MUD.get(), SpelunkeryBlocks.BIOLUMINESCENT_MOSS.get());
+            output.acceptAfter(SpelunkeryBlocks.MYCELIUM_MUD.get(), SpelunkeryBlocks.FUNGAL_TURF.get());
+            output.acceptAfter(SpelunkeryBlocks.FUNGAL_TURF.get(), SpelunkeryBlocks.BIOLUMINESCENT_MOSS.get());
             output.acceptAfter(SpelunkeryBlocks.BIOLUMINESCENT_MOSS.get(), SpelunkeryBlocks.BLUE_CRYSTAL.get());
             output.acceptAfter(SpelunkeryBlocks.BLUE_CRYSTAL.get(), SpelunkeryBlocks.CRUCIBLE.get());
             output.acceptAfter(SpelunkeryBlocks.CRUCIBLE.get(), SpelunkeryBlocks.FOUNDRY.get());
@@ -260,6 +261,7 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.SCORCHED_DRIPSTONE.get());
         output.accept(SpelunkeryBlocks.CHARRED_BONES.get());
         output.accept(SpelunkeryBlocks.MYCELIUM_MUD.get());
+        output.accept(SpelunkeryBlocks.FUNGAL_TURF.get());
         output.accept(SpelunkeryBlocks.MYCELIUM_MUD_BRICKS.get());
         output.accept(SpelunkeryBlocks.MYCELIUM_MUD_BRICK_STAIRS.get());
         output.accept(SpelunkeryBlocks.MYCELIUM_MUD_BRICK_SLAB.get());

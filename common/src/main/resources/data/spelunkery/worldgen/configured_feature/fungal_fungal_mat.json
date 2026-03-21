@@ -1,18 +1,41 @@
 {
-  "type": "minecraft:ore",
+  "type": "minecraft:random_patch",
   "config": {
-    "discard_chance_on_air_exposure": 0.0,
-    "size": 34,
-    "targets": [
-      {
-        "state": {
-          "Name": "spelunkery:fungal_mat"
-        },
-        "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "spelunkery:mycelium_mud"
+    "tries": 64,
+    "xz_spread": 8,
+    "y_spread": 1,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "spelunkery:fungal_mat"
+            }
+          }
         }
-      }
-    ]
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "spelunkery:fungal_mat"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
   }
 }

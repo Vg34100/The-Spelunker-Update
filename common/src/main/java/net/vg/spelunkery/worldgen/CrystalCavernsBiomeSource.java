@@ -114,14 +114,11 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
             return false;
         }
 
-        float erosion = Climate.unquantizeCoord(targetPoint.erosion());
-        float depth = Climate.unquantizeCoord(targetPoint.depth());
-
-        if (y > -8 || depth < 0.2F || depth > 1.2F || erosion > 0.18F) {
+        if (y > 0) {
             return false;
         }
 
-        return matchesBand(x, z, 9, 15L, 1L, 5L);
+        return matchesBand(x, z, 18, 7L, 2L, 5L);
     }
 
     private boolean shouldUseFungalGrottos(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {

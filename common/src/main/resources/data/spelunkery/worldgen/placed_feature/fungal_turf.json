@@ -1,9 +1,9 @@
 {
-  "feature": "spelunkery:fungal_fungal_mat",
+  "feature": "spelunkery:fungal_turf",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 30
+      "count": 44
     },
     {
       "type": "minecraft:in_square"
