@@ -16,16 +16,19 @@ import java.util.stream.Stream;
 public final class CrystalCavernsBiomeSource extends BiomeSource {
     public static final MapCodec<CrystalCavernsBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             MultiNoiseBiomeSourceParameterList.CODEC.fieldOf("preset").forGetter(source -> source.preset),
-            Biome.CODEC.fieldOf("crystal_biome").forGetter(source -> source.crystalBiome)
-    ).apply(instance, CrystalCavernsBiomeSource::new));
+            Biome.CODEC.fieldOf("crystal_biome").forGetter(source -> source.crystalBiome),
+            Biome.CODEC.optionalFieldOf("marble_biome").forGetter(source -> java.util.Optional.of(source.marbleBiome))
+    ).apply(instance, (preset, crystalBiome, marbleBiome) -> new CrystalCavernsBiomeSource(preset, crystalBiome, marbleBiome.orElse(crystalBiome))));
 
     private final Holder<MultiNoiseBiomeSourceParameterList> preset;
     private final Holder<Biome> crystalBiome;
+    private final Holder<Biome> marbleBiome;
     private final MultiNoiseBiomeSource delegate;
 
-    public CrystalCavernsBiomeSource(Holder<MultiNoiseBiomeSourceParameterList> preset, Holder<Biome> crystalBiome) {
+    public CrystalCavernsBiomeSource(Holder<MultiNoiseBiomeSourceParameterList> preset, Holder<Biome> crystalBiome, Holder<Biome> marbleBiome) {
         this.preset = preset;
         this.crystalBiome = crystalBiome;
+        this.marbleBiome = marbleBiome;
         this.delegate = MultiNoiseBiomeSource.createFromPreset(preset);
     }
 
@@ -36,17 +39,40 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
-        return Stream.concat(this.delegate.possibleBiomes().stream(), Stream.of(this.crystalBiome)).distinct();
+        return Stream.concat(this.delegate.possibleBiomes().stream(), Stream.of(this.crystalBiome, this.marbleBiome)).distinct();
     }
 
     @Override
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
         Climate.TargetPoint targetPoint = sampler.sample(x, y, z);
         Holder<Biome> vanilla = this.delegate.getNoiseBiome(targetPoint);
+        if (shouldUseMarbleCaves(vanilla, targetPoint, x, y, z)) {
+            return this.marbleBiome;
+        }
         if (shouldUseCrystalCaverns(vanilla, targetPoint, x, y, z)) {
             return this.crystalBiome;
         }
         return vanilla;
+    }
+
+    private boolean shouldUseMarbleCaves(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
+        if (vanilla.is(Biomes.DEEP_DARK) || y > 20) {
+            return false;
+        }
+
+        float humidity = Climate.unquantizeCoord(targetPoint.humidity());
+        float erosion = Climate.unquantizeCoord(targetPoint.erosion());
+        float depth = Climate.unquantizeCoord(targetPoint.depth());
+
+        if (depth < 0.1F || depth > 1.15F || humidity < 0.0F || erosion > 0.28F) {
+            return false;
+        }
+
+        if (vanilla.is(Biomes.LUSH_CAVES) || vanilla.is(Biomes.DRIPSTONE_CAVES)) {
+            return true;
+        }
+
+        return matchesBand(x, y, z, 3L, 1L, 3L);
     }
 
     private boolean shouldUseCrystalCaverns(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
@@ -58,21 +84,18 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
         float erosion = Climate.unquantizeCoord(targetPoint.erosion());
         float depth = Climate.unquantizeCoord(targetPoint.depth());
 
-        if (y > 12 || depth < 0.15F || depth > 1.1F || humidity < -0.15F || erosion > 0.45F) {
+        if (y > 8 || depth < 0.2F || depth > 1.05F || humidity < -0.1F || humidity > 0.18F || erosion > 0.12F) {
             return false;
         }
 
-        if (vanilla.is(Biomes.LUSH_CAVES) || vanilla.is(Biomes.DRIPSTONE_CAVES)) {
-            return true;
-        }
-
-        return humidity > 0.05F && erosion < 0.2F && matchesCrystalBand(x, y, z);
+        return matchesBand(x, y, z, 5L, 2L, 4L);
     }
 
-    private boolean matchesCrystalBand(int x, int y, int z) {
+    private boolean matchesBand(int x, int y, int z, long mask, long threshold, long salt) {
         long hash = 341873128712L * x + 132897987541L * y + 42317861L * z;
+        hash += salt * 982451653L;
         hash ^= hash >>> 13;
         hash *= 1274126177L;
-        return (hash & 7L) < 2L;
+        return (hash & mask) < threshold;
     }
 }

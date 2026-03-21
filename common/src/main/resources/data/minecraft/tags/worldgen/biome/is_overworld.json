@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "spelunkery:crystal_caverns"
+    "spelunkery:crystal_caverns",
+    "spelunkery:marble_caves"
   ]
 }

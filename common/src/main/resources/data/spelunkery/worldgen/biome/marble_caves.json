@@ -8,7 +8,7 @@
   },
   "downfall": 0.5,
   "effects": {
-    "fog_color": 9472286,
+    "fog_color": 12370687,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -19,11 +19,11 @@
       "max_delay": 24000,
       "min_delay": 12000,
       "replace_current_music": false,
-      "sound": "minecraft:music.overworld.lush_caves"
+      "sound": "minecraft:music.overworld.dripstone_caves"
     },
-    "sky_color": 7441151,
-    "water_color": 4684544,
-    "water_fog_color": 263179
+    "sky_color": 8103167,
+    "water_color": 4159204,
+    "water_fog_color": 329011
   },
   "features": [
     [],
@@ -33,7 +33,7 @@
     ],
     [
       "spelunkery:crystal_cavern_topaz_geode",
-      "spelunkery:crystal_spikes"
+      "minecraft:large_dripstone"
     ],
     [
       "minecraft:monster_room",
@@ -67,8 +67,9 @@
       "minecraft:ore_lapis",
       "minecraft:ore_lapis_buried",
       "minecraft:ore_copper_large",
-      "spelunkery:prismatic_cluster",
-      "spelunkery:gem_pocket_ore",
+      "spelunkery:crystal_cavern_marble",
+      "spelunkery:crystal_cavern_ruby_pocket",
+      "spelunkery:crystal_cavern_sapphire_pocket",
       "minecraft:underwater_magma",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
@@ -76,7 +77,8 @@
     ],
     [
       "minecraft:basalt_pillar",
-      "spelunkery:crystal_spikes"
+      "minecraft:dripstone_cluster",
+      "minecraft:pointed_dripstone"
     ],
     [
       "minecraft:spring_water",

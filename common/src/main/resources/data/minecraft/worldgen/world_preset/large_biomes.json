@@ -7,7 +7,8 @@
         "biome_source": {
           "type": "spelunkery:crystal_caverns",
           "preset": "minecraft:overworld",
-          "crystal_biome": "spelunkery:crystal_caverns"
+          "crystal_biome": "spelunkery:crystal_caverns",
+          "marble_biome": "spelunkery:marble_caves"
         },
         "settings": "minecraft:large_biomes"
       }
