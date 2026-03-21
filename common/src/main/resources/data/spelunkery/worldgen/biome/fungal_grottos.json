@@ -90,16 +90,11 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:glow_lichen",
-      "minecraft:classic_vines_cave_feature",
       "minecraft:classic_vines_cave_feature",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:brown_mushroom_taiga",
       "minecraft:red_mushroom_taiga",
-      "minecraft:brown_mushroom_normal",
-      "minecraft:red_mushroom_normal",
-      "spelunkery:fungal_glowcap_patch",
       "spelunkery:fungal_glowcap_patch",
       "spelunkery:fungal_huge_brown_mushroom",
       "spelunkery:fungal_huge_red_mushroom"
