@@ -96,7 +96,7 @@ public final class MinerHelmetHelper {
     }
 
     private static void pulseOres(Player player) {
-        if (!(player.level() instanceof ServerLevel level) || player.tickCount % 45 != 0) {
+        if (!(player.level() instanceof ServerLevel level) || player.tickCount % 120 != 0) {
             return;
         }
 
@@ -151,7 +151,7 @@ public final class MinerHelmetHelper {
         }
 
         for (Slime marker : level.getEntitiesOfClass(Slime.class, player.getBoundingBox().inflate(20.0D), entity -> entity.getTags().contains(ORE_PULSE_TAG))) {
-            if (marker.tickCount > 16) {
+            if (marker.tickCount > 50) {
                 marker.discard();
             }
         }
