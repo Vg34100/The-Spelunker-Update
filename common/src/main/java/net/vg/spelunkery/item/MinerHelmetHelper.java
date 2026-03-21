@@ -25,6 +25,7 @@ import java.util.List;
 public final class MinerHelmetHelper {
     private static final String GEM_KEY = "spelunkery_miner_helmet_gem";
     private static final int PASSIVE_DURATION = 220;
+    private static final int DURABILITY_DRAIN_INTERVAL = 120;
 
     private MinerHelmetHelper() {
     }
@@ -62,6 +63,10 @@ public final class MinerHelmetHelper {
         MinerHelmetGem gem = getGem(helmet);
         if (gem == null) {
             return;
+        }
+
+        if (!player.level().isClientSide && !player.isCreative() && player.tickCount % DURABILITY_DRAIN_INTERVAL == 0) {
+            helmet.hurtAndBreak(1, player, EquipmentSlot.HEAD);
         }
 
         switch (gem) {
