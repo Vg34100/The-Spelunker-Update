@@ -56,7 +56,7 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
     }
 
     private boolean shouldUseMarbleCaves(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
-        if (vanilla.is(Biomes.DEEP_DARK) || y > 24) {
+        if (vanilla.is(Biomes.DEEP_DARK) || y > 12) {
             return false;
         }
 
@@ -64,15 +64,15 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
         float erosion = Climate.unquantizeCoord(targetPoint.erosion());
         float depth = Climate.unquantizeCoord(targetPoint.depth());
 
-        if (depth < 0.1F || depth > 1.15F || humidity < -0.05F || erosion > 0.26F) {
+        if (depth < 0.2F || depth > 1.0F || humidity < 0.02F || humidity > 0.24F || erosion > 0.18F) {
             return false;
         }
 
         if (vanilla.is(Biomes.LUSH_CAVES) || vanilla.is(Biomes.DRIPSTONE_CAVES)) {
-            return true;
+            return matchesBand(x, z, 15L, 1L, 3L);
         }
 
-        return matchesBand(x, z, 7L, 2L, 3L);
+        return matchesBand(x, z, 31L, 1L, 3L);
     }
 
     private boolean shouldUseCrystalCaverns(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
