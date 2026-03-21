@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,6 +42,10 @@ public final class SpelunkeryGameplayHelper {
         }
 
         ExperienceOrb.award((ServerLevel) player.level(), Vec3.atCenterOf(pos), 1);
+    }
+
+    public static boolean shouldDropBatWing(LivingEntity entity) {
+        return entity instanceof Bat bat && bat.getRandom().nextFloat() < 0.67F;
     }
 
     private static boolean isValuableMinedBlock(BlockState state) {

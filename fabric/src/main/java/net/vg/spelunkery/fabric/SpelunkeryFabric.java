@@ -8,11 +8,14 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryItems;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
 
 public final class SpelunkeryFabric implements ModInitializer {
@@ -39,6 +42,11 @@ public final class SpelunkeryFabric implements ModInitializer {
             net.minecraft.world.entity.Entity sourceEntity = source.getDirectEntity() != null ? source.getDirectEntity() : source.getEntity();
             if (sourceEntity instanceof net.minecraft.world.entity.LivingEntity attacker) {
                 BronzeShieldItem.tryBash(entity, attacker);
+            }
+        });
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+            if (SpelunkeryGameplayHelper.shouldDropBatWing(entity)) {
+                entity.level().addFreshEntity(new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(SpelunkeryItems.BAT_WING.get())));
             }
         });
         BiomeModifications.addFeature(

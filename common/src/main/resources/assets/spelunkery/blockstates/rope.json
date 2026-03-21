@@ -1,16 +1,7 @@
 {
   "variants": {
-    "axis=x": {
-      "model": "spelunkery:block/rope",
-      "x": 90,
-      "y": 90
-    },
-    "axis=y": {
+    "": {
       "model": "spelunkery:block/rope"
-    },
-    "axis=z": {
-      "model": "spelunkery:block/rope",
-      "x": 90
     }
   }
 }
