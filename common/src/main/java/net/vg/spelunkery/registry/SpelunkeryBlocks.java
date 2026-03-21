@@ -393,6 +393,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.WOOL)
                     .strength(0.3F)
                     .sound(SoundType.CHAIN)
+                    .noCollission()
                     .noOcclusion())
     );
 
