@@ -33,6 +33,7 @@
     "spelunkery:foundry",
     "spelunkery:ruby_block",
     "spelunkery:sapphire_block",
+    "spelunkery:gem_pocket",
     "spelunkery:marble",
     "spelunkery:marble_stairs",
     "spelunkery:marble_slab",
@@ -64,6 +65,10 @@
     "spelunkery:prismatic_tiles",
     "spelunkery:prismatic_tile_stairs",
     "spelunkery:prismatic_tile_slab",
-    "spelunkery:prismatic_tile_wall"
+    "spelunkery:prismatic_tile_wall",
+    "spelunkery:blue_crystal",
+    "spelunkery:green_crystal",
+    "spelunkery:red_crystal",
+    "spelunkery:yellow_crystal"
   ]
 }

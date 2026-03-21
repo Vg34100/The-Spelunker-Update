@@ -50,8 +50,10 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.TOPAZ_BLOCK.get(), SpelunkeryBlocks.RUBY_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.RUBY_BLOCK.get(), SpelunkeryBlocks.SAPPHIRE_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.SAPPHIRE_BLOCK.get(), SpelunkeryBlocks.MARBLE.get());
-            output.acceptAfter(SpelunkeryBlocks.MARBLE.get(), SpelunkeryBlocks.PRISMATIC_STONE.get());
-            output.acceptAfter(SpelunkeryBlocks.PRISMATIC_STONE.get(), SpelunkeryBlocks.CRUCIBLE.get());
+            output.acceptAfter(SpelunkeryBlocks.MARBLE.get(), SpelunkeryBlocks.GEM_POCKET.get());
+            output.acceptAfter(SpelunkeryBlocks.GEM_POCKET.get(), SpelunkeryBlocks.PRISMATIC_STONE.get());
+            output.acceptAfter(SpelunkeryBlocks.PRISMATIC_STONE.get(), SpelunkeryBlocks.BLUE_CRYSTAL.get());
+            output.acceptAfter(SpelunkeryBlocks.BLUE_CRYSTAL.get(), SpelunkeryBlocks.CRUCIBLE.get());
             output.acceptAfter(SpelunkeryBlocks.CRUCIBLE.get(), SpelunkeryBlocks.FOUNDRY.get());
         });
 
@@ -177,6 +179,7 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.RUBY_BLOCK.get());
         output.accept(SpelunkeryBlocks.SAPPHIRE_BLOCK.get());
         output.accept(SpelunkeryBlocks.MARBLE.get());
+        output.accept(SpelunkeryBlocks.GEM_POCKET.get());
         output.accept(SpelunkeryBlocks.MARBLE_STAIRS.get());
         output.accept(SpelunkeryBlocks.MARBLE_SLAB.get());
         output.accept(SpelunkeryBlocks.MARBLE_WALL.get());
@@ -208,6 +211,10 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.PRISMATIC_TILE_STAIRS.get());
         output.accept(SpelunkeryBlocks.PRISMATIC_TILE_SLAB.get());
         output.accept(SpelunkeryBlocks.PRISMATIC_TILE_WALL.get());
+        output.accept(SpelunkeryBlocks.BLUE_CRYSTAL.get());
+        output.accept(SpelunkeryBlocks.GREEN_CRYSTAL.get());
+        output.accept(SpelunkeryBlocks.RED_CRYSTAL.get());
+        output.accept(SpelunkeryBlocks.YELLOW_CRYSTAL.get());
         output.accept(SpelunkeryBlocks.BRONZE_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_TILES.get());
         output.accept(SpelunkeryBlocks.BRONZE_GRATE.get());

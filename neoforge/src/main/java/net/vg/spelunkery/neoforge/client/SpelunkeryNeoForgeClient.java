@@ -30,6 +30,10 @@ public final class SpelunkeryNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_CHAIN.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_LANTERN.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.ROPE.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BLUE_CRYSTAL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.GREEN_CRYSTAL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.RED_CRYSTAL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.YELLOW_CRYSTAL.get(), RenderType.cutout());
             registerBowPredicates();
             registerShieldPredicates();
         });

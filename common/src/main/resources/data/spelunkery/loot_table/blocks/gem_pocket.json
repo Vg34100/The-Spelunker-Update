@@ -1,0 +1,175 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "name": "spelunkery:gem_pocket"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spelunkery:ruby",
+              "weight": 5,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spelunkery:sapphire",
+              "weight": 5,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spelunkery:topaz_shard",
+              "weight": 5,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:amethyst_shard",
+              "weight": 5,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:emerald",
+              "weight": 1,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 2.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:diamond",
+              "weight": 1,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 2.0
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "spelunkery:blocks/gem_pocket"
+}

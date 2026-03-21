@@ -20,7 +20,11 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 SpelunkeryBlocks.BRONZE_BARS.get(),
                 SpelunkeryBlocks.BRONZE_CHAIN.get(),
                 SpelunkeryBlocks.BRONZE_LANTERN.get(),
-                SpelunkeryBlocks.ROPE.get()
+                SpelunkeryBlocks.ROPE.get(),
+                SpelunkeryBlocks.BLUE_CRYSTAL.get(),
+                SpelunkeryBlocks.GREEN_CRYSTAL.get(),
+                SpelunkeryBlocks.RED_CRYSTAL.get(),
+                SpelunkeryBlocks.YELLOW_CRYSTAL.get()
         );
         FabricModelPredicateProviderRegistry.register(
                 SpelunkeryItems.ELECTRUM_BOW.get(),

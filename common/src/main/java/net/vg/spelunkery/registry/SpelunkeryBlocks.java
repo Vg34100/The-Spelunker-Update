@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -162,6 +163,15 @@ public final class SpelunkeryBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> 5))
+    );
+
+    public static final RegistrySupplier<Block> GEM_POCKET = registerBlock(
+            "gem_pocket",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(2.4F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST))
     );
 
     public static final RegistrySupplier<Block> MARBLE = registerBlock(
@@ -331,6 +341,50 @@ public final class SpelunkeryBlocks {
     public static final RegistrySupplier<Block> PRISMATIC_TILE_WALL = registerBlock(
             "prismatic_tile_wall",
             () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).forceSolidOn())
+    );
+
+    public static final RegistrySupplier<Block> BLUE_CRYSTAL = registerBlock(
+            "blue_crystal",
+            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(1.5F)
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .randomTicks()
+                    .noOcclusion()
+                    .lightLevel(state -> 4))
+    );
+
+    public static final RegistrySupplier<Block> GREEN_CRYSTAL = registerBlock(
+            "green_crystal",
+            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(1.5F)
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .randomTicks()
+                    .noOcclusion()
+                    .lightLevel(state -> 4))
+    );
+
+    public static final RegistrySupplier<Block> RED_CRYSTAL = registerBlock(
+            "red_crystal",
+            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.5F)
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .randomTicks()
+                    .noOcclusion()
+                    .lightLevel(state -> 4))
+    );
+
+    public static final RegistrySupplier<Block> YELLOW_CRYSTAL = registerBlock(
+            "yellow_crystal",
+            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD)
+                    .strength(1.5F)
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .randomTicks()
+                    .noOcclusion()
+                    .lightLevel(state -> 4))
     );
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(

@@ -15,6 +15,7 @@
   "block.spelunkery.topaz_block": "Topaz Block",
   "block.spelunkery.ruby_block": "Ruby Block",
   "block.spelunkery.sapphire_block": "Sapphire Block",
+  "block.spelunkery.gem_pocket": "Gem Pocket",
   "block.spelunkery.bronze_block": "Block of Bronze",
   "block.spelunkery.bronze_tiles": "Bronze Tiles",
   "block.spelunkery.bronze_grate": "Bronze Grate",
@@ -87,6 +88,10 @@
   "block.spelunkery.prismatic_tile_stairs": "Prismatic Tile Stairs",
   "block.spelunkery.prismatic_tile_slab": "Prismatic Tile Slab",
   "block.spelunkery.prismatic_tile_wall": "Prismatic Tile Wall",
+  "block.spelunkery.blue_crystal": "Blue Crystal",
+  "block.spelunkery.green_crystal": "Green Crystal",
+  "block.spelunkery.red_crystal": "Red Crystal",
+  "block.spelunkery.yellow_crystal": "Yellow Crystal",
   "block.spelunkery.rope": "Rope",
   "item.spelunkery.rope": "Rope",
   "item.spelunkery.rope_bundle": "Rope Bundle",
@@ -130,5 +135,6 @@
   "item.spelunkery.rose_gold_chestplate": "Rose Gold Chestplate",
   "item.spelunkery.rose_gold_leggings": "Rose Gold Leggings",
   "item.spelunkery.rose_gold_boots": "Rose Gold Boots",
-  "biome.spelunkery.crystal_caverns": "Crystal Caverns"
+  "biome.spelunkery.crystal_caverns": "Crystal Caverns",
+  "biome.spelunkery.marble_caves": "Marble Caves"
 }

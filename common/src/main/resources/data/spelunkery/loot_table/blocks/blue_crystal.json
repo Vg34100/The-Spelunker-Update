@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spelunkery:blue_crystal"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "spelunkery:blocks/blue_crystal"
+}
