@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.registry.SpelunkeryBlockEntities;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
+import net.vg.spelunkery.registry.SpelunkeryEffects;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
@@ -14,6 +15,7 @@ public final class Spelunkery {
     public static void init() {
         SpelunkeryBlocks.init();
         SpelunkeryItems.init();
+        SpelunkeryEffects.init();
         SpelunkeryBlockEntities.init();
         SpelunkeryMenuTypes.init();
         SpelunkeryRecipeTypes.init();

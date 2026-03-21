@@ -29,6 +29,7 @@ public final class SpelunkeryNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_BARS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_CHAIN.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_LANTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.ROPE.get(), RenderType.cutout());
             registerBowPredicates();
             registerShieldPredicates();
         });

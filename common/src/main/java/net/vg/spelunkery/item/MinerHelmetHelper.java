@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.state.BlockState;
+import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 import java.util.List;
@@ -88,6 +89,7 @@ public final class MinerHelmetHelper {
         }
 
         ExperienceOrb.award((ServerLevel) player.level(), net.minecraft.world.phys.Vec3.atCenterOf(pos), 1);
+        SpelunkeryGameplayHelper.onBlockMined(player, pos, state);
     }
 
     private static void apply(Player player, net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect) {

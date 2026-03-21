@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
@@ -22,6 +23,7 @@ public final class SpelunkeryFabric implements ModInitializer {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);
                 MinerHelmetHelper.updateEquippedHelmet(player);
+                SpelunkeryGameplayHelper.updatePlayerEffects(player);
             }
         });
         PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {

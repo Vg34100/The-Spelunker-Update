@@ -19,6 +19,7 @@ import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.block.CrucibleBlock;
 import net.vg.spelunkery.block.FoundryBlock;
 import net.vg.spelunkery.block.InvarAnvilBlock;
+import net.vg.spelunkery.block.RopeBlock;
 
 import java.util.function.Supplier;
 
@@ -386,6 +387,15 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
+    public static final RegistrySupplier<Block> ROPE = registerBlockWithoutItem(
+            "rope",
+            () -> new RopeBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOL)
+                    .strength(0.4F)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion())
+    );
+
     public static final RegistrySupplier<Block> CRUCIBLE = registerBlock(
             "crucible",
             () -> new CrucibleBlock(BlockBehaviour.Properties.of()
@@ -422,5 +432,9 @@ public final class SpelunkeryBlocks {
         RegistrySupplier<T> block = BLOCKS.register(name, supplier);
         SpelunkeryItems.registerBlockItem(name, block::get);
         return block;
+    }
+
+    private static <T extends Block> RegistrySupplier<T> registerBlockWithoutItem(String name, Supplier<T> supplier) {
+        return BLOCKS.register(name, supplier);
     }
 }

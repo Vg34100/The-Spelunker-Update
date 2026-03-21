@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/iron_sword"
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "spelunkery:item/bronze_sword"
+  }
 }

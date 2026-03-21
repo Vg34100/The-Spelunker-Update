@@ -6,6 +6,7 @@ import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.fml.common.Mod;
+import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
@@ -35,6 +36,7 @@ public final class SpelunkeryNeoForge {
     private void onPlayerTick(PlayerTickEvent.Post event) {
         ArmorUpgradeHelper.updateEquippedArmorEffects(event.getEntity());
         MinerHelmetHelper.updateEquippedHelmet(event.getEntity());
+        SpelunkeryGameplayHelper.updatePlayerEffects(event.getEntity());
     }
 
     private void onBlockBreak(BlockEvent.BreakEvent event) {

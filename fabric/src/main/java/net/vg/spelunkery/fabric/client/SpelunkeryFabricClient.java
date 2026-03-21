@@ -19,7 +19,8 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 RenderType.cutout(),
                 SpelunkeryBlocks.BRONZE_BARS.get(),
                 SpelunkeryBlocks.BRONZE_CHAIN.get(),
-                SpelunkeryBlocks.BRONZE_LANTERN.get()
+                SpelunkeryBlocks.BRONZE_LANTERN.get(),
+                SpelunkeryBlocks.ROPE.get()
         );
         FabricModelPredicateProviderRegistry.register(
                 SpelunkeryItems.ELECTRUM_BOW.get(),

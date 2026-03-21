@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/gold_boots"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spelunkery:item/rose_gold_boots"
+  }
 }

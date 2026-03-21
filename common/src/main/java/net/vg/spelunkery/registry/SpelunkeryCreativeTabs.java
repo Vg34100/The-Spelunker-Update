@@ -78,7 +78,10 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryItems.BRONZE_COMPASS.get(), SpelunkeryItems.BRONZE_SHIELD.get());
             output.acceptAfter(SpelunkeryItems.BRONZE_SHIELD.get(), SpelunkeryItems.MINERS_HELMET.get());
             output.acceptAfter(SpelunkeryItems.MINERS_HELMET.get(), SpelunkeryItems.PROSPECTOR_LENS.get());
-            output.acceptAfter(SpelunkeryItems.PROSPECTOR_LENS.get(), SpelunkeryItems.ELECTRUM_BOW.get());
+            output.acceptAfter(SpelunkeryItems.PROSPECTOR_LENS.get(), SpelunkeryItems.TORCH_LAUNCHER.get());
+            output.acceptAfter(SpelunkeryItems.TORCH_LAUNCHER.get(), SpelunkeryItems.ROPE_BUNDLE.get());
+            output.acceptAfter(SpelunkeryItems.ROPE_BUNDLE.get(), SpelunkeryItems.ROPE.get());
+            output.acceptAfter(SpelunkeryItems.ROPE.get(), SpelunkeryItems.ELECTRUM_BOW.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.COMBAT), (flags, output, hasPermissions) -> {
@@ -87,6 +90,16 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Items.SHIELD, SpelunkeryItems.BRONZE_SHIELD.get());
             output.acceptAfter(SpelunkeryItems.BRONZE_SHIELD.get(), SpelunkeryItems.MINERS_HELMET.get());
             output.acceptAfter(Items.BOW, SpelunkeryItems.ELECTRUM_BOW.get());
+            output.acceptAfter(SpelunkeryItems.ELECTRUM_BOW.get(), SpelunkeryItems.BRONZE_SWORD.get());
+            output.acceptAfter(SpelunkeryItems.BRONZE_SWORD.get(), SpelunkeryItems.SILVER_HELMET.get());
+            output.acceptAfter(SpelunkeryItems.SILVER_BOOTS.get(), SpelunkeryItems.INVAR_HELMET.get());
+            output.acceptAfter(SpelunkeryItems.INVAR_BOOTS.get(), SpelunkeryItems.ROSE_GOLD_HELMET.get());
+        });
+
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.FOOD_AND_DRINKS), (flags, output, hasPermissions) -> {
+            output.acceptAfter(Items.POTION, SpelunkeryItems.SPELUNKERS_BREW.get());
+            output.acceptAfter(SpelunkeryItems.SPELUNKERS_BREW.get(), SpelunkeryItems.DANGERSENSE_TONIC.get());
+            output.acceptAfter(SpelunkeryItems.DANGERSENSE_TONIC.get(), SpelunkeryItems.MINERS_TONIC.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.BUILDING_BLOCKS), (flags, output, hasPermissions) -> {
@@ -177,6 +190,7 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.ROSE_GOLD_TILES.get());
         output.accept(SpelunkeryBlocks.ELECTRUM_BLOCK.get());
         output.accept(SpelunkeryBlocks.ELECTRUM_TILES.get());
+        output.accept(SpelunkeryBlocks.ROPE.get());
         output.accept(SpelunkeryBlocks.CRUCIBLE.get());
         output.accept(SpelunkeryBlocks.FOUNDRY.get());
     }
@@ -196,14 +210,56 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryItems.INVAR_INGOT.get());
         output.accept(SpelunkeryItems.ROSE_GOLD_INGOT.get());
         output.accept(SpelunkeryItems.ELECTRUM_INGOT.get());
+        output.accept(SpelunkeryItems.BAT_WING.get());
         output.accept(SpelunkeryItems.NICKEL_PLATING.get());
         output.accept(SpelunkeryItems.SILVER_LINING.get());
         output.accept(SpelunkeryItems.ROSE_GOLD_FILIGREE.get());
+        output.accept(SpelunkeryItems.SPELUNKERS_BREW.get());
+        output.accept(SpelunkeryItems.DANGERSENSE_TONIC.get());
+        output.accept(SpelunkeryItems.MINERS_TONIC.get());
         output.accept(SpelunkeryItems.BRONZE_COMPASS.get());
         output.accept(SpelunkeryItems.BRONZE_SHIELD.get());
         output.accept(SpelunkeryItems.MINERS_HELMET.get());
         output.accept(SpelunkeryItems.PROSPECTOR_LENS.get());
+        output.accept(SpelunkeryItems.TORCH_LAUNCHER.get());
+        output.accept(SpelunkeryItems.ROPE_BUNDLE.get());
+        output.accept(SpelunkeryItems.ROPE.get());
         output.accept(SpelunkeryItems.SILVER_SWORD.get());
+        output.accept(SpelunkeryItems.BRONZE_SWORD.get());
+        output.accept(SpelunkeryItems.BRONZE_PICKAXE.get());
+        output.accept(SpelunkeryItems.BRONZE_AXE.get());
+        output.accept(SpelunkeryItems.BRONZE_SHOVEL.get());
+        output.accept(SpelunkeryItems.BRONZE_HOE.get());
+        output.accept(SpelunkeryItems.BRONZE_HELMET.get());
+        output.accept(SpelunkeryItems.BRONZE_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.BRONZE_LEGGINGS.get());
+        output.accept(SpelunkeryItems.BRONZE_BOOTS.get());
+        output.accept(SpelunkeryItems.SILVER_PICKAXE.get());
+        output.accept(SpelunkeryItems.SILVER_AXE.get());
+        output.accept(SpelunkeryItems.SILVER_SHOVEL.get());
+        output.accept(SpelunkeryItems.SILVER_HOE.get());
+        output.accept(SpelunkeryItems.SILVER_HELMET.get());
+        output.accept(SpelunkeryItems.SILVER_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.SILVER_LEGGINGS.get());
+        output.accept(SpelunkeryItems.SILVER_BOOTS.get());
+        output.accept(SpelunkeryItems.INVAR_SWORD.get());
+        output.accept(SpelunkeryItems.INVAR_PICKAXE.get());
+        output.accept(SpelunkeryItems.INVAR_AXE.get());
+        output.accept(SpelunkeryItems.INVAR_SHOVEL.get());
+        output.accept(SpelunkeryItems.INVAR_HOE.get());
+        output.accept(SpelunkeryItems.INVAR_HELMET.get());
+        output.accept(SpelunkeryItems.INVAR_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.INVAR_LEGGINGS.get());
+        output.accept(SpelunkeryItems.INVAR_BOOTS.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_SWORD.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_PICKAXE.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_AXE.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_SHOVEL.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_HOE.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_HELMET.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_CHESTPLATE.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_LEGGINGS.get());
+        output.accept(SpelunkeryItems.ROSE_GOLD_BOOTS.get());
         output.accept(SpelunkeryItems.ELECTRUM_BOW.get());
     }
 }

@@ -14,8 +14,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.MinerHelmetGem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryEffects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -52,7 +54,9 @@ public final class TopazPulseRenderer {
         }
 
         ItemStack helmet = minecraft.player.getItemBySlot(EquipmentSlot.HEAD);
-        if (MinerHelmetHelper.getGem(helmet) != MinerHelmetGem.TOPAZ) {
+        boolean helmetActive = MinerHelmetHelper.getGem(helmet) == MinerHelmetGem.TOPAZ;
+        boolean brewActive = minecraft.player.hasEffect(SpelunkeryGameplayHelper.holder(SpelunkeryEffects.SPELUNKING.get()));
+        if (!helmetActive && !brewActive) {
             CACHED_TARGETS.clear();
             lastRefreshTick = Long.MIN_VALUE;
             return;
@@ -60,7 +64,7 @@ public final class TopazPulseRenderer {
 
         long tick = minecraft.level.getGameTime();
         refreshTargets(minecraft);
-        if (CACHED_TARGETS.isEmpty() || tick % PULSE_PERIOD_TICKS >= PULSE_VISIBLE_TICKS) {
+        if (CACHED_TARGETS.isEmpty() || (!brewActive && tick % PULSE_PERIOD_TICKS >= PULSE_VISIBLE_TICKS)) {
             return;
         }
 
