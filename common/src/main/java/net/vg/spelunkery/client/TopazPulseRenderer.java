@@ -1,7 +1,9 @@
 package net.vg.spelunkery.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -22,6 +24,21 @@ import java.util.List;
 public final class TopazPulseRenderer {
     private static final List<BlockPos> CACHED_TARGETS = new ArrayList<>();
     private static long lastRefreshTick = Long.MIN_VALUE;
+    private static final RenderType ORE_PULSE_LINES = RenderType.create(
+            "spelunkery:ore_pulse_lines",
+            DefaultVertexFormat.POSITION_COLOR_NORMAL,
+            VertexFormat.Mode.LINES,
+            1536,
+            false,
+            false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RenderType.RENDERTYPE_LINES_SHADER)
+                    .setLineState(new RenderType.LineStateShard(java.util.OptionalDouble.of(2.0D)))
+                    .setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(RenderType.NO_CULL)
+                    .setDepthTestState(RenderType.NO_DEPTH_TEST)
+                    .createCompositeState(false)
+    );
 
     private TopazPulseRenderer() {
     }
@@ -47,15 +64,13 @@ public final class TopazPulseRenderer {
         Vec3 cameraPos = camera.getPosition();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableDepthTest();
-        var lineBuffer = consumers.getBuffer(RenderType.lines());
+        var lineBuffer = consumers.getBuffer(ORE_PULSE_LINES);
         for (BlockPos pos : CACHED_TARGETS) {
             poseStack.pushPose();
             poseStack.translate(pos.getX() - cameraPos.x, pos.getY() - cameraPos.y, pos.getZ() - cameraPos.z);
             LevelRenderer.renderLineBox(poseStack, lineBuffer, 0.02D, 0.02D, 0.02D, 0.98D, 0.98D, 0.98D, 0.98F, 0.86F, 0.22F, 0.95F);
             poseStack.popPose();
         }
-        RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
     }
 
