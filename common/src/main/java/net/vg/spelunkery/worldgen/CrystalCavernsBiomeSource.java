@@ -110,20 +110,18 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
     }
 
     private boolean shouldUseMagmaVaults(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
-        if (vanilla.is(Biomes.DEEP_DARK) || vanilla.is(Biomes.LUSH_CAVES)) {
+        if (vanilla.is(Biomes.DEEP_DARK)) {
             return false;
         }
 
-        float humidity = Climate.unquantizeCoord(targetPoint.humidity());
         float erosion = Climate.unquantizeCoord(targetPoint.erosion());
         float depth = Climate.unquantizeCoord(targetPoint.depth());
-        float temperature = Climate.unquantizeCoord(targetPoint.temperature());
 
-        if (y > -20 || depth < 0.25F || depth > 1.15F || humidity > -0.05F || erosion > 0.08F || temperature < 0.35F) {
+        if (y > -8 || depth < 0.2F || depth > 1.2F || erosion > 0.18F) {
             return false;
         }
 
-        return matchesBand(x, z, 9, 31L, 2L, 5L);
+        return matchesBand(x, z, 9, 15L, 1L, 5L);
     }
 
     private boolean shouldUseFungalGrottos(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {

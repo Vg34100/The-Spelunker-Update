@@ -2,7 +2,7 @@
   "type": "minecraft:ore",
   "config": {
     "discard_chance_on_air_exposure": 0.0,
-    "size": 24,
+    "size": 30,
     "targets": [
       {
         "state": {
@@ -20,15 +20,6 @@
         "target": {
           "predicate_type": "minecraft:block_match",
           "block": "spelunkery:fungal_mat"
-        }
-      },
-      {
-        "state": {
-          "Name": "spelunkery:bioluminescent_moss"
-        },
-        "target": {
-          "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:stone_ore_replaceables"
         }
       }
     ]

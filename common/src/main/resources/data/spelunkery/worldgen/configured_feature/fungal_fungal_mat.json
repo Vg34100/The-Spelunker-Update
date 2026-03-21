@@ -2,7 +2,7 @@
   "type": "minecraft:ore",
   "config": {
     "discard_chance_on_air_exposure": 0.0,
-    "size": 28,
+    "size": 34,
     "targets": [
       {
         "state": {
@@ -11,15 +11,6 @@
         "target": {
           "predicate_type": "minecraft:block_match",
           "block": "spelunkery:mycelium_mud"
-        }
-      },
-      {
-        "state": {
-          "Name": "spelunkery:fungal_mat"
-        },
-        "target": {
-          "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:stone_ore_replaceables"
         }
       }
     ]
