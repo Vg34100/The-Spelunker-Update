@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "spelunkery:mycelium_mud",
+    "spelunkery:fungal_turf",
+    "spelunkery:bioluminescent_moss"
+  ]
+}
