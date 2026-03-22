@@ -1,7 +1,7 @@
 {
   "type": "spelunkery:blob_replace",
   "config": {
-    "size": 64,
+    "size": 112,
     "exposed_only": true,
     "targets": [
       {
@@ -10,7 +10,7 @@
         },
         "target": {
           "predicate_type": "minecraft:block_match",
-          "block": "spelunkery:fungal_turf"
+          "block": "spelunkery:mycelium_mud"
         }
       },
       {
@@ -19,7 +19,7 @@
         },
         "target": {
           "predicate_type": "minecraft:block_match",
-          "block": "spelunkery:mycelium_mud"
+          "block": "minecraft:rooted_dirt"
         }
       }
     ]

@@ -8,8 +8,8 @@
   },
   "downfall": 0.8,
   "effects": {
-    "fog_color": 10732090,
-    "sky_color": 7455580,
+    "fog_color": 8617847,
+    "sky_color": 7374886,
     "water_color": 4159204,
     "water_fog_color": 329011,
     "mood_sound": {
@@ -73,7 +73,6 @@
       "minecraft:ore_lapis_buried",
       "minecraft:ore_copper",
       "spelunkery:fungal_mycelium_mud",
-      "spelunkery:fungal_turf",
       "spelunkery:fungal_fungal_mat",
       "spelunkery:fungal_bioluminescent_moss",
       "spelunkery:fungal_rooted_dirt",

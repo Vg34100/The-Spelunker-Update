@@ -27,7 +27,6 @@ public final class GlowcapBlock extends BushBlock {
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(SpelunkeryBlocks.MYCELIUM_MUD.get())
-                || state.is(SpelunkeryBlocks.FUNGAL_TURF.get())
                 || state.is(SpelunkeryBlocks.BIOLUMINESCENT_MOSS.get())
                 || state.is(SpelunkeryBlocks.FUNGAL_MAT.get())
                 || state.is(net.minecraft.world.level.block.Blocks.ROOTED_DIRT)
