@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "spelunkery:block/foundry"
+    },
+    "facing=south": {
+      "model": "spelunkery:block/foundry",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "spelunkery:block/foundry",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "spelunkery:block/foundry",
+      "y": 90
     }
   }
 }

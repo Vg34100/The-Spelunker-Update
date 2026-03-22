@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.client.SpelunkeryClient;
 import net.vg.spelunkery.client.TopazPulseRenderer;
+import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
@@ -44,6 +45,11 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 SpelunkeryItems.BRONZE_SHIELD.get(),
                 ResourceLocation.withDefaultNamespace("blocking"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+        );
+        FabricModelPredicateProviderRegistry.register(
+                SpelunkeryItems.MINERS_HELMET.get(),
+                ResourceLocation.fromNamespaceAndPath("spelunkery", "socketed_gem"),
+                (stack, level, entity, seed) -> MinerHelmetHelper.modelPredicate(stack)
         );
         WorldRenderEvents.AFTER_ENTITIES.register(context -> TopazPulseRenderer.render(context.matrixStack(), context.consumers(), context.camera()));
     }

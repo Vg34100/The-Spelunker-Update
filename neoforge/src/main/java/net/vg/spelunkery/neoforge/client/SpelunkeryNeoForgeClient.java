@@ -12,6 +12,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
@@ -38,6 +39,7 @@ public final class SpelunkeryNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.GLOWCAP.get(), RenderType.cutout());
             registerBowPredicates();
             registerShieldPredicates();
+            registerMinerHelmetPredicates();
         });
     }
 
@@ -61,6 +63,14 @@ public final class SpelunkeryNeoForgeClient {
                 SpelunkeryItems.BRONZE_SHIELD.get(),
                 ResourceLocation.withDefaultNamespace("blocking"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+        );
+    }
+
+    private static void registerMinerHelmetPredicates() {
+        registerPredicate(
+                SpelunkeryItems.MINERS_HELMET.get(),
+                ResourceLocation.fromNamespaceAndPath("spelunkery", "socketed_gem"),
+                (stack, level, entity, seed) -> MinerHelmetHelper.modelPredicate(stack)
         );
     }
 

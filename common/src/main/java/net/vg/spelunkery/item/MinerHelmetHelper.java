@@ -59,6 +59,22 @@ public final class MinerHelmetHelper {
         return result;
     }
 
+    public static float modelPredicate(ItemStack stack) {
+        MinerHelmetGem gem = getGem(stack);
+        if (gem == null) {
+            return 0.0F;
+        }
+
+        return switch (gem) {
+            case RUBY -> 1.0F;
+            case SAPPHIRE -> 2.0F;
+            case TOPAZ -> 3.0F;
+            case AMETHYST -> 4.0F;
+            case EMERALD -> 5.0F;
+            case DIAMOND -> 6.0F;
+        };
+    }
+
     public static void updateEquippedHelmet(Player player) {
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         MinerHelmetGem gem = getGem(helmet);

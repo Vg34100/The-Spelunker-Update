@@ -72,6 +72,19 @@ public final class SpelunkeryEquipmentMaterials {
             0.0F,
             () -> Ingredient.of(SpelunkeryItems.ROSE_GOLD_INGOT.get())
     ));
+    public static final Holder<ArmorMaterial> MINERS_HELMET_ARMOR = Holder.direct(material(
+            "miners_helmet",
+            Map.of(
+                    ArmorItem.Type.BOOTS, 0,
+                    ArmorItem.Type.LEGGINGS, 0,
+                    ArmorItem.Type.CHESTPLATE, 0,
+                    ArmorItem.Type.HELMET, 2
+            ),
+            12,
+            0.0F,
+            0.0F,
+            () -> Ingredient.of(SpelunkeryItems.BRONZE_INGOT.get())
+    ));
 
     private SpelunkeryEquipmentMaterials() {
     }

@@ -15,7 +15,7 @@ import net.vg.spelunkery.menu.FoundryMenu;
 
 public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> implements RecipeUpdateListener {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("spelunkery", "textures/gui/foundry.png");
-    private static final int RECIPE_BUTTON_X_OFFSET = 150;
+    private static final int RECIPE_BUTTON_X_OFFSET = 87;
     private static final int RECIPE_BUTTON_Y_OFFSET = 4;
 
     private final RecipeBookComponent recipeBookComponent = new FoundryRecipeBookComponent();

@@ -20,6 +20,7 @@ public class FoundryRecipeBookComponent extends RecipeBookComponent {
             return;
         }
 
+        ghostRecipe.clear();
         ghostRecipe.setRecipe(recipeHolder);
         ghostRecipe.addIngredient(Ingredient.of(recipe.result()), slots.get(FoundryBlockEntity.OUTPUT_SLOT).x, slots.get(FoundryBlockEntity.OUTPUT_SLOT).y);
 

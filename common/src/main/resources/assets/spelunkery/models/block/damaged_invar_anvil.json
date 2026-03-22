@@ -2,7 +2,7 @@
   "parent": "minecraft:block/template_anvil",
   "textures": {
     "top": "spelunkery:block/damaged_invar_anvil_top",
-    "body": "spelunkery:block/invar_block",
-    "particle": "spelunkery:block/invar_block"
+    "body": "spelunkery:block/invar_anvil_body",
+    "particle": "spelunkery:block/invar_anvil_body"
   }
 }

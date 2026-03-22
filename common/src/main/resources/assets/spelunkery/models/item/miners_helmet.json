@@ -2,5 +2,43 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "spelunkery:item/miners_helmet"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 1.0
+      },
+      "model": "spelunkery:item/miners_helmet_ruby"
+    },
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 2.0
+      },
+      "model": "spelunkery:item/miners_helmet_sapphire"
+    },
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 3.0
+      },
+      "model": "spelunkery:item/miners_helmet_topaz"
+    },
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 4.0
+      },
+      "model": "spelunkery:item/miners_helmet_amethyst"
+    },
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 5.0
+      },
+      "model": "spelunkery:item/miners_helmet_emerald"
+    },
+    {
+      "predicate": {
+        "spelunkery:socketed_gem": 6.0
+      },
+      "model": "spelunkery:item/miners_helmet_diamond"
+    }
+  ]
 }

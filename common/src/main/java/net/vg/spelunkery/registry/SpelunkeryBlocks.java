@@ -25,6 +25,8 @@ import net.vg.spelunkery.block.FungalMatBlock;
 import net.vg.spelunkery.block.GlowcapBlock;
 import net.vg.spelunkery.block.InvarAnvilBlock;
 import net.vg.spelunkery.block.RopeBlock;
+import net.vg.spelunkery.block.ScorchedDripstoneBlock;
+import net.vg.spelunkery.block.SpelunkeryPointedDripstoneBlock;
 
 import java.util.function.Supplier;
 
@@ -349,7 +351,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> BLUE_CRYSTAL = registerBlock(
             "blue_crystal",
-            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+            () -> new SpelunkeryPointedDripstoneBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_BLUE)
                     .strength(1.5F)
                     .sound(SoundType.AMETHYST_CLUSTER)
@@ -360,7 +362,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> GREEN_CRYSTAL = registerBlock(
             "green_crystal",
-            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+            () -> new SpelunkeryPointedDripstoneBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(1.5F)
                     .sound(SoundType.AMETHYST_CLUSTER)
@@ -371,7 +373,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> RED_CRYSTAL = registerBlock(
             "red_crystal",
-            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+            () -> new SpelunkeryPointedDripstoneBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(1.5F)
                     .sound(SoundType.AMETHYST_CLUSTER)
@@ -382,7 +384,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> YELLOW_CRYSTAL = registerBlock(
             "yellow_crystal",
-            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+            () -> new SpelunkeryPointedDripstoneBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.GOLD)
                     .strength(1.5F)
                     .sound(SoundType.AMETHYST_CLUSTER)
@@ -485,7 +487,7 @@ public final class SpelunkeryBlocks {
 
     public static final RegistrySupplier<Block> SCORCHED_DRIPSTONE = registerBlock(
             "scorched_dripstone",
-            () -> new PointedDripstoneBlock(BlockBehaviour.Properties.of()
+            () -> new ScorchedDripstoneBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(1.5F)
                     .sound(SoundType.POINTED_DRIPSTONE)

@@ -159,7 +159,7 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         Inventory inventory = player.getInventory();
         clearFoundryInputsToInventory(inventory);
 
-        if (!placeRecipeIntoSlots(recipe, inventory)) {
+        if (!placeRecipeIntoSlots(recipe, inventory, placeAll)) {
             broadcastChanges();
             return;
         }
@@ -255,12 +255,18 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         }
     }
 
-    private boolean placeRecipeIntoSlots(FoundryRecipe recipe, Inventory inventory) {
+    private boolean placeRecipeIntoSlots(FoundryRecipe recipe, Inventory inventory, boolean placeAll) {
+        int crafts = placeAll ? maxCrafts(recipe, inventory) : 1;
+        if (crafts <= 0) {
+            return false;
+        }
+
         List<InventoryUse> plannedUses = new ArrayList<>();
         List<ItemStack> plannedStacks = new ArrayList<>();
 
         for (FoundryIngredient ingredient : recipe.ingredients()) {
-            int remaining = ingredient.count();
+            int required = ingredient.count() * crafts;
+            int remaining = required;
             ItemStack prototype = ItemStack.EMPTY;
 
             for (int slot = 0; slot < inventory.getContainerSize() && remaining > 0; slot++) {
@@ -270,7 +276,7 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
                 }
 
                 if (prototype.isEmpty()) {
-                    prototype = stack.copyWithCount(ingredient.count());
+                    prototype = stack.copyWithCount(required);
                 }
 
                 int used = Math.min(remaining, stack.getCount());
@@ -295,6 +301,25 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         }
 
         return true;
+    }
+
+    private int maxCrafts(FoundryRecipe recipe, Inventory inventory) {
+        int maxCrafts = Integer.MAX_VALUE;
+
+        for (FoundryIngredient ingredient : recipe.ingredients()) {
+            int available = 0;
+            for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                ItemStack stack = inventory.getItem(slot);
+                if (ingredient.matches(stack)) {
+                    available += stack.getCount();
+                }
+            }
+
+            maxCrafts = Math.min(maxCrafts, available / ingredient.count());
+            maxCrafts = Math.min(maxCrafts, 64 / ingredient.count());
+        }
+
+        return maxCrafts == Integer.MAX_VALUE ? 0 : maxCrafts;
     }
 
     private static Container getContainer(Inventory inventory, BlockPos pos) {

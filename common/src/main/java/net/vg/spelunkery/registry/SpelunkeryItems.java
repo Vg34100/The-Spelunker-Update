@@ -60,7 +60,7 @@ public final class SpelunkeryItems {
     public static final RegistrySupplier<Item> MINERS_TONIC = ITEMS.register("miners_tonic", () -> new TonicItem(net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper.holder(SpelunkeryEffects.MINERS_FOCUS.get()), 20 * 180, 0, new Item.Properties().stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)));
     public static final RegistrySupplier<Item> MINERS_HELMET = ITEMS.register(
             "miners_helmet",
-            () -> new MinerHelmetItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).durability(192))
+            () -> new MinerHelmetItem(SpelunkeryEquipmentMaterials.MINERS_HELMET_ARMOR, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).durability(192))
     );
     public static final RegistrySupplier<Item> SILVER_SWORD = ITEMS.register(
             "silver_sword",
