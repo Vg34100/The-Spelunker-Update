@@ -25,6 +25,14 @@ public class SpelunkeryPointedDripstoneBlock extends PointedDripstoneBlock {
     }
 
     @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        Direction tipDirection = state.getValue(TIP_DIRECTION);
+        BlockPos supportPos = pos.relative(tipDirection.getOpposite());
+        BlockState supportState = level.getBlockState(supportPos);
+        return supportState.isFaceSturdy(level, supportPos, tipDirection) || isSameDripstoneWithDirection(supportState, tipDirection);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         LevelAccessor level = context.getLevel();
         BlockPos pos = context.getClickedPos();

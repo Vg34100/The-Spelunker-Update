@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube_orientable_bottom_top",
+  "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
     "bottom": "spelunkery:block/foundry_bottom",
     "front": "spelunkery:block/foundry_front",

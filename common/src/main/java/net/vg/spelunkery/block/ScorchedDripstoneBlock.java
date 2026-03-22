@@ -2,6 +2,7 @@ package net.vg.spelunkery.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -22,7 +23,7 @@ public final class ScorchedDripstoneBlock extends SpelunkeryPointedDripstoneBloc
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance);
-        if (!level.isClientSide && fallDistance > 2.0F) {
+        if (!level.isClientSide && state.getValue(TIP_DIRECTION) == Direction.UP && fallDistance > 0.5F) {
             entity.igniteForSeconds(4.0F);
         }
     }

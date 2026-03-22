@@ -2,6 +2,7 @@ package net.vg.spelunkery.menu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -160,6 +161,7 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         clearFoundryInputsToInventory(inventory);
 
         if (!placeRecipeIntoSlots(recipe, inventory, placeAll)) {
+            player.connection.send(new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder));
             broadcastChanges();
             return;
         }
