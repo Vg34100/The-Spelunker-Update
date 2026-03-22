@@ -15,6 +15,8 @@ import net.vg.spelunkery.menu.FoundryMenu;
 
 public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> implements RecipeUpdateListener {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("spelunkery", "textures/gui/foundry.png");
+    private static final int RECIPE_BUTTON_X_OFFSET = 150;
+    private static final int RECIPE_BUTTON_Y_OFFSET = 4;
 
     private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
     private boolean widthTooNarrow;
@@ -34,8 +36,8 @@ public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> implemen
         recipeBookComponent.init(width, height, minecraft, widthTooNarrow, menu);
         leftPos = recipeBookComponent.updateScreenPosition(width, imageWidth);
         addRenderableWidget(new ImageButton(
-                leftPos + 20,
-                height / 2 - 49,
+                leftPos + RECIPE_BUTTON_X_OFFSET,
+                topPos + RECIPE_BUTTON_Y_OFFSET,
                 20,
                 18,
                 RecipeBookComponent.RECIPE_BUTTON_SPRITES,
@@ -138,6 +140,6 @@ public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> implemen
     private void toggleRecipeBook(Button button) {
         recipeBookComponent.toggleVisibility();
         leftPos = recipeBookComponent.updateScreenPosition(width, imageWidth);
-        button.setPosition(leftPos + 20, height / 2 - 49);
+        button.setPosition(leftPos + RECIPE_BUTTON_X_OFFSET, topPos + RECIPE_BUTTON_Y_OFFSET);
     }
 }

@@ -2,6 +2,7 @@ package net.vg.spelunkery.menu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,6 +23,8 @@ import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecipe> {
@@ -57,6 +60,13 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         this.data = data;
         this.access = ContainerLevelAccess.create(playerInventory.player.level(), pos);
         this.level = playerInventory.player.level();
+
+        if (playerInventory.player instanceof ServerPlayer serverPlayer) {
+            Collection<net.minecraft.world.item.crafting.RecipeHolder<?>> foundryRecipes = new ArrayList<>(
+                    level.getRecipeManager().getAllRecipesFor(SpelunkeryRecipeTypes.FOUNDRY_TYPE.get())
+            );
+            serverPlayer.awardRecipes(foundryRecipes);
+        }
 
         addSlot(new Slot(container, 0, 29, 17));
         addSlot(new Slot(container, 1, 29, 35));
