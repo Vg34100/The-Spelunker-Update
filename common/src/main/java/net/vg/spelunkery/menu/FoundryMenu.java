@@ -7,6 +7,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
@@ -14,11 +16,11 @@ import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.StackedContents;
 import net.vg.spelunkery.block.entity.FoundryBlockEntity;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 import net.vg.spelunkery.recipe.FoundryRecipeInput;
+import net.vg.spelunkery.recipe.FoundryIngredient;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
@@ -149,6 +151,23 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
     }
 
     @Override
+    public void handlePlacement(boolean placeAll, RecipeHolder<?> recipeHolder, ServerPlayer player) {
+        if (recipeHolder == null || !(recipeHolder.value() instanceof FoundryRecipe recipe) || !player.getRecipeBook().contains(recipeHolder)) {
+            return;
+        }
+
+        Inventory inventory = player.getInventory();
+        clearFoundryInputsToInventory(inventory);
+
+        if (!placeRecipeIntoSlots(recipe, inventory)) {
+            broadcastChanges();
+            return;
+        }
+
+        broadcastChanges();
+    }
+
+    @Override
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack moved = ItemStack.EMPTY;
         Slot slot = slots.get(index);
@@ -222,6 +241,60 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
                 container.getItem(1),
                 container.getItem(2)
         ));
+    }
+
+    private void clearFoundryInputsToInventory(Inventory inventory) {
+        for (int slot = INPUT_START; slot < OUTPUT_SLOT; slot++) {
+            ItemStack stack = container.getItem(slot);
+            if (stack.isEmpty()) {
+                continue;
+            }
+
+            inventory.placeItemBackInInventory(stack.copy(), false);
+            getSlot(slot).set(ItemStack.EMPTY);
+        }
+    }
+
+    private boolean placeRecipeIntoSlots(FoundryRecipe recipe, Inventory inventory) {
+        List<InventoryUse> plannedUses = new ArrayList<>();
+        List<ItemStack> plannedStacks = new ArrayList<>();
+
+        for (FoundryIngredient ingredient : recipe.ingredients()) {
+            int remaining = ingredient.count();
+            ItemStack prototype = ItemStack.EMPTY;
+
+            for (int slot = 0; slot < inventory.getContainerSize() && remaining > 0; slot++) {
+                ItemStack stack = inventory.getItem(slot);
+                if (!ingredient.matches(stack)) {
+                    continue;
+                }
+
+                if (prototype.isEmpty()) {
+                    prototype = stack.copyWithCount(ingredient.count());
+                }
+
+                int used = Math.min(remaining, stack.getCount());
+                plannedUses.add(new InventoryUse(slot, used));
+                remaining -= used;
+            }
+
+            if (remaining > 0 || prototype.isEmpty()) {
+                return false;
+            }
+
+            plannedStacks.add(prototype);
+        }
+
+        for (InventoryUse plannedUse : plannedUses) {
+            inventory.removeItem(plannedUse.slot(), plannedUse.amount());
+        }
+
+        for (int slot = 0; slot < FoundryBlockEntity.INPUT_SLOT_COUNT; slot++) {
+            ItemStack stack = slot < plannedStacks.size() ? plannedStacks.get(slot) : ItemStack.EMPTY;
+            getSlot(slot).set(stack);
+        }
+
+        return true;
     }
 
     private static Container getContainer(Inventory inventory, BlockPos pos) {
@@ -303,5 +376,8 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         public void clearContent() {
             foundry.clearContent();
         }
+    }
+
+    private record InventoryUse(int slot, int amount) {
     }
 }

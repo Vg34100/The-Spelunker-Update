@@ -18,7 +18,7 @@ public class FoundryScreen extends AbstractContainerScreen<FoundryMenu> implemen
     private static final int RECIPE_BUTTON_X_OFFSET = 150;
     private static final int RECIPE_BUTTON_Y_OFFSET = 4;
 
-    private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
+    private final RecipeBookComponent recipeBookComponent = new FoundryRecipeBookComponent();
     private boolean widthTooNarrow;
 
     public FoundryScreen(FoundryMenu menu, Inventory playerInventory, Component title) {
