@@ -19,6 +19,8 @@ public final class BlobReplaceFeature extends Feature<BlobReplaceConfiguration> 
         BlockPos origin = context.origin();
         RandomSource random = context.random();
         BlobReplaceConfiguration config = context.config();
+        int originChunkX = origin.getX() >> 4;
+        int originChunkZ = origin.getZ() >> 4;
 
         int replaced = 0;
         int baseRadius = Math.max(2, (int) Math.ceil(Math.cbrt(config.size()) * 1.35D));
@@ -54,6 +56,10 @@ public final class BlobReplaceFeature extends Feature<BlobReplaceConfiguration> 
                         }
 
                         BlockPos pos = center.offset(dx, dy, dz);
+                        if ((pos.getX() >> 4) != originChunkX || (pos.getZ() >> 4) != originChunkZ) {
+                            continue;
+                        }
+
                         BlockState state = level.getBlockState(pos);
                         if (config.exposedOnly() && !isExposed(level, pos)) {
                             continue;
