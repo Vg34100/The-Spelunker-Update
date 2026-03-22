@@ -15,12 +15,13 @@ import net.vg.spelunkery.registry.SpelunkeryBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration> {
-    private final Block capBlock;
+    private final Supplier<Block> capBlock;
     private final boolean redCap;
 
-    public GiantMushroomFeature(Codec<NoneFeatureConfiguration> codec, Block capBlock, boolean redCap) {
+    public GiantMushroomFeature(Codec<NoneFeatureConfiguration> codec, Supplier<Block> capBlock, boolean redCap) {
         super(codec);
         this.capBlock = capBlock;
         this.redCap = redCap;
@@ -55,7 +56,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         }
 
         updateMushroomStates(level, stemPositions, Blocks.MUSHROOM_STEM);
-        updateMushroomStates(level, capPositions, this.capBlock);
+        updateMushroomStates(level, capPositions, this.capBlock.get());
         return !capPositions.isEmpty();
     }
 
@@ -114,7 +115,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                 }
                 BlockPos pos = top.offset(dx, 0, dz);
                 if (!level.getBlockState(pos).is(Blocks.BEDROCK)) {
-                    level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
+                    level.setBlock(pos, this.capBlock.get().defaultBlockState(), 2);
                     capPositions.add(pos);
                 }
             }
@@ -131,7 +132,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                     }
                     BlockPos pos = top.offset(dx, layer, dz);
                     if (!level.getBlockState(pos).is(Blocks.BEDROCK)) {
-                        level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
+                        level.setBlock(pos, this.capBlock.get().defaultBlockState(), 2);
                         capPositions.add(pos);
                     }
                 }

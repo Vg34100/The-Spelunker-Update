@@ -20,9 +20,9 @@ public final class SpelunkeryFeatures {
     public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> SCORCHED_DRIPSTONE = FEATURES.register("scorched_dripstone", () -> new ScorchedDripstoneFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistrySupplier<Feature<BlobReplaceConfiguration>> BLOB_REPLACE = FEATURES.register("blob_replace", () -> new BlobReplaceFeature(BlobReplaceConfiguration.CODEC));
     public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> FUNGAL_OVERGROWTH = FEATURES.register("fungal_overgrowth", () -> new FungalOvergrowthFeature(NoneFeatureConfiguration.CODEC));
-    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_BROWN_MUSHROOM = FEATURES.register("giant_brown_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, Blocks.BROWN_MUSHROOM_BLOCK, false));
-    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_RED_MUSHROOM = FEATURES.register("giant_red_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, Blocks.RED_MUSHROOM_BLOCK, true));
-    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_BLUE_MUSHROOM = FEATURES.register("giant_blue_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, SpelunkeryBlocks.BLUE_MUSHROOM_BLOCK.get(), false));
+    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_BROWN_MUSHROOM = FEATURES.register("giant_brown_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, () -> Blocks.BROWN_MUSHROOM_BLOCK, false));
+    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_RED_MUSHROOM = FEATURES.register("giant_red_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, () -> Blocks.RED_MUSHROOM_BLOCK, true));
+    public static final RegistrySupplier<Feature<NoneFeatureConfiguration>> GIANT_BLUE_MUSHROOM = FEATURES.register("giant_blue_mushroom", () -> new GiantMushroomFeature(NoneFeatureConfiguration.CODEC, SpelunkeryBlocks.BLUE_MUSHROOM_BLOCK, false));
 
     private static boolean initialized;
 
