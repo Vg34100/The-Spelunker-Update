@@ -1,7 +1,7 @@
 {
   "type": "spelunkery:blob_replace",
   "config": {
-    "size": 54,
+    "size": 72,
     "exposed_only": true,
     "targets": [
       {

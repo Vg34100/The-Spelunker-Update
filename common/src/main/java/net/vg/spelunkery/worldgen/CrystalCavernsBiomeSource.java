@@ -106,7 +106,7 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
             return false;
         }
 
-        return matchesBand(x, z, 8, 7L, 1L, 4L);
+        return matchesBand(x, z, 7, 7L, 1L, 4L);
     }
 
     private boolean shouldUseMagmaVaults(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
@@ -118,7 +118,7 @@ public final class CrystalCavernsBiomeSource extends BiomeSource {
             return false;
         }
 
-        return matchesBand(x, z, 18, 7L, 2L, 5L);
+        return matchesBand(x, z, 12, 7L, 1L, 5L);
     }
 
     private boolean shouldUseFungalGrottos(Holder<Biome> vanilla, Climate.TargetPoint targetPoint, int x, int y, int z) {
