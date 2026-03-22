@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 
 public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfiguration> {
-    private static final int ATTEMPTS = 40;
+    private static final int ATTEMPTS = 28;
 
     public FungalOvergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -30,8 +30,10 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
 
         for (int i = 0; i < ATTEMPTS; i++) {
             BlockPos sample = origin.offset(random.nextInt(16) - 8, random.nextInt(24) - 12, random.nextInt(16) - 8);
-            placedAny |= placeGroundCluster(level, sample, random);
             placedAny |= placeWallCluster(level, sample, random);
+            if (random.nextInt(3) != 0) {
+                placedAny |= placeGroundCluster(level, sample, random);
+            }
         }
 
         return placedAny;
@@ -39,7 +41,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
 
     private boolean placeGroundCluster(WorldGenLevel level, BlockPos center, RandomSource random) {
         boolean placedAny = false;
-        int tries = 6 + random.nextInt(8);
+        int tries = 3 + random.nextInt(4);
         for (int i = 0; i < tries; i++) {
             BlockPos sample = center.offset(random.nextInt(9) - 4, random.nextInt(7) - 3, random.nextInt(9) - 4);
             BlockPos groundPos = findGroundAir(level, sample);
@@ -53,13 +55,13 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
             }
 
             float roll = random.nextFloat();
-            if (roll < 0.78F) {
+            if (roll < 0.42F) {
                 level.setBlock(groundPos, SpelunkeryBlocks.FUNGAL_MAT.get().defaultBlockState(), 2);
                 placedAny = true;
                 continue;
             }
 
-            if (roll < 0.92F && SpelunkeryBlocks.GLOWCAP.get().defaultBlockState().canSurvive(level, groundPos)) {
+            if (roll < 0.76F && SpelunkeryBlocks.GLOWCAP.get().defaultBlockState().canSurvive(level, groundPos)) {
                 level.setBlock(groundPos, SpelunkeryBlocks.GLOWCAP.get().defaultBlockState(), 2);
                 placedAny = true;
             }
@@ -70,7 +72,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
 
     private boolean placeWallCluster(WorldGenLevel level, BlockPos center, RandomSource random) {
         boolean placedAny = false;
-        int tries = 10 + random.nextInt(8);
+        int tries = 16 + random.nextInt(12);
         for (int i = 0; i < tries; i++) {
             BlockPos sample = center.offset(random.nextInt(11) - 5, random.nextInt(9) - 4, random.nextInt(11) - 5);
             if (random.nextBoolean()) {

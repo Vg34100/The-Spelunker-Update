@@ -33,7 +33,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         BlockPos origin = context.origin();
         RandomSource random = context.random();
         int radius = this.redCap ? 2 : 3;
-        int height = 5 + random.nextInt(4) + (random.nextInt(4) == 0 ? 1 : 0);
+        int height = 5 + random.nextInt(4) + (random.nextInt(3) == 0 ? 1 : 0);
         BlockPos stemBase = findStemBase(level, origin, height, radius, random);
         if (stemBase == null || !fitsInChunk(origin, stemBase, radius) || !canPlace(level, stemBase, height, radius)) {
             return false;
@@ -61,16 +61,16 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
     }
 
     private static BlockPos findStemBase(WorldGenLevel level, BlockPos origin, int height, int radius, RandomSource random) {
-        for (int attempt = 0; attempt < 48; attempt++) {
-            int x = origin.getX() + random.nextInt(15) - 7;
-            int z = origin.getZ() + random.nextInt(15) - 7;
+        for (int attempt = 0; attempt < 96; attempt++) {
+            int x = origin.getX() + random.nextInt(21) - 10;
+            int z = origin.getZ() + random.nextInt(21) - 10;
             int maxY = origin.getY() + 18;
             int minY = Math.max(level.getMinBuildHeight() + 1, origin.getY() - 40);
 
             for (int y = maxY; y >= minY; y--) {
                 BlockPos pos = new BlockPos(x, y, z);
                 BlockPos below = pos.below();
-                if (!level.isEmptyBlock(pos) || !isSupport(level.getBlockState(below))) {
+                if (!isSupport(level.getBlockState(below)) || level.getBlockState(pos).is(Blocks.BEDROCK)) {
                     continue;
                 }
 
