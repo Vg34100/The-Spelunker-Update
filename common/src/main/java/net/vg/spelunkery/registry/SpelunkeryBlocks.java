@@ -586,15 +586,6 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.METAL))
     );
 
-    public static final RegistrySupplier<Block> BRONZE_GRATE = registerBlock(
-            "bronze_grate",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_ORANGE)
-                    .strength(5.0F, 6.0F)
-                    .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
-    );
-
     public static final RegistrySupplier<Block> BRONZE_BARS = registerBlock(
             "bronze_bars",
             () -> new IronBarsBlock(BlockBehaviour.Properties.of()

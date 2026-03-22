@@ -150,8 +150,7 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(SpelunkeryBlocks.PRISMATIC_TILE_SLAB.get(), SpelunkeryBlocks.PRISMATIC_TILE_WALL.get());
             output.acceptAfter(SpelunkeryBlocks.PRISMATIC_TILE_WALL.get(), SpelunkeryBlocks.BRONZE_BLOCK.get());
             output.acceptAfter(SpelunkeryBlocks.BRONZE_BLOCK.get(), SpelunkeryBlocks.BRONZE_TILES.get());
-            output.acceptAfter(SpelunkeryBlocks.BRONZE_TILES.get(), SpelunkeryBlocks.BRONZE_GRATE.get());
-            output.acceptAfter(SpelunkeryBlocks.BRONZE_GRATE.get(), SpelunkeryBlocks.BRONZE_BARS.get());
+            output.acceptAfter(SpelunkeryBlocks.BRONZE_TILES.get(), SpelunkeryBlocks.BRONZE_BARS.get());
             output.acceptAfter(SpelunkeryBlocks.BRONZE_BARS.get(), SpelunkeryBlocks.BRONZE_CHAIN.get());
             output.acceptAfter(SpelunkeryBlocks.BRONZE_CHAIN.get(), SpelunkeryBlocks.BRONZE_LANTERN.get());
             output.acceptAfter(SpelunkeryBlocks.BRONZE_LANTERN.get(), SpelunkeryBlocks.INVAR_BLOCK.get());
@@ -270,7 +269,6 @@ public final class SpelunkeryCreativeTabs {
         output.accept(SpelunkeryBlocks.BLUE_MUSHROOM_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_BLOCK.get());
         output.accept(SpelunkeryBlocks.BRONZE_TILES.get());
-        output.accept(SpelunkeryBlocks.BRONZE_GRATE.get());
         output.accept(SpelunkeryBlocks.BRONZE_BARS.get());
         output.accept(SpelunkeryBlocks.BRONZE_CHAIN.get());
         output.accept(SpelunkeryBlocks.BRONZE_LANTERN.get());
