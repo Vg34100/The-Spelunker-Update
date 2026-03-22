@@ -23,8 +23,8 @@ public final class BlobReplaceFeature extends Feature<BlobReplaceConfiguration> 
         int originChunkZ = origin.getZ() >> 4;
 
         int replaced = 0;
-        int baseRadius = Math.max(2, (int) Math.ceil(Math.cbrt(config.size()) * 1.35D));
-        int clusters = Math.max(1, config.size() / 24);
+        int baseRadius = Math.max(2, (int) Math.ceil(Math.cbrt(config.size()) * 1.55D));
+        int clusters = Math.max(1, config.size() / 18);
 
         for (int i = 0; i < clusters; i++) {
             BlockPos center = origin.offset(

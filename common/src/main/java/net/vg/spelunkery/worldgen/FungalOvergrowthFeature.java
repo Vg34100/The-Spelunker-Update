@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 
 public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfiguration> {
-    private static final int ATTEMPTS = 64;
+    private static final int ATTEMPTS = 40;
 
     public FungalOvergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -30,36 +30,56 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
 
         for (int i = 0; i < ATTEMPTS; i++) {
             BlockPos sample = origin.offset(random.nextInt(16) - 8, random.nextInt(24) - 12, random.nextInt(16) - 8);
-            placedAny |= tryPlaceGroundCover(level, sample, random);
-            placedAny |= tryPlaceGlowLichen(level, sample, random);
-            placedAny |= tryPlaceVines(level, sample, random);
+            placedAny |= placeGroundCluster(level, sample, random);
+            placedAny |= placeWallCluster(level, sample, random);
         }
 
         return placedAny;
     }
 
-    private boolean tryPlaceGroundCover(WorldGenLevel level, BlockPos sample, RandomSource random) {
-        BlockPos groundPos = findGroundAir(level, sample);
-        if (groundPos == null) {
-            return false;
+    private boolean placeGroundCluster(WorldGenLevel level, BlockPos center, RandomSource random) {
+        boolean placedAny = false;
+        int tries = 6 + random.nextInt(8);
+        for (int i = 0; i < tries; i++) {
+            BlockPos sample = center.offset(random.nextInt(9) - 4, random.nextInt(7) - 3, random.nextInt(9) - 4);
+            BlockPos groundPos = findGroundAir(level, sample);
+            if (groundPos == null) {
+                continue;
+            }
+
+            BlockState below = level.getBlockState(groundPos.below());
+            if (!isFungalSupport(below)) {
+                continue;
+            }
+
+            float roll = random.nextFloat();
+            if (roll < 0.78F) {
+                level.setBlock(groundPos, SpelunkeryBlocks.FUNGAL_MAT.get().defaultBlockState(), 2);
+                placedAny = true;
+                continue;
+            }
+
+            if (roll < 0.92F && SpelunkeryBlocks.GLOWCAP.get().defaultBlockState().canSurvive(level, groundPos)) {
+                level.setBlock(groundPos, SpelunkeryBlocks.GLOWCAP.get().defaultBlockState(), 2);
+                placedAny = true;
+            }
         }
 
-        BlockState below = level.getBlockState(groundPos.below());
-        if (!isFungalSupport(below)) {
-            return false;
-        }
+        return placedAny;
+    }
 
-        if (random.nextFloat() < 0.7F) {
-            level.setBlock(groundPos, SpelunkeryBlocks.FUNGAL_MAT.get().defaultBlockState(), 2);
-            return true;
+    private boolean placeWallCluster(WorldGenLevel level, BlockPos center, RandomSource random) {
+        boolean placedAny = false;
+        int tries = 10 + random.nextInt(8);
+        for (int i = 0; i < tries; i++) {
+            BlockPos sample = center.offset(random.nextInt(11) - 5, random.nextInt(9) - 4, random.nextInt(11) - 5);
+            if (random.nextBoolean()) {
+                placedAny |= tryPlaceGlowLichen(level, sample, random);
+            } else {
+                placedAny |= tryPlaceVines(level, sample, random);
+            }
         }
-
-        if (random.nextFloat() < 0.55F && SpelunkeryBlocks.GLOWCAP.get().defaultBlockState().canSurvive(level, groundPos)) {
-            level.setBlock(groundPos, SpelunkeryBlocks.GLOWCAP.get().defaultBlockState(), 2);
-            return true;
-        }
-
-        return false;
+        return placedAny;
     }
 
     private boolean tryPlaceGlowLichen(WorldGenLevel level, BlockPos sample, RandomSource random) {
@@ -130,7 +150,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
     }
 
     private static BlockPos findGroundAir(WorldGenLevel level, BlockPos sample) {
-        for (int offset = -8; offset <= 8; offset++) {
+        for (int offset = 6; offset >= -8; offset--) {
             BlockPos candidate = sample.offset(0, offset, 0);
             if (!level.getBlockState(candidate).isAir()) {
                 continue;
@@ -145,7 +165,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
     }
 
     private static BlockPos findNearbyAir(WorldGenLevel level, BlockPos sample) {
-        for (int offset = -8; offset <= 8; offset++) {
+        for (int offset = 6; offset >= -8; offset--) {
             BlockPos candidate = sample.offset(0, offset, 0);
             if (level.getBlockState(candidate).isAir()) {
                 return candidate;

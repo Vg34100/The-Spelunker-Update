@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "bottom": "spelunkery:block/fungal_turf_bottom",
-    "top": "spelunkery:block/fungal_turf_top",
-    "side": "spelunkery:block/fungal_turf_side"
-  }
-}

@@ -2,14 +2,11 @@ package net.vg.spelunkery.worldgen;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GlowLichenBlock;
 import net.minecraft.world.level.block.HugeMushroomBlock;
-import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -35,7 +32,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         BlockPos origin = context.origin();
         RandomSource random = context.random();
         int radius = this.redCap ? 2 : 3;
-        int height = 4 + random.nextInt(3) + (random.nextInt(5) == 0 ? 1 : 0);
+        int height = 5 + random.nextInt(4) + (random.nextInt(4) == 0 ? 1 : 0);
         BlockPos stemBase = findStemBase(level, origin, height, radius, random);
         if (stemBase == null || !fitsInChunk(origin, stemBase, radius) || !canPlace(level, stemBase, height, radius)) {
             return false;
@@ -63,10 +60,10 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
     }
 
     private static BlockPos findStemBase(WorldGenLevel level, BlockPos origin, int height, int radius, RandomSource random) {
-        for (int attempt = 0; attempt < 24; attempt++) {
+        for (int attempt = 0; attempt < 48; attempt++) {
             int x = origin.getX() + random.nextInt(15) - 7;
             int z = origin.getZ() + random.nextInt(15) - 7;
-            int maxY = origin.getY() + 12;
+            int maxY = origin.getY() + 18;
             int minY = Math.max(level.getMinBuildHeight() + 1, origin.getY() - 40);
 
             for (int y = maxY; y >= minY; y--) {
@@ -76,9 +73,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                     continue;
                 }
 
-                if (canPlace(level, pos, height, radius)) {
-                    return pos;
-                }
+                return pos;
             }
         }
 
@@ -98,23 +93,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
 
     private static boolean canPlace(WorldGenLevel level, BlockPos stemBase, int height, int radius) {
         int topY = stemBase.getY() + height + 2;
-        if (topY >= level.getMaxBuildHeight()) {
-            return false;
-        }
-
-        for (int y = stemBase.getY(); y <= topY; y++) {
-            int testRadius = y < stemBase.getY() + height - 2 ? 0 : radius;
-            for (int dx = -testRadius; dx <= testRadius; dx++) {
-                for (int dz = -testRadius; dz <= testRadius; dz++) {
-                    BlockPos pos = new BlockPos(stemBase.getX() + dx, y, stemBase.getZ() + dz);
-                    if (!isReplaceable(level.getBlockState(pos))) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
+        return topY < level.getMaxBuildHeight();
     }
 
     private static boolean isSupport(BlockState state) {
@@ -127,18 +106,6 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                 || state.is(Blocks.PODZOL);
     }
 
-    private static boolean isReplaceable(BlockState state) {
-        return state.isAir()
-                || state.is(Blocks.VINE)
-                || state.is(Blocks.GLOW_LICHEN)
-                || state.is(Blocks.BROWN_MUSHROOM)
-                || state.is(Blocks.RED_MUSHROOM)
-                || state.is(SpelunkeryBlocks.GLOWCAP.get())
-                || state.is(SpelunkeryBlocks.FUNGAL_MAT.get())
-                || state.is(Blocks.SHORT_GRASS)
-                || state.is(Blocks.TALL_GRASS);
-    }
-
     private void placeBrownCap(WorldGenLevel level, BlockPos top, List<BlockPos> capPositions) {
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
@@ -146,8 +113,10 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                     continue;
                 }
                 BlockPos pos = top.offset(dx, 0, dz);
-                level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
-                capPositions.add(pos);
+                if (!level.getBlockState(pos).is(Blocks.BEDROCK)) {
+                    level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
+                    capPositions.add(pos);
+                }
             }
         }
     }
@@ -161,8 +130,10 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                         continue;
                     }
                     BlockPos pos = top.offset(dx, layer, dz);
-                    level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
-                    capPositions.add(pos);
+                    if (!level.getBlockState(pos).is(Blocks.BEDROCK)) {
+                        level.setBlock(pos, this.capBlock.defaultBlockState(), 2);
+                        capPositions.add(pos);
+                    }
                 }
             }
         }

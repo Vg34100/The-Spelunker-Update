@@ -7,6 +7,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
@@ -21,7 +22,6 @@ import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.block.CrucibleBlock;
 import net.vg.spelunkery.block.FoundryBlock;
 import net.vg.spelunkery.block.FungalMatBlock;
-import net.vg.spelunkery.block.FungalTurfBlock;
 import net.vg.spelunkery.block.GlowcapBlock;
 import net.vg.spelunkery.block.InvarAnvilBlock;
 import net.vg.spelunkery.block.RopeBlock;
@@ -510,13 +510,6 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.MUD))
     );
 
-    public static final RegistrySupplier<Block> FUNGAL_TURF = registerBlock(
-            "fungal_turf",
-            () -> new FungalTurfBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD.get())
-                    .randomTicks()
-                    .sound(SoundType.GRASS))
-    );
-
     public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICKS = registerBlock(
             "mycelium_mud_bricks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD.get()).requiresCorrectToolForDrops().sound(SoundType.MUD_BRICKS))
@@ -565,6 +558,14 @@ public final class SpelunkeryBlocks {
                     .noOcclusion()
                     .sound(SoundType.FUNGUS)
                     .lightLevel(state -> 10))
+    );
+
+    public static final RegistrySupplier<Block> BLUE_MUSHROOM_BLOCK = registerBlock(
+            "blue_mushroom_block",
+            () -> new HugeMushroomBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(0.2F)
+                    .sound(SoundType.WOOD))
     );
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(
