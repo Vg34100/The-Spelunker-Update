@@ -12,6 +12,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.item.MinerHelmetGem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
@@ -67,10 +68,19 @@ public final class SpelunkeryNeoForgeClient {
     }
 
     private static void registerMinerHelmetPredicates() {
+        registerMinerHelmetPredicate("ruby", MinerHelmetGem.RUBY);
+        registerMinerHelmetPredicate("sapphire", MinerHelmetGem.SAPPHIRE);
+        registerMinerHelmetPredicate("topaz", MinerHelmetGem.TOPAZ);
+        registerMinerHelmetPredicate("amethyst", MinerHelmetGem.AMETHYST);
+        registerMinerHelmetPredicate("emerald", MinerHelmetGem.EMERALD);
+        registerMinerHelmetPredicate("diamond", MinerHelmetGem.DIAMOND);
+    }
+
+    private static void registerMinerHelmetPredicate(String name, MinerHelmetGem gem) {
         registerPredicate(
                 SpelunkeryItems.MINERS_HELMET.get(),
-                ResourceLocation.fromNamespaceAndPath("spelunkery", "socketed_gem"),
-                (stack, level, entity, seed) -> MinerHelmetHelper.modelPredicate(stack)
+                ResourceLocation.fromNamespaceAndPath("spelunkery", name),
+                (stack, level, entity, seed) -> MinerHelmetHelper.gemPredicate(stack, gem)
         );
     }
 

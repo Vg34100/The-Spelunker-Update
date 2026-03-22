@@ -75,6 +75,10 @@ public final class MinerHelmetHelper {
         };
     }
 
+    public static float gemPredicate(ItemStack stack, MinerHelmetGem expectedGem) {
+        return getGem(stack) == expectedGem ? 1.0F : 0.0F;
+    }
+
     public static void updateEquippedHelmet(Player player) {
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         MinerHelmetGem gem = getGem(helmet);

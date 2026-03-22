@@ -6,37 +6,37 @@
   "overrides": [
     {
       "predicate": {
-        "spelunkery:socketed_gem": 6.0
+        "spelunkery:diamond": 1.0
       },
       "model": "spelunkery:item/miners_helmet_diamond"
     },
     {
       "predicate": {
-        "spelunkery:socketed_gem": 5.0
+        "spelunkery:emerald": 1.0
       },
       "model": "spelunkery:item/miners_helmet_emerald"
     },
     {
       "predicate": {
-        "spelunkery:socketed_gem": 4.0
+        "spelunkery:amethyst": 1.0
       },
       "model": "spelunkery:item/miners_helmet_amethyst"
     },
     {
       "predicate": {
-        "spelunkery:socketed_gem": 3.0
+        "spelunkery:topaz": 1.0
       },
       "model": "spelunkery:item/miners_helmet_topaz"
     },
     {
       "predicate": {
-        "spelunkery:socketed_gem": 2.0
+        "spelunkery:sapphire": 1.0
       },
       "model": "spelunkery:item/miners_helmet_sapphire"
     },
     {
       "predicate": {
-        "spelunkery:socketed_gem": 1.0
+        "spelunkery:ruby": 1.0
       },
       "model": "spelunkery:item/miners_helmet_ruby"
     }

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.vg.spelunkery.client.SpelunkeryClient;
 import net.vg.spelunkery.client.TopazPulseRenderer;
+import net.vg.spelunkery.item.MinerHelmetGem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
@@ -46,11 +47,20 @@ public final class SpelunkeryFabricClient implements ClientModInitializer {
                 ResourceLocation.withDefaultNamespace("blocking"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
         );
+        registerMinerHelmetPredicate("ruby", MinerHelmetGem.RUBY);
+        registerMinerHelmetPredicate("sapphire", MinerHelmetGem.SAPPHIRE);
+        registerMinerHelmetPredicate("topaz", MinerHelmetGem.TOPAZ);
+        registerMinerHelmetPredicate("amethyst", MinerHelmetGem.AMETHYST);
+        registerMinerHelmetPredicate("emerald", MinerHelmetGem.EMERALD);
+        registerMinerHelmetPredicate("diamond", MinerHelmetGem.DIAMOND);
+        WorldRenderEvents.AFTER_ENTITIES.register(context -> TopazPulseRenderer.render(context.matrixStack(), context.consumers(), context.camera()));
+    }
+
+    private static void registerMinerHelmetPredicate(String name, MinerHelmetGem gem) {
         FabricModelPredicateProviderRegistry.register(
                 SpelunkeryItems.MINERS_HELMET.get(),
-                ResourceLocation.fromNamespaceAndPath("spelunkery", "socketed_gem"),
-                (stack, level, entity, seed) -> MinerHelmetHelper.modelPredicate(stack)
+                ResourceLocation.fromNamespaceAndPath("spelunkery", name),
+                (stack, level, entity, seed) -> MinerHelmetHelper.gemPredicate(stack, gem)
         );
-        WorldRenderEvents.AFTER_ENTITIES.register(context -> TopazPulseRenderer.render(context.matrixStack(), context.consumers(), context.camera()));
     }
 }
