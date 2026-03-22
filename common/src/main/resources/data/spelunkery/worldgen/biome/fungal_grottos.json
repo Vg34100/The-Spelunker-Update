@@ -73,7 +73,6 @@
       "minecraft:ore_lapis_buried",
       "minecraft:ore_copper",
       "spelunkery:fungal_mycelium_mud",
-      "spelunkery:fungal_fungal_mat",
       "spelunkery:fungal_bioluminescent_moss",
       "spelunkery:fungal_rooted_dirt",
       "minecraft:underwater_magma",
@@ -86,11 +85,9 @@
       "minecraft:spring_lava"
     ],
     [
-      "spelunkery:fungal_glow_lichen",
-      "spelunkery:fungal_vines",
+      "spelunkery:fungal_overgrowth",
       "spelunkery:fungal_brown_mushrooms",
       "spelunkery:fungal_red_mushrooms",
-      "spelunkery:fungal_glowcap_patch",
       "spelunkery:fungal_huge_brown_mushroom",
       "spelunkery:fungal_huge_red_mushroom"
     ],

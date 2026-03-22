@@ -34,14 +34,10 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
-        BlockPos stemBase = findStemBase(level, origin);
-        if (stemBase == null) {
-            return false;
-        }
-
         int radius = this.redCap ? 2 : 3;
         int height = 4 + random.nextInt(3) + (random.nextInt(5) == 0 ? 1 : 0);
-        if (!fitsInChunk(origin, stemBase, radius) || !canPlace(level, stemBase, height, radius)) {
+        BlockPos stemBase = findStemBase(level, origin, height, radius, random);
+        if (stemBase == null || !fitsInChunk(origin, stemBase, radius) || !canPlace(level, stemBase, height, radius)) {
             return false;
         }
 
@@ -66,15 +62,26 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         return !capPositions.isEmpty();
     }
 
-    private static BlockPos findStemBase(WorldGenLevel level, BlockPos origin) {
-        int minY = Math.max(level.getMinBuildHeight() + 1, origin.getY() - 24);
-        for (int y = origin.getY(); y >= minY; y--) {
-            BlockPos pos = new BlockPos(origin.getX(), y, origin.getZ());
-            BlockPos below = pos.below();
-            if (level.isEmptyBlock(pos) && isSupport(level.getBlockState(below))) {
-                return pos;
+    private static BlockPos findStemBase(WorldGenLevel level, BlockPos origin, int height, int radius, RandomSource random) {
+        for (int attempt = 0; attempt < 24; attempt++) {
+            int x = origin.getX() + random.nextInt(15) - 7;
+            int z = origin.getZ() + random.nextInt(15) - 7;
+            int maxY = origin.getY() + 12;
+            int minY = Math.max(level.getMinBuildHeight() + 1, origin.getY() - 40);
+
+            for (int y = maxY; y >= minY; y--) {
+                BlockPos pos = new BlockPos(x, y, z);
+                BlockPos below = pos.below();
+                if (!level.isEmptyBlock(pos) || !isSupport(level.getBlockState(below))) {
+                    continue;
+                }
+
+                if (canPlace(level, pos, height, radius)) {
+                    return pos;
+                }
             }
         }
+
         return null;
     }
 
