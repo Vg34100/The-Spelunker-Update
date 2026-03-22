@@ -6,18 +6,25 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.RecipeBookMenu;
+import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.StackedContents;
 import net.vg.spelunkery.block.entity.FoundryBlockEntity;
+import net.vg.spelunkery.recipe.FoundryRecipe;
+import net.vg.spelunkery.recipe.FoundryRecipeInput;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
+import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
-public class FoundryMenu extends AbstractContainerMenu {
+import java.util.List;
+
+public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecipe> {
     private static final int INPUT_START = 0;
     private static final int OUTPUT_SLOT = FoundryBlockEntity.OUTPUT_SLOT;
     private static final int PLAYER_INV_START = 4;
@@ -28,6 +35,7 @@ public class FoundryMenu extends AbstractContainerMenu {
     private final Container container;
     private final ContainerData data;
     private final ContainerLevelAccess access;
+    private final net.minecraft.world.level.Level level;
 
     public FoundryMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buf) {
         this(containerId, playerInventory, readContainer(playerInventory, buf));
@@ -48,6 +56,7 @@ public class FoundryMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
         this.access = ContainerLevelAccess.create(playerInventory.player.level(), pos);
+        this.level = playerInventory.player.level();
 
         addSlot(new Slot(container, 0, 29, 17));
         addSlot(new Slot(container, 1, 29, 35));
@@ -78,6 +87,55 @@ public class FoundryMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(access, player, SpelunkeryBlocks.FOUNDRY.get());
+    }
+
+    @Override
+    public void fillCraftSlotsStackedContents(StackedContents stackedContents) {
+        for (int slot = INPUT_START; slot < OUTPUT_SLOT; slot++) {
+            stackedContents.accountSimpleStack(container.getItem(slot));
+        }
+    }
+
+    @Override
+    public void clearCraftingContent() {
+        for (int slot = INPUT_START; slot <= OUTPUT_SLOT; slot++) {
+            getSlot(slot).set(ItemStack.EMPTY);
+        }
+    }
+
+    @Override
+    public boolean recipeMatches(net.minecraft.world.item.crafting.RecipeHolder<FoundryRecipe> recipeHolder) {
+        return recipeHolder.value().matches(currentInput(), level);
+    }
+
+    @Override
+    public int getResultSlotIndex() {
+        return OUTPUT_SLOT;
+    }
+
+    @Override
+    public int getGridWidth() {
+        return 1;
+    }
+
+    @Override
+    public int getGridHeight() {
+        return FoundryBlockEntity.INPUT_SLOT_COUNT;
+    }
+
+    @Override
+    public int getSize() {
+        return FoundryBlockEntity.INPUT_SLOT_COUNT + 1;
+    }
+
+    @Override
+    public RecipeBookType getRecipeBookType() {
+        return RecipeBookType.FURNACE;
+    }
+
+    @Override
+    public boolean shouldMoveToInventory(int slotIndex) {
+        return slotIndex >= INPUT_START && slotIndex <= OUTPUT_SLOT;
     }
 
     @Override
@@ -134,6 +192,26 @@ public class FoundryMenu extends AbstractContainerMenu {
     public int getScaledHeatLevel() {
         int lava = data.get(3);
         return lava > 0 ? lava * 12 / 3 : 0;
+    }
+
+    public boolean canSmelt(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        return level.getRecipeManager().getRecipeFor(
+                SpelunkeryRecipeTypes.FOUNDRY_TYPE.get(),
+                new FoundryRecipeInput(List.of(stack, ItemStack.EMPTY, ItemStack.EMPTY)),
+                level
+        ).isPresent();
+    }
+
+    private FoundryRecipeInput currentInput() {
+        return new FoundryRecipeInput(List.of(
+                container.getItem(0),
+                container.getItem(1),
+                container.getItem(2)
+        ));
     }
 
     private static Container getContainer(Inventory inventory, BlockPos pos) {
