@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_single_face",
   "textures": {
-    "texture": "spelunkery:block/glowcap"
+    "texture": "spelunkery:block/blue_mushroom_block"
   }
 }

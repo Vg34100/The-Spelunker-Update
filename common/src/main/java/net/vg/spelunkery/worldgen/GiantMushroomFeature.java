@@ -18,13 +18,19 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration> {
-    private final Supplier<Block> capBlock;
-    private final boolean redCap;
+    public enum CapShape {
+        BROWN,
+        RED,
+        BLUE
+    }
 
-    public GiantMushroomFeature(Codec<NoneFeatureConfiguration> codec, Supplier<Block> capBlock, boolean redCap) {
+    private final Supplier<Block> capBlock;
+    private final CapShape capShape;
+
+    public GiantMushroomFeature(Codec<NoneFeatureConfiguration> codec, Supplier<Block> capBlock, CapShape capShape) {
         super(codec);
         this.capBlock = capBlock;
-        this.redCap = redCap;
+        this.capShape = capShape;
     }
 
     @Override
@@ -32,10 +38,28 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
-        int radius = this.redCap ? 2 : 3;
+        int radius = this.capShape == CapShape.BROWN ? 3 : 2;
         int height = 5 + random.nextInt(4) + (random.nextInt(3) == 0 ? 1 : 0);
         BlockPos stemBase = findStemBase(level, origin, height, radius, random);
-        if (stemBase == null || !fitsInChunk(origin, stemBase, radius) || !canPlace(level, stemBase, height, radius)) {
+        if (stemBase == null || !fitsInChunk(origin, stemBase, radius)) {
+            return false;
+        }
+
+        return placeAt(level, origin, random, stemBase, height, radius);
+    }
+
+    public boolean growFromOrigin(WorldGenLevel level, BlockPos stemBase, RandomSource random) {
+        int radius = this.capShape == CapShape.BROWN ? 3 : 2;
+        int height = 5 + random.nextInt(4) + (random.nextInt(3) == 0 ? 1 : 0);
+        if (!isSupport(level.getBlockState(stemBase.below())) || !fitsInChunk(stemBase, stemBase, radius)) {
+            return false;
+        }
+
+        return placeAt(level, stemBase, random, stemBase, height, radius);
+    }
+
+    private boolean placeAt(WorldGenLevel level, BlockPos origin, RandomSource random, BlockPos stemBase, int height, int radius) {
+        if (!canPlace(level, stemBase, height, radius)) {
             return false;
         }
 
@@ -49,10 +73,10 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
         }
 
         BlockPos capTop = stemBase.above(height - 1);
-        if (this.redCap) {
-            placeRedCap(level, capTop, capPositions);
-        } else {
-            placeBrownCap(level, capTop, capPositions);
+        switch (this.capShape) {
+            case RED -> placeRedCap(level, capTop, capPositions);
+            case BLUE -> placeBlueCap(level, capTop, capPositions);
+            default -> placeBrownCap(level, capTop, capPositions);
         }
 
         updateMushroomStates(level, stemPositions, Blocks.MUSHROOM_STEM);
@@ -71,6 +95,9 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
                 BlockPos pos = new BlockPos(x, y, z);
                 BlockPos below = pos.below();
                 if (!isSupport(level.getBlockState(below)) || level.getBlockState(pos).is(Blocks.BEDROCK)) {
+                    continue;
+                }
+                if (hasNearbyStem(level, pos)) {
                     continue;
                 }
 
@@ -95,6 +122,23 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
     private static boolean canPlace(WorldGenLevel level, BlockPos stemBase, int height, int radius) {
         int topY = stemBase.getY() + height + 2;
         return topY < level.getMaxBuildHeight();
+    }
+
+    private static boolean hasNearbyStem(WorldGenLevel level, BlockPos stemBase) {
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                if (dx == 0 && dz == 0) {
+                    continue;
+                }
+                BlockPos checkPos = stemBase.offset(dx, 0, dz);
+                for (int dy = -1; dy <= 7; dy++) {
+                    if (level.getBlockState(checkPos.above(dy)).is(Blocks.MUSHROOM_STEM)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private static boolean isSupport(BlockState state) {
@@ -125,6 +169,32 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
     private void placeRedCap(WorldGenLevel level, BlockPos top, List<BlockPos> capPositions) {
         for (int layer = -1; layer <= 1; layer++) {
             int radius = layer == 1 ? 1 : 2;
+            for (int dx = -radius; dx <= radius; dx++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    if (Math.abs(dx) == radius && Math.abs(dz) == radius && layer != 1) {
+                        continue;
+                    }
+                    BlockPos pos = top.offset(dx, layer, dz);
+                    if (!level.getBlockState(pos).is(Blocks.BEDROCK)) {
+                        level.setBlock(pos, this.capBlock.get().defaultBlockState(), 2);
+                        capPositions.add(pos);
+                    }
+                }
+            }
+        }
+    }
+
+    private void placeBlueCap(WorldGenLevel level, BlockPos top, List<BlockPos> capPositions) {
+        for (int layer = -2; layer <= 1; layer++) {
+            int radius;
+            if (layer <= -1) {
+                radius = 3 + layer;
+            } else if (layer == 0) {
+                radius = 2;
+            } else {
+                radius = 1;
+            }
+
             for (int dx = -radius; dx <= radius; dx++) {
                 for (int dz = -radius; dz <= radius; dz++) {
                     if (Math.abs(dx) == radius && Math.abs(dz) == radius && layer != 1) {

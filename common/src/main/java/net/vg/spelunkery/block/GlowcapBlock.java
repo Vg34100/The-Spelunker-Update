@@ -2,31 +2,23 @@ package net.vg.spelunkery.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
-import net.minecraft.util.RandomSource;
+import net.vg.spelunkery.registry.SpelunkeryFeatures;
+import net.vg.spelunkery.worldgen.GiantMushroomFeature;
 
 public final class GlowcapBlock extends BushBlock implements BonemealableBlock {
     public static final MapCodec<GlowcapBlock> CODEC = simpleCodec(GlowcapBlock::new);
     private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
-    private static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_GLOWCAP_FEATURE = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Spelunkery.MOD_ID, "fungal_giant_blue_mushroom")
-    );
 
     public GlowcapBlock(Properties properties) {
         super(properties);
@@ -69,13 +61,9 @@ public final class GlowcapBlock extends BushBlock implements BonemealableBlock {
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        RegistryAccess registryAccess = level.registryAccess();
-        ConfiguredFeature<?, ?> feature = registryAccess.lookupOrThrow(Registries.CONFIGURED_FEATURE)
-                .getOrThrow(GIANT_GLOWCAP_FEATURE)
-                .value();
-
         level.removeBlock(pos, false);
-        if (!feature.place(level, level.getChunkSource().getGenerator(), random, pos)) {
+        GiantMushroomFeature giantFeature = (GiantMushroomFeature) SpelunkeryFeatures.GIANT_BLUE_MUSHROOM.get();
+        if (!giantFeature.growFromOrigin(level, pos, random)) {
             level.setBlock(pos, state, 3);
         }
     }
