@@ -11,11 +11,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vg.spelunkery.Spelunkery;
-import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.client.screen.FoundryScreen;
 import net.vg.spelunkery.item.MinerHelmetGem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
+import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 import java.lang.reflect.Method;
 
@@ -27,7 +29,6 @@ public final class SpelunkeryNeoForgeClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            SpelunkeryClient.init();
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_BARS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_CHAIN.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(SpelunkeryBlocks.BRONZE_LANTERN.get(), RenderType.cutout());
@@ -42,6 +43,11 @@ public final class SpelunkeryNeoForgeClient {
             registerShieldPredicates();
             registerMinerHelmetPredicates();
         });
+    }
+
+    @SubscribeEvent
+    public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(SpelunkeryMenuTypes.FOUNDRY.get(), FoundryScreen::new);
     }
 
     private static void registerBowPredicates() {
