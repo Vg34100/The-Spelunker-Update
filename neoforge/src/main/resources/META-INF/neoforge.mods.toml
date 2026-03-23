@@ -6,7 +6,7 @@ license = "MIT"
 [[mods]]
 modId = "spelunkery"
 version = "${version}"
-displayName = "spelunkery"
+displayName = "The Spelunker Update"
 authors = "VgLevelUp"
 description = '''
 
