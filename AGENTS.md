@@ -1,75 +1,236 @@
 # AGENTS.md
 
-Use this file as the fast-path for working in this repo. Load this before wandering the tree.
+This file is a reusable workflow guide for agentic work in a typical Architectury/Fabric/NeoForge Minecraft mod repo.
 
-## Priorities
+Use it as the first file to load before exploring the tree.
 
-- Do not revert or overwrite unrelated user edits.
-- The worktree is often dirty with active texture work. Treat PNG changes as user-owned unless the user explicitly asks you to edit them.
-- Prefer the smallest amount of context needed: search first, then open only the exact files you need.
+## Goals
 
-## Fast Search
+- Minimize context waste.
+- Prefer fast search over broad file reading.
+- Keep user work safe in dirty trees.
+- Make changes loader-aware.
+- End with a clean, inspectable commit history.
 
-- Find files: `rg --files`
-- Find symbols/text: `rg -n "pattern" common/src/main/java fabric/src/main/java neoforge/src/main/java`
-- Find textures/models/data: `rg --files common/src/main/resources/assets/spelunkery common/src/main/resources/data/spelunkery`
+## Context Discipline
 
-## Where Things Live
+- Search first. Read second. Edit last.
+- Prefer `rg --files` and `rg -n` over opening directories or large files blindly.
+- Open only the exact files on the active path.
+- Reuse known build/test commands instead of re-deriving them each turn.
+- Summarize findings instead of repeating raw command output back to the user.
 
-### Common Java
+## Fast Search Workflow
 
-- Main mod init: `common/src/main/java/net/vg/spelunkery/Spelunkery.java`
-- Registries: `common/src/main/java/net/vg/spelunkery/registry/`
-- Blocks/items/worldgen/features/menus/screens live under:
-  - `common/src/main/java/net/vg/spelunkery/block/`
-  - `common/src/main/java/net/vg/spelunkery/item/`
-  - `common/src/main/java/net/vg/spelunkery/worldgen/`
-  - `common/src/main/java/net/vg/spelunkery/menu/`
-  - `common/src/main/java/net/vg/spelunkery/client/screen/`
+### Find files
 
-### Loader-Specific Java
+```bash
+rg --files
+```
 
-- Fabric init: `fabric/src/main/java/net/vg/spelunkery/fabric/`
-- NeoForge init: `neoforge/src/main/java/net/vg/spelunkery/neoforge/`
-- NeoForge client hooks: `neoforge/src/main/java/net/vg/spelunkery/neoforge/client/`
-- If something works on Fabric but not NeoForge, inspect the loader-specific init/client files first.
+### Find text or symbols
 
-### Assets and Data
+```bash
+rg -n "pattern" common/src/main/java fabric/src/main/java neoforge/src/main/java
+```
 
-- Block textures: `common/src/main/resources/assets/spelunkery/textures/block/`
-- Item textures: `common/src/main/resources/assets/spelunkery/textures/item/`
-- GUI textures: `common/src/main/resources/assets/spelunkery/textures/gui/`
-- Block models: `common/src/main/resources/assets/spelunkery/models/block/`
-- Item models: `common/src/main/resources/assets/spelunkery/models/item/`
-- Blockstates: `common/src/main/resources/assets/spelunkery/blockstates/`
-- Loot tables: `common/src/main/resources/data/spelunkery/loot_table/`
-- Recipes: `common/src/main/resources/data/spelunkery/recipe/`
-- Worldgen JSON: `common/src/main/resources/data/spelunkery/worldgen/`
-- Tags: `common/src/main/resources/data/spelunkery/tags/`
+### Find assets or data
 
-### Docs
+```bash
+rg --files common/src/main/resources/assets common/src/main/resources/data
+```
 
-- Wiki docs source: `docs/wiki/`
-- Modrinth front-page draft: `docs/wiki/modrinth-front-page.md`
+## Typical Minecraft Mod Layout
 
-## Dirty Worktree Warning
+These are the first places to check in most multiplatform mod repos.
 
-Expect many modified PNGs and some untracked reference textures. Do not clean them up unless asked.
+### Common code
 
-Known recurring user-owned texture/reference files include:
+- `common/src/main/java/...`
+- shared registries
+- shared blocks, items, menus, block entities, worldgen, recipes, screens
 
-- `common/src/main/resources/assets/spelunkery/textures/block/stone.png`
-- `common/src/main/resources/assets/spelunkery/textures/block/deepslate.png`
-- `common/src/main/resources/assets/spelunkery/textures/block/iron_block.png`
-- `common/src/main/resources/assets/spelunkery/textures/block/emerald_block.png`
-- `common/src/main/resources/assets/spelunkery/textures/item/iron_ingot.png`
-- `common/src/main/resources/assets/spelunkery/textures/item/raw_iron.png`
-- `common/src/main/resources/assets/spelunkery/textures/item/raw_gold.png`
-- `common/src/main/resources/assets/spelunkery/textures/item/raw_copper.png`
+### Fabric code
 
-## WSL Compile Loop
+- `fabric/src/main/java/...`
+- Fabric-only bootstrap
+- Fabric-only client hooks
+- Fabric-only events and data hooks
 
-Use a WSL mirror build to avoid Windows path and file-lock issues. This is the standard compile check.
+### NeoForge code
+
+- `neoforge/src/main/java/...`
+- NeoForge-only bootstrap
+- NeoForge-only client hooks
+- NeoForge event bus registration
+
+### Resources
+
+- `common/src/main/resources/assets/<modid>/textures/block/`
+- `common/src/main/resources/assets/<modid>/textures/item/`
+- `common/src/main/resources/assets/<modid>/textures/gui/`
+- `common/src/main/resources/assets/<modid>/models/block/`
+- `common/src/main/resources/assets/<modid>/models/item/`
+- `common/src/main/resources/assets/<modid>/blockstates/`
+- `common/src/main/resources/data/<modid>/recipe/`
+- `common/src/main/resources/data/<modid>/loot_table/`
+- `common/src/main/resources/data/<modid>/worldgen/`
+- `common/src/main/resources/data/<modid>/tags/`
+
+## Loader Split Rule
+
+If something works on one loader but not the other:
+
+1. Check the shared implementation.
+2. Check loader-specific bootstrap and client registration.
+3. Do not assume Architectury abstraction is enough for every case.
+4. If a shared helper is unstable on one loader, move that behavior into loader-native code.
+
+Good examples:
+
+- screen registration
+- creative tab insertion
+- render layer registration
+- client predicates
+- event wiring
+
+## Common Debug Paths
+
+### Screen/menu issue
+
+Check:
+
+- menu type registration
+- menu open call
+- client screen registration
+- loader-specific screen event hooks
+
+### Texture/model issue
+
+Check:
+
+- block/item model JSON
+- blockstate JSON
+- referenced texture path
+- render layer if cutout/translucent behavior matters
+
+Use `F3 + T` for texture/model reloads.
+
+### Worldgen issue
+
+Check:
+
+- configured feature JSON
+- placed feature JSON
+- biome JSON generation-step wiring
+- custom feature registration and custom feature code
+
+### Recipe/book/UI issue
+
+Check:
+
+- menu class
+- screen class
+- recipe type registration
+- recipe serializer/type wiring
+- client-side category/filter hooks
+
+## Dirty Worktree Rule
+
+- Assume the tree is dirty unless proven otherwise.
+- Never revert unrelated user changes.
+- Treat modified PNGs, docs, and generated references as user-owned unless explicitly told otherwise.
+- Stage only the files for the current fix.
+
+Before committing, always inspect:
+
+```bash
+git status --short
+```
+
+## Compile/Test Workflow
+
+For WSL-on-Windows or mixed-filesystem setups, prefer a mirror build to avoid path, lock, and Gradle cache issues.
+
+### Reusable mirror compile loop
+
+```bash
+mirror=/tmp/mod-wsl
+rm -rf "$mirror"
+mkdir -p "$mirror"
+rsync -a --delete \
+  --exclude '.git' \
+  --exclude '.gradle' \
+  --exclude 'build' \
+  --exclude 'fabric/run' \
+  --exclude 'neoforge/run' \
+  ./ "$mirror"/
+cd "$mirror"
+env GRADLE_USER_HOME=/tmp/mod-gradle-home \
+    MOD_BUILD_ROOT=/tmp/mod-build \
+    ./gradlew --project-cache-dir /tmp/mod-project-cache \
+    --rerun-tasks \
+    :common:processResources \
+    :common:compileJava \
+    :fabric:compileJava \
+    :neoforge:compileJava
+```
+
+If a specific repo already has a known-good variant, prefer that exact command.
+
+## Editing Rules
+
+- Use the smallest patch that fixes the actual issue.
+- Prefer loader-native fixes over forcing a shared abstraction when runtime behavior diverges.
+- Avoid drive-by refactors unless they directly reduce future breakage on the active path.
+- If you discover a reusable list or workflow, centralize it once instead of duplicating it in multiple loader files.
+
+## Commit Workflow
+
+Use the commit style the user has preferred in this repo:
+
+1. Make one coherent change.
+2. Run the relevant compile/test loop.
+3. Stage only the files for that change.
+4. Commit with a short conventional-style message.
+
+Preferred commit shape:
+
+- `fix: ...`
+- `feat: ...`
+- `refactor: ...`
+- `style: ...`
+- `docs: ...`
+- `chore: ...`
+
+Good examples:
+
+- `fix: register foundry screen on neoforge`
+- `fix: split vanilla creative tabs by loader`
+- `docs: refresh wiki for current gameplay`
+
+Avoid:
+
+- giant mixed-purpose commits
+- vague messages like `updates` or `misc fixes`
+- committing user texture work unless explicitly requested
+
+## Final Response Pattern
+
+Keep closeout concise:
+
+- say what changed
+- point to the important file or two
+- say what was verified
+- call out anything not tested
+
+Do not dump long terminal logs into the response.
+
+## Repo-Local Appendix
+
+These notes are specific to this repo and can be replaced in a new project.
+
+### Current known-good mirror compile loop for this repo
 
 ```bash
 mirror=/tmp/spelunkery-wsl
@@ -93,31 +254,7 @@ env GRADLE_USER_HOME=/tmp/spelunkery-gradle-home \
     :neoforge:compileJava
 ```
 
-## Typical Debug Path
+### Current repo-specific caution
 
-### Fabric-only or NeoForge-only bug
-
-1. Check the common implementation.
-2. Check the loader-specific init/client registration.
-3. Search for loader-specific screen, menu, creative tab, render layer, or event registration.
-
-### Texture or model issue
-
-1. Check block/item model JSON.
-2. Check blockstate JSON.
-3. Check the PNG path actually referenced by the model.
-4. For in-game refresh, use `F3 + T`.
-
-### Worldgen issue
-
-1. Check configured feature JSON.
-2. Check placed feature JSON.
-3. Check biome JSON generation step wiring.
-4. If custom feature code is involved, inspect the registered feature in `registry/SpelunkeryFeatures.java`.
-
-## Context Efficiency Rules
-
-- Do not open whole directories blindly.
-- Do not re-read giant files if `rg` can narrow the target first.
-- Prefer inspecting only the 1-3 files on the relevant path.
-- When reporting back, summarize rather than dumping command output.
+- This repo frequently has user-owned texture edits in `common/src/main/resources/assets/spelunkery/textures/`
+- Do not stage or revert those files unless the user explicitly asks for that
