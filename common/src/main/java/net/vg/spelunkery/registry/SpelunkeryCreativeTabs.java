@@ -99,8 +99,8 @@ public final class SpelunkeryCreativeTabs {
             output.acceptAfter(Items.BOW, SpelunkeryItems.ELECTRUM_BOW.get());
             output.acceptAfter(SpelunkeryItems.ELECTRUM_BOW.get(), SpelunkeryItems.BRONZE_SWORD.get());
             output.acceptAfter(SpelunkeryItems.BRONZE_SWORD.get(), SpelunkeryItems.SILVER_HELMET.get());
-            output.acceptAfter(SpelunkeryItems.SILVER_BOOTS.get(), SpelunkeryItems.INVAR_HELMET.get());
-            output.acceptAfter(SpelunkeryItems.INVAR_BOOTS.get(), SpelunkeryItems.ROSE_GOLD_HELMET.get());
+            output.acceptAfter(SpelunkeryItems.SILVER_HELMET.get(), SpelunkeryItems.INVAR_HELMET.get());
+            output.acceptAfter(SpelunkeryItems.INVAR_HELMET.get(), SpelunkeryItems.ROSE_GOLD_HELMET.get());
         });
 
         CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.FOOD_AND_DRINKS), (flags, output, hasPermissions) -> {
