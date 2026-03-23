@@ -177,7 +177,8 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(2.4F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.AMETHYST))
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 4))
     );
 
     public static final RegistrySupplier<Block> MARBLE = registerBlock(
