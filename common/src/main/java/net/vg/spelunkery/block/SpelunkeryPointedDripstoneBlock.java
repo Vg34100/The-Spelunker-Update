@@ -3,6 +3,8 @@ package net.vg.spelunkery.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -63,15 +65,30 @@ public class SpelunkeryPointedDripstoneBlock extends PointedDripstoneBlock {
             BlockPos pos,
             BlockPos neighborPos
     ) {
-        BlockState updated = super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-        if (!updated.is(this) || (direction != Direction.UP && direction != Direction.DOWN)) {
-            return updated;
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        Direction tipDirection = updated.getValue(TIP_DIRECTION);
-        boolean mergeTips = updated.getValue(THICKNESS) == DripstoneThickness.TIP_MERGE;
+        if (direction != Direction.UP && direction != Direction.DOWN) {
+            return state;
+        }
+
+        Direction tipDirection = state.getValue(TIP_DIRECTION);
+        if (direction == tipDirection.getOpposite() && !canSurvive(state, level, pos)) {
+            level.scheduleTick(pos, this, tipDirection == Direction.DOWN ? 2 : 1);
+            return state;
+        }
+
+        boolean mergeTips = state.getValue(THICKNESS) == DripstoneThickness.TIP_MERGE;
         DripstoneThickness thickness = calculateThickness(level, pos, tipDirection, mergeTips);
-        return thickness == null ? updated : updated.setValue(THICKNESS, thickness);
+        return thickness == null ? state : state.setValue(THICKNESS, thickness);
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!canSurvive(state, level, pos)) {
+            level.destroyBlock(pos, true);
+        }
     }
 
     protected boolean isSameDripstone(BlockState state) {
