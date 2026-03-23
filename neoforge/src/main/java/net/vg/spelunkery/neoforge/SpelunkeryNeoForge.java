@@ -1,18 +1,25 @@
 package net.vg.spelunkery.neoforge;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.vg.spelunkery.Spelunkery;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 @Mod(Spelunkery.MOD_ID)
@@ -53,6 +60,33 @@ public final class SpelunkeryNeoForge {
     private void onLivingDrops(LivingDropsEvent event) {
         if (SpelunkeryGameplayHelper.shouldDropBatWing(event.getEntity())) {
             event.getDrops().add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), new ItemStack(SpelunkeryItems.BAT_WING.get())));
+        }
+    }
+
+    @EventBusSubscriber(modid = Spelunkery.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+    public static final class CreativeTabEvents {
+        private CreativeTabEvents() {
+        }
+
+        @SubscribeEvent
+        public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
+            if (event.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
+                SpelunkeryCreativeTabs.addNaturalBlockEntries(item -> accept(event, item));
+            } else if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
+                SpelunkeryCreativeTabs.addIngredientEntries(item -> accept(event, item));
+            } else if (event.getTabKey().equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
+                SpelunkeryCreativeTabs.addToolsAndUtilityEntries(item -> accept(event, item));
+            } else if (event.getTabKey().equals(CreativeModeTabs.COMBAT)) {
+                SpelunkeryCreativeTabs.addCombatEntries(item -> accept(event, item));
+            } else if (event.getTabKey().equals(CreativeModeTabs.FOOD_AND_DRINKS)) {
+                SpelunkeryCreativeTabs.addFoodAndDrinkEntries(item -> accept(event, item));
+            } else if (event.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {
+                SpelunkeryCreativeTabs.addBuildingBlockEntries(item -> accept(event, item));
+            }
+        }
+
+        private static void accept(BuildCreativeModeTabContentsEvent event, ItemLike item) {
+            event.accept(new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
 }

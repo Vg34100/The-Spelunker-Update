@@ -6,8 +6,10 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -15,6 +17,7 @@ import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
 
@@ -22,6 +25,7 @@ public final class SpelunkeryFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Spelunkery.init();
+        registerVanillaCreativeTabs();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);
@@ -84,5 +88,20 @@ public final class SpelunkeryFabric implements ModInitializer {
                 GenerationStep.Decoration.LOCAL_MODIFICATIONS,
                 SpelunkeryWorldgen.SAPPHIRE_POCKET_PLACED
         );
+    }
+
+    private static void registerVanillaCreativeTabs() {
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries ->
+                SpelunkeryCreativeTabs.addNaturalBlockEntries(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries ->
+                SpelunkeryCreativeTabs.addIngredientEntries(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries ->
+                SpelunkeryCreativeTabs.addToolsAndUtilityEntries(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register(entries ->
+                SpelunkeryCreativeTabs.addCombatEntries(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries ->
+                SpelunkeryCreativeTabs.addFoodAndDrinkEntries(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(entries ->
+                SpelunkeryCreativeTabs.addBuildingBlockEntries(entries::accept));
     }
 }
