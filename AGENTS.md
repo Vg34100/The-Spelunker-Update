@@ -216,6 +216,22 @@ Before committing, always inspect:
 git status --short
 ```
 
+## Docs And Wiki Workflow
+
+- Treat repo docs as the source of truth.
+- Write and update documentation in-repo first, not directly in the GitHub wiki UI.
+- Use `docs/wiki/` for structured gameplay/system pages.
+- Use a repo page like `docs/wiki/modrinth-front-page.md` for storefront/front-page copy drafts.
+- The GitHub wiki does not auto-sync by default, so think of it as a publish target.
+
+Preferred workflow:
+
+1. Update or add the page in `docs/wiki/`.
+2. Keep recipe, mechanic, and progression details aligned with the actual code/data.
+3. If the user wants GitHub wiki updated, sync from the repo docs rather than rewriting from scratch in the browser.
+
+If automation is later added, it should push repo docs into the GitHub wiki repo. Until then, avoid treating the GitHub wiki as the primary source.
+
 ## Compile/Test Workflow
 
 For WSL-on-Windows or mixed-filesystem setups, prefer a mirror build to avoid path, lock, and Gradle cache issues.
