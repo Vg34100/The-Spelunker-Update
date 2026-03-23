@@ -4,8 +4,9 @@
 
 ## Where It Appears
 
-- Generated in clusters inside `Crystal Caverns`
-- Often mixed into marble, calcite, and basalt-heavy cave sections
+- Generated throughout `Crystal Caverns`
+- Mixed into marble, calcite, and basalt-heavy cave sections
+- Emits a faint light level in dark caves
 
 ## Uses
 
@@ -19,5 +20,5 @@
 
 ## Notes
 
-- Emits a faint glow
 - Intended as the signature building stone of `Crystal Caverns`
+- `Gem Pocket` is tuned to visually match prismatic stone in dark caves

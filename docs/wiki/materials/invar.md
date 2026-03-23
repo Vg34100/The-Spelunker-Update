@@ -8,7 +8,7 @@ Invar is a nickel-and-iron alloy built around durability, stability, and premium
 
 - Produced in a `Foundry` placed directly above a filled `Crucible`
 - Current recipe:
-  - `2 Iron Ingots`
+  - `1 Iron Ingot`
   - `1 Nickel Ingot`
   - consumes `1` crucible lava charge
   - yields `2 Invar Ingots`
@@ -23,6 +23,12 @@ Invar is a nickel-and-iron alloy built around durability, stability, and premium
 
 - `Invar Anvil` now uses its own slower-degrading damage chain
 - `Chipped Invar Anvil` and `Damaged Invar Anvil` are intermediate wear states
+- `Invar Anvil` crafting recipe:
+  - `BBB`
+  - ` I `
+  - `III`
+  - `B = Block of Invar`
+  - `I = Invar Ingot`
 - Invar blocks and tiles provide durable industrial building material
 
 ## Gear Direction

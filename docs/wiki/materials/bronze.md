@@ -19,7 +19,7 @@ It is produced in the foundry using tin and copper ingots and is intended to bec
 
 - `Bronze Ingots` can be crafted into a `Block of Bronze`
 - `Block of Bronze` can be crafted back into `9 Bronze Ingots`
-- `Bronze Tiles` and `Bronze Grates` are decorative crafted blocks
+- `Bronze Tiles` are available as a decorative crafted block
 - `Bronze Lantern` is a warm metal light source
 
 ## Current Uses
@@ -27,8 +27,8 @@ It is produced in the foundry using tin and copper ingots and is intended to bec
 - `Bronze Compass` reports your current depth
 - `Bronze Shield` can bash attackers back if you brace into the hit
 - `Bronze Lantern` provides decorative cave lighting
-- `Bronze Grate` adds metal industrial detailing
 - `Bronze Bars` and `Bronze Chain` expand bronze into cave building hardware
+- `Torch Launcher` uses bronze as its main crafted metal
 
 ## Gear Direction
 

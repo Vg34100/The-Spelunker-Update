@@ -2,13 +2,13 @@
 
 ## Overview
 
-Marble is a bright decorative stone that generates in common underground patches, similar to vanilla granite, diorite, and andesite.
+Marble is a bright decorative stone family tied to Spelunkery's cave biomes rather than ordinary overworld stone patches.
 
 ## Generation
 
-- Generates in common overworld stone patches.
-- Appears from `y=-48` up to `y=96`.
-- Uses broad overworld coverage instead of narrow biome locking.
+- Found heavily in `Marble Caves`
+- Also appears throughout `Crystal Caverns`
+- Used as the main host stone for several crystal-pocket and cave-biome features
 
 ## Variants
 
@@ -20,5 +20,5 @@ Marble is a bright decorative stone that generates in common underground patches
 
 ## Notes
 
-- Marble is used as ruby's primary host stone in crystal pockets.
-- It is meant to feel like a new vanilla-style decorative stone family rather than a rare ore material.
+- Marble is used as a host stone for crystal-pocket generation
+- It is meant to feel like a full cave stone family, not just a decorative patch block

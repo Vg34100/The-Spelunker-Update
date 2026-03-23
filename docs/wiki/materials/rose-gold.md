@@ -8,10 +8,10 @@ Rose gold is an alloy built around cave instruments and enchantment-adjacent uti
 
 - Produced in a `Foundry` placed directly above a filled `Crucible`
 - Current recipe:
-  - `1 Gold Ingot`
+  - `2 Gold Ingots`
   - `1 Copper Ingot`
   - consumes `1` crucible lava charge
-  - yields `2 Rose Gold Ingots`
+  - yields `3 Rose Gold Ingots`
 
 ## Storage
 
@@ -23,6 +23,12 @@ Rose gold is an alloy built around cave instruments and enchantment-adjacent uti
 
 - `Prospector's Lens` scans nearby stone for ore signatures
 - `Rose Gold Filigree` upgrades iron armor into `Rose Gold-Plated Iron Armor`
+- `Rose Gold Filigree` crafting recipe:
+  - ` m `
+  - `mpm`
+  - ` m `
+  - `m = Rose Gold Ingot`
+  - `p = Paper`
 - Rose gold-plated armor is the first enchantability-focused armor upgrade path
 
 ## Gear Direction

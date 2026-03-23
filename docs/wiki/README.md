@@ -4,7 +4,7 @@
 
 This folder holds player-facing reference pages for the Spelunkery mod.
 
-Each page should describe what the material or feature is, where it appears, what it is used for, and any important mechanics players need to know.
+These pages are meant to describe what each material, biome, item, or system does in the current playable build: where it appears, what it is used for, and any important mechanics players need to know.
 
 ## Materials
 
@@ -19,12 +19,20 @@ Each page should describe what the material or feature is, where it appears, wha
 - [Ruby](./materials/ruby.md)
 - [Marble](./materials/marble.md)
 - [Sapphire](./materials/sapphire.md)
+- [Prismatic Stone](./materials/prismatic-stone.md)
 
 ## Items
 
 - [Tools and Weapons](./items/tools-and-weapons.md)
 - [Expedition Gear](./items/expedition-gear.md)
 - [Armor Upgrades](./items/armor-upgrades.md)
+
+## Biomes
+
+- [Crystal Caverns](./biomes/crystal-caverns.md)
+- [Marble Caves](./biomes/marble-caves.md)
+- [Magma Vaults](./biomes/magma-vaults.md)
+- [Fungal Grottos](./biomes/fungal-grottos.md)
 
 ## Systems
 
