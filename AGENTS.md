@@ -77,6 +77,74 @@ These are the first places to check in most multiplatform mod repos.
 - `common/src/main/resources/data/<modid>/worldgen/`
 - `common/src/main/resources/data/<modid>/tags/`
 
+## How To Inspect Vanilla Minecraft Classes
+
+When you want to copy or adapt vanilla behavior, do not guess. Inspect the mapped Minecraft sources available through the Gradle/Loom caches.
+
+### Fastest practical rule
+
+- Search your own code first.
+- If the behavior is clearly based on a vanilla menu, block, screen, feature, recipe book, or renderer, inspect the matching vanilla class before editing.
+
+### Common places to look
+
+For Architectury/Loom projects, mapped Minecraft jars usually live under `~/.gradle/caches/fabric-loom/`.
+
+Useful examples:
+
+- merged named jar for browsing classes:
+  - `~/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/...`
+- loader/library source jars:
+  - `~/.gradle/caches/modules-2/files-2.1/...`
+
+### Quick class search
+
+Use `jar tf` plus `rg` to find likely vanilla classes:
+
+```bash
+jar tf ~/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/*/*.jar | rg 'MenuScreens|RecipeBook|FurnaceScreen|CreativeModeTabs'
+```
+
+### Read a mapped source file from a sources jar
+
+If a sources jar exists, prefer that over decompiling bytecode:
+
+```bash
+python3 - <<'PY'
+import zipfile, glob
+path = glob.glob('/home/$USER/.gradle/caches/modules-2/files-2.1/**/**/**/*sources.jar', recursive=True)[0]
+with zipfile.ZipFile(path) as z:
+    for name in z.namelist():
+        if name.endswith('SomeVanillaClass.java'):
+            print(z.read(name).decode('utf-8'))
+            break
+PY
+```
+
+In practice, narrow the glob to the exact dependency first.
+
+### Good lookup targets by task
+
+- menu/screen issue:
+  - `MenuScreens`
+  - matching vanilla screen class like `FurnaceScreen`, `AbstractFurnaceScreen`, `CraftingScreen`
+- recipe book issue:
+  - `RecipeBookComponent`
+  - `RecipeBookMenu`
+  - matching vanilla screen/menu implementation
+- worldgen issue:
+  - matching feature class and configured/placed feature patterns
+- block behavior issue:
+  - matching vanilla block class, especially survival/update/placement methods
+- client rendering/model predicate issue:
+  - matching vanilla item/block render registration path
+
+### Efficiency rule
+
+- Do not open random large Minecraft sources jars blindly.
+- Search for the exact class name first.
+- Open only the one or two vanilla classes closest to the feature being implemented.
+
 ## Loader Split Rule
 
 If something works on one loader but not the other:
