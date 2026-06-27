@@ -10,7 +10,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -51,7 +51,7 @@ public final class SpelunkeryNeoForge {
         SpelunkeryGameplayHelper.updatePlayerEffects(event.getEntity());
     }
 
-    private void onBlockBreak(BlockEvent.BreakEvent event) {
+    private void onBlockBreak(BreakBlockEvent event) {
         if (event.getPlayer() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
             MinerHelmetHelper.onBlockMined(serverPlayer, event.getPos(), event.getState());
         }
@@ -63,7 +63,7 @@ public final class SpelunkeryNeoForge {
         }
     }
 
-    @EventBusSubscriber(modid = Spelunkery.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = Spelunkery.MOD_ID)
     public static final class CreativeTabEvents {
         private CreativeTabEvents() {
         }

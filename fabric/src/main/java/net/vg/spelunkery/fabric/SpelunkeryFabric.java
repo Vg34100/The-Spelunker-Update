@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -91,17 +91,17 @@ public final class SpelunkeryFabric implements ModInitializer {
     }
 
     private static void registerVanillaCreativeTabs() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries ->
-                SpelunkeryCreativeTabs.addNaturalBlockEntries(entries::accept));
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries ->
-                SpelunkeryCreativeTabs.addIngredientEntries(entries::accept));
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries ->
-                SpelunkeryCreativeTabs.addToolsAndUtilityEntries(entries::accept));
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register(entries ->
-                SpelunkeryCreativeTabs.addCombatEntries(entries::accept));
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries ->
-                SpelunkeryCreativeTabs.addFoodAndDrinkEntries(entries::accept));
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(entries ->
-                SpelunkeryCreativeTabs.addBuildingBlockEntries(entries::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(output ->
+                SpelunkeryCreativeTabs.addNaturalBlockEntries(output::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(output ->
+                SpelunkeryCreativeTabs.addIngredientEntries(output::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output ->
+                SpelunkeryCreativeTabs.addToolsAndUtilityEntries(output::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output ->
+                SpelunkeryCreativeTabs.addCombatEntries(output::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(output ->
+                SpelunkeryCreativeTabs.addFoodAndDrinkEntries(output::accept));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(output ->
+                SpelunkeryCreativeTabs.addBuildingBlockEntries(output::accept));
     }
 }

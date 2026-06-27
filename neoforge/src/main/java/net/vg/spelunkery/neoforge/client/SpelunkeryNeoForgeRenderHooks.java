@@ -1,6 +1,5 @@
 package net.vg.spelunkery.neoforge.client;
 
-import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,9 +13,7 @@ public final class SpelunkeryNeoForgeRenderHooks {
     }
 
     @SubscribeEvent
-    public static void onRenderLevel(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-            TopazPulseRenderer.render(event.getPoseStack(), Minecraft.getInstance().renderBuffers().bufferSource(), event.getCamera());
-        }
+    public static void onRenderLevel(RenderLevelStageEvent.AfterLevel event) {
+        TopazPulseRenderer.render();
     }
 }
