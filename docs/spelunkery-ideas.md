@@ -143,7 +143,7 @@ The focus is on making caves more rewarding, more readable, and more mechanicall
 
 ## Feature D: Gear and Utility
 
-### Miner's Helmet
+### Miner's Helmet—
 
 - The miner's helmet occupies the helmet slot.
 - It should be weak as armor but useful enough that there is a real reason to wear it.
