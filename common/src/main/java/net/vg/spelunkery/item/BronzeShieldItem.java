@@ -47,10 +47,11 @@ public class BronzeShieldItem extends ShieldItem {
         }
 
         if (blocker instanceof Player player) {
-            if (player.getCooldowns().isOnCooldown(SpelunkeryItems.BRONZE_SHIELD.get())) {
+            ItemStack shieldStack = player.getUseItem();
+            if (player.getCooldowns().isOnCooldown(shieldStack)) {
                 return;
             }
-            player.getCooldowns().addCooldown(SpelunkeryItems.BRONZE_SHIELD.get(), BASH_COOLDOWN_TICKS);
+            player.getCooldowns().addCooldown(shieldStack, BASH_COOLDOWN_TICKS);
         }
 
         double xKnockback = blocker.getX() - attacker.getX();
@@ -72,7 +73,7 @@ public class BronzeShieldItem extends ShieldItem {
                 SoundEvents.SHIELD_BLOCK,
                 SoundSource.PLAYERS,
                 1.0F,
-                0.85F + blocker.level().random.nextFloat() * 0.2F
+                0.85F + blocker.getRandom().nextFloat() * 0.2F
         );
     }
 

@@ -538,7 +538,7 @@ public final class SpelunkeryBlocks {
             () -> new FungalMatBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(0.1F)
-                    .noCollission()
+                    .noCollision()
                     .noOcclusion()
                     .sound(SoundType.MOSS))
     );
@@ -556,7 +556,7 @@ public final class SpelunkeryBlocks {
             "glowcap",
             () -> new GlowcapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_CYAN)
-                    .noCollission()
+                    .noCollision()
                     .instabreak()
                     .noOcclusion()
                     .sound(SoundType.FUNGUS)
@@ -707,7 +707,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.WOOL)
                     .strength(0.3F)
                     .sound(SoundType.CHAIN)
-                    .noCollission()
+                    .noCollision()
                     .noOcclusion())
     );
 

@@ -1,8 +1,6 @@
 package net.vg.spelunkery.recipe;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -12,8 +10,8 @@ import net.vg.spelunkery.item.MinerHelmetHelper;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
 public class MinerHelmetSocketRecipe extends CustomRecipe {
-    public MinerHelmetSocketRecipe(CraftingBookCategory category) {
-        super(category);
+    public MinerHelmetSocketRecipe() {
+        super();
     }
 
     @Override
@@ -22,19 +20,14 @@ public class MinerHelmetSocketRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput input) {
         ItemStack helmet = findHelmet(input);
         MinerHelmetGem gem = findGem(input);
         return helmet != null && gem != null ? MinerHelmetHelper.socket(helmet, gem) : ItemStack.EMPTY;
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 2;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return SpelunkeryRecipeTypes.MINER_HELMET_SOCKET_SERIALIZER.get();
     }
 

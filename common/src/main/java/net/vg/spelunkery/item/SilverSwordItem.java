@@ -5,19 +5,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 
-public class SilverSwordItem extends SwordItem {
-    public SilverSwordItem(Tier tier, Properties properties) {
-        super(tier, properties);
+public class SilverSwordItem extends Item {
+    public SilverSwordItem(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        boolean hurt = super.hurtEnemy(stack, target, attacker);
-        if (target.getType().is(EntityTypeTags.UNDEAD)) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        super.hurtEnemy(stack, target, attacker);
+        if (target.getType().builtInRegistryHolder().is(EntityTypeTags.UNDEAD)) {
             target.invulnerableTime = 0;
             DamageSource source = attacker instanceof Player player
                     ? attacker.damageSources().playerAttack(player)
@@ -25,6 +24,5 @@ public class SilverSwordItem extends SwordItem {
             float bonusDamage = (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
             target.hurt(source, bonusDamage);
         }
-        return hurt;
     }
 }

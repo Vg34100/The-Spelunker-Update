@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,48 +36,48 @@ public class CrucibleBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult) {
         int lavaLevel = state.getValue(LEVEL);
 
         if (stack.is(Items.LAVA_BUCKET)) {
             if (lavaLevel >= MAX_LAVA_USES) {
-                if (!level.isClientSide) {
-                    player.displayClientMessage(Component.literal("The crucible is already full of lava."), true);
+                if (!level.isClientSide()) {
+                    player.sendOverlayMessage(Component.literal("The crucible is already full of lava."));
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 level.setBlockAndUpdate(pos, state.setValue(LEVEL, MAX_LAVA_USES));
                 if (!player.getAbilities().instabuild) {
                     player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                 }
-                player.displayClientMessage(Component.literal("The crucible is filled with lava."), true);
+                player.sendOverlayMessage(Component.literal("The crucible is filled with lava."));
             }
 
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         if (stack.is(Items.BUCKET) && lavaLevel >= MAX_LAVA_USES) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 level.setBlockAndUpdate(pos, state.setValue(LEVEL, 0));
                 if (!player.getAbilities().instabuild) {
                     player.setItemInHand(hand, new ItemStack(Items.LAVA_BUCKET));
                 }
-                player.displayClientMessage(Component.literal("You bucket the unused lava back out."), true);
+                player.sendOverlayMessage(Component.literal("You bucket the unused lava back out."));
             }
 
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             int lavaLevel = state.getValue(LEVEL);
-            player.displayClientMessage(Component.literal(lavaLevel > 0 ? "The crucible has " + lavaLevel + " lava uses left." : "The crucible is empty."), true);
+            player.sendOverlayMessage(Component.literal(lavaLevel > 0 ? "The crucible has " + lavaLevel + " lava uses left." : "The crucible is empty."));
         }
         return InteractionResult.SUCCESS;
     }

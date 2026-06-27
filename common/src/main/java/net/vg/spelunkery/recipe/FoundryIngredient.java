@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public record FoundryIngredient(Ingredient ingredient, int count) {
     public static final Codec<FoundryIngredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(FoundryIngredient::ingredient),
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(FoundryIngredient::ingredient),
             Codec.intRange(1, 64).optionalFieldOf("count", 1).forGetter(FoundryIngredient::count)
     ).apply(instance, FoundryIngredient::new));
 

@@ -35,6 +35,6 @@ public final class RopeBlockItem extends BlockItem {
             context.getItemInHand().shrink(1);
         }
 
-        return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+        return InteractionResult.SUCCESS;
     }
 }

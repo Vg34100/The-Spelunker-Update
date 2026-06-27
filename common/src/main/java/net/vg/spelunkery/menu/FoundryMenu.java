@@ -2,14 +2,16 @@ package net.vg.spelunkery.menu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
@@ -17,7 +19,6 @@ import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.entity.player.StackedContents;
 import net.vg.spelunkery.block.entity.FoundryBlockEntity;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 import net.vg.spelunkery.recipe.FoundryRecipeInput;
@@ -27,10 +28,9 @@ import net.vg.spelunkery.registry.SpelunkeryMenuTypes;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecipe> {
+public class FoundryMenu extends RecipeBookMenu {
     private static final int INPUT_START = 0;
     private static final int OUTPUT_SLOT = FoundryBlockEntity.OUTPUT_SLOT;
     private static final int PLAYER_INV_START = 4;
@@ -64,13 +64,6 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
         this.access = ContainerLevelAccess.create(playerInventory.player.level(), pos);
         this.level = playerInventory.player.level();
 
-        if (playerInventory.player instanceof ServerPlayer serverPlayer) {
-            Collection<net.minecraft.world.item.crafting.RecipeHolder<?>> foundryRecipes = new ArrayList<>(
-                    level.getRecipeManager().getAllRecipesFor(SpelunkeryRecipeTypes.FOUNDRY_TYPE.get())
-            );
-            serverPlayer.awardRecipes(foundryRecipes);
-        }
-
         addSlot(new Slot(container, 0, 29, 17));
         addSlot(new Slot(container, 1, 29, 35));
         addSlot(new Slot(container, 2, 29, 53));
@@ -103,70 +96,32 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
     }
 
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents stackedContents) {
+    public void fillCraftSlotsStackedContents(StackedItemContents stackedContents) {
         for (int slot = INPUT_START; slot < OUTPUT_SLOT; slot++) {
             stackedContents.accountSimpleStack(container.getItem(slot));
         }
     }
 
     @Override
-    public void clearCraftingContent() {
-        for (int slot = INPUT_START; slot <= OUTPUT_SLOT; slot++) {
-            getSlot(slot).set(ItemStack.EMPTY);
+    public PostPlaceAction handlePlacement(boolean placeAll, boolean filteringCraftable, RecipeHolder<?> recipeHolder, ServerLevel level, Inventory inventory) {
+        if (recipeHolder == null || !(recipeHolder.value() instanceof FoundryRecipe recipe)) {
+            return PostPlaceAction.NOTHING;
         }
-    }
 
-    @Override
-    public boolean recipeMatches(net.minecraft.world.item.crafting.RecipeHolder<FoundryRecipe> recipeHolder) {
-        return recipeHolder.value().matches(currentInput(), level);
-    }
+        clearFoundryInputsToInventory(inventory);
 
-    @Override
-    public int getResultSlotIndex() {
-        return OUTPUT_SLOT;
-    }
+        if (!placeRecipeIntoSlots(recipe, inventory, placeAll)) {
+            broadcastChanges();
+            return PostPlaceAction.PLACE_GHOST_RECIPE;
+        }
 
-    @Override
-    public int getGridWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getGridHeight() {
-        return FoundryBlockEntity.INPUT_SLOT_COUNT;
-    }
-
-    @Override
-    public int getSize() {
-        return FoundryBlockEntity.INPUT_SLOT_COUNT + 1;
+        broadcastChanges();
+        return PostPlaceAction.NOTHING;
     }
 
     @Override
     public RecipeBookType getRecipeBookType() {
         return RecipeBookType.FURNACE;
-    }
-
-    @Override
-    public boolean shouldMoveToInventory(int slotIndex) {
-        return slotIndex >= INPUT_START && slotIndex <= OUTPUT_SLOT;
-    }
-
-    @Override
-    public void handlePlacement(boolean placeAll, RecipeHolder<?> recipeHolder, ServerPlayer player) {
-        if (recipeHolder == null || !(recipeHolder.value() instanceof FoundryRecipe recipe) || !player.getRecipeBook().contains(recipeHolder)) {
-            return;
-        }
-
-        Inventory inventory = player.getInventory();
-        clearFoundryInputsToInventory(inventory);
-
-        if (!placeRecipeIntoSlots(recipe, inventory, placeAll)) {
-            player.connection.send(new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder));
-            broadcastChanges();
-            return;
-        }
-
-        broadcastChanges();
     }
 
     @Override
@@ -230,10 +185,11 @@ public class FoundryMenu extends RecipeBookMenu<FoundryRecipeInput, FoundryRecip
             return false;
         }
 
-        return level.getRecipeManager().getRecipeFor(
+        if (!(level instanceof ServerLevel serverLevel)) return false;
+        return serverLevel.recipeAccess().getRecipeFor(
                 SpelunkeryRecipeTypes.FOUNDRY_TYPE.get(),
                 new FoundryRecipeInput(List.of(stack, ItemStack.EMPTY, ItemStack.EMPTY)),
-                level
+                serverLevel
         ).isPresent();
     }
 

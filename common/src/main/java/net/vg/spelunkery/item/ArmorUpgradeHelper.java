@@ -4,32 +4,36 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
 import net.vg.spelunkery.Spelunkery;
 
 public final class ArmorUpgradeHelper {
     private static final String UPGRADE_KEY = "spelunkery_armor_upgrade";
-    private static final ResourceLocation NICKEL_TOUGHNESS_ID = Spelunkery.id("nickel_plating_toughness");
-    private static final ResourceLocation ROSE_GOLD_LUCK_ID = Spelunkery.id("rose_gold_filigree_luck");
+    private static final Identifier NICKEL_TOUGHNESS_ID = Spelunkery.id("nickel_plating_toughness");
+    private static final Identifier ROSE_GOLD_LUCK_ID = Spelunkery.id("rose_gold_filigree_luck");
 
     private ArmorUpgradeHelper() {
     }
 
     public static boolean isUpgradeableArmor(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem;
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        if (equippable == null) return false;
+        EquipmentSlot slot = equippable.slot();
+        return slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST || slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET;
     }
 
     public static ArmorUpgrade getUpgrade(ItemStack stack) {
@@ -39,7 +43,7 @@ public final class ArmorUpgradeHelper {
         }
 
         CompoundTag tag = customData.copyTag();
-        return tag.contains(UPGRADE_KEY) ? ArmorUpgrade.byId(tag.getString(UPGRADE_KEY)) : null;
+        return tag.getString(UPGRADE_KEY).map(ArmorUpgrade::byId).orElse(null);
     }
 
     public static boolean hasUpgrade(ItemStack stack, ArmorUpgrade upgrade) {
@@ -51,7 +55,7 @@ public final class ArmorUpgradeHelper {
 
         CustomData.update(DataComponents.CUSTOM_DATA, result, tag -> tag.putString(UPGRADE_KEY, upgrade.id()));
         if (isUpgradeableArmor(result) && isIronArmor(result)) {
-            result.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(upgrade.modelData()));
+            result.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(java.util.List.of(), java.util.List.of(), java.util.List.of(), java.util.List.of(upgrade.modelData())));
         }
 
         result.set(DataComponents.LORE, new ItemLore(java.util.List.of(
@@ -78,22 +82,22 @@ public final class ArmorUpgradeHelper {
 
     private static int countPieces(Player player, ArmorUpgrade upgrade) {
         int count = 0;
-        for (ItemStack armor : player.getArmorSlots()) {
-            if (hasUpgrade(armor, upgrade)) {
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (hasUpgrade(player.getItemBySlot(slot), upgrade)) {
                 count++;
             }
         }
         return count;
     }
 
-    private static ItemAttributeModifiers buildAttributeModifiers(ItemStack stack, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> extraAttribute, ResourceLocation extraId, double amount) {
-        ItemAttributeModifiers defaults = stack.getItem().getDefaultAttributeModifiers();
+    private static ItemAttributeModifiers buildAttributeModifiers(ItemStack stack, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> extraAttribute, Identifier extraId, double amount) {
+        ItemAttributeModifiers defaults = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         for (ItemAttributeModifiers.Entry entry : defaults.modifiers()) {
             builder.add(entry.attribute(), entry.modifier(), entry.slot());
         }
         builder.add(extraAttribute, new AttributeModifier(extraId, amount, Operation.ADD_VALUE), getSlotGroup(stack));
-        return builder.build().withTooltip(defaults.showInTooltip());
+        return builder.build();
     }
 
     private static void applyNickelDurability(ItemStack result, ItemStack original) {
@@ -119,8 +123,9 @@ public final class ArmorUpgradeHelper {
     }
 
     private static EquipmentSlotGroup getSlotGroup(ItemStack stack) {
-        if (stack.getItem() instanceof ArmorItem armorItem) {
-            return EquipmentSlotGroup.bySlot(armorItem.getEquipmentSlot());
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        if (equippable != null) {
+            return EquipmentSlotGroup.bySlot(equippable.slot());
         }
         return EquipmentSlotGroup.ARMOR;
     }

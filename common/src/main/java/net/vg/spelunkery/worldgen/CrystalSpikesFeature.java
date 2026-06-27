@@ -73,7 +73,7 @@ public final class CrystalSpikesFeature extends Feature<NoneFeatureConfiguration
             }
 
             BlockPos supportPos = candidate.relative(direction.getOpposite());
-            if (level.getBlockState(supportPos).isSolidRender(level, supportPos)
+            if (level.getBlockState(supportPos).isSolid()
                     && level.getFluidState(supportPos).getType() != Fluids.WATER) {
                 return candidate;
             }

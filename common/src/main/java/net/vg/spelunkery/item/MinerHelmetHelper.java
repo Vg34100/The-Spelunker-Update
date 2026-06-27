@@ -46,7 +46,7 @@ public final class MinerHelmetHelper {
         }
 
         CompoundTag tag = customData.copyTag();
-        return tag.contains(GEM_KEY) ? MinerHelmetGem.byId(tag.getString(GEM_KEY)) : null;
+        return tag.contains(GEM_KEY) ? tag.getString(GEM_KEY).map(MinerHelmetGem::byId).orElse(null) : null;
     }
 
     public static ItemStack socket(ItemStack original, MinerHelmetGem gem) {
@@ -86,14 +86,14 @@ public final class MinerHelmetHelper {
             return;
         }
 
-        if (!player.level().isClientSide && !player.isCreative() && player.tickCount % DURABILITY_DRAIN_INTERVAL == 0) {
+        if (!player.level().isClientSide() && !player.isCreative() && player.tickCount % DURABILITY_DRAIN_INTERVAL == 0) {
             helmet.hurtAndBreak(1, player, EquipmentSlot.HEAD);
         }
 
         switch (gem) {
             case RUBY -> apply(player, MobEffects.FIRE_RESISTANCE);
             case SAPPHIRE -> apply(player, MobEffects.NIGHT_VISION);
-            case DIAMOND -> apply(player, MobEffects.DAMAGE_RESISTANCE);
+            case DIAMOND -> apply(player, MobEffects.RESISTANCE);
             case TOPAZ -> {
             }
             case AMETHYST -> pulseMobs(player);
@@ -127,7 +127,7 @@ public final class MinerHelmetHelper {
     }
 
     private static boolean isValuableMinedBlock(BlockState state) {
-        String path = state.getBlockHolder().unwrapKey().map(key -> key.location().getPath()).orElse("");
+        String path = state.getBlock().builtInRegistryHolder().unwrapKey().map(key -> key.identifier().getPath()).orElse("");
         return path.endsWith("_ore")
                 || path.equals("topaz_block")
                 || path.equals("ruby_block")

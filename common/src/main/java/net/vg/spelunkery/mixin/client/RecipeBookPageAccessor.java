@@ -1,14 +1,4 @@
 package net.vg.spelunkery.mixin.client;
 
-import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
-import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
-import java.util.List;
-
-@Mixin(RecipeBookPage.class)
-public interface RecipeBookPageAccessor {
-    @Accessor("recipeCollections")
-    List<RecipeCollection> spelunkery$getRecipeCollections();
-}
+// Stub: RecipeBookPage.recipeCollections accessor no longer needed in MC 26.1.2.
+// This mixin is also removed from spelunkery.mixins.json client list.

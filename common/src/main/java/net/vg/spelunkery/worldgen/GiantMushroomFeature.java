@@ -89,7 +89,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
             int x = origin.getX() + random.nextInt(21) - 10;
             int z = origin.getZ() + random.nextInt(21) - 10;
             int maxY = origin.getY() + 18;
-            int minY = Math.max(level.getMinBuildHeight() + 1, origin.getY() - 40);
+            int minY = Math.max(level.getMinY() + 1, origin.getY() - 40);
 
             for (int y = maxY; y >= minY; y--) {
                 BlockPos pos = new BlockPos(x, y, z);
@@ -121,7 +121,7 @@ public final class GiantMushroomFeature extends Feature<NoneFeatureConfiguration
 
     private static boolean canPlace(WorldGenLevel level, BlockPos stemBase, int height, int radius) {
         int topY = stemBase.getY() + height + 2;
-        return topY < level.getMaxBuildHeight();
+        return topY < level.getMaxY();
     }
 
     private static boolean hasNearbyStem(WorldGenLevel level, BlockPos stemBase) {

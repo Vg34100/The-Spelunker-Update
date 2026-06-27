@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,14 +60,16 @@ public class SpelunkeryPointedDripstoneBlock extends PointedDripstoneBlock {
     @Override
     protected BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState neighborState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
         if (direction != Direction.UP && direction != Direction.DOWN) {
@@ -75,7 +78,7 @@ public class SpelunkeryPointedDripstoneBlock extends PointedDripstoneBlock {
 
         Direction tipDirection = state.getValue(TIP_DIRECTION);
         if (direction == tipDirection.getOpposite() && !canSurvive(state, level, pos)) {
-            level.scheduleTick(pos, this, tipDirection == Direction.DOWN ? 2 : 1);
+            scheduledTickAccess.scheduleTick(pos, this, tipDirection == Direction.DOWN ? 2 : 1);
             return state;
         }
 

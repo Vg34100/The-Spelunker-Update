@@ -96,7 +96,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
             Direction direction = directions[(start.ordinal() + i) % directions.length];
             BlockPos supportPos = airPos.relative(direction);
             BlockState supportState = level.getBlockState(supportPos);
-            if (!supportState.isSolidRender(level, supportPos)) {
+            if (!supportState.isSolid()) {
                 continue;
             }
 
@@ -120,7 +120,7 @@ public final class FungalOvergrowthFeature extends Feature<NoneFeatureConfigurat
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockPos supportPos = airPos.relative(direction);
             BlockState supportState = level.getBlockState(supportPos);
-            if (!supportState.isSolidRender(level, supportPos)) {
+            if (!supportState.isSolid()) {
                 continue;
             }
 

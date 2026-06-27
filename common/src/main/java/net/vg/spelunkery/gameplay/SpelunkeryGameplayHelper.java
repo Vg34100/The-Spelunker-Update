@@ -25,7 +25,7 @@ public final class SpelunkeryGameplayHelper {
     }
 
     public static void updatePlayerEffects(Player player) {
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return;
         }
 
@@ -49,7 +49,7 @@ public final class SpelunkeryGameplayHelper {
     }
 
     private static boolean isValuableMinedBlock(BlockState state) {
-        String path = state.getBlockHolder().unwrapKey().map(key -> key.location().getPath()).orElse("");
+        String path = state.getBlock().builtInRegistryHolder().unwrapKey().map(key -> key.identifier().getPath()).orElse("");
         return path.endsWith("_ore")
                 || path.equals("topaz_block")
                 || path.equals("ruby_block")

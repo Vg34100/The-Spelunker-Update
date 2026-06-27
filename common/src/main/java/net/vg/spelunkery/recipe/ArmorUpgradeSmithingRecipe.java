@@ -2,17 +2,19 @@ package net.vg.spelunkery.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.vg.spelunkery.item.ArmorUpgrade;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
+
+import java.util.Optional;
 
 public record ArmorUpgradeSmithingRecipe(
         Ingredient template,
@@ -32,7 +34,7 @@ public record ArmorUpgradeSmithingRecipe(
             Ingredient.CONTENTS_STREAM_CODEC, ArmorUpgradeSmithingRecipe::base,
             Ingredient.CONTENTS_STREAM_CODEC, ArmorUpgradeSmithingRecipe::addition,
             net.minecraft.network.codec.ByteBufCodecs.STRING_UTF8, recipe -> recipe.upgrade.id(),
-            (template, base, addition, upgradeId) -> new ArmorUpgradeSmithingRecipe(template, base, addition, ArmorUpgrade.byId(upgradeId))
+            (t, b, a, upgradeId) -> new ArmorUpgradeSmithingRecipe(t, b, a, ArmorUpgrade.byId(upgradeId))
     );
 
     @Override
@@ -45,44 +47,47 @@ public record ArmorUpgradeSmithingRecipe(
     }
 
     @Override
-    public ItemStack assemble(SmithingRecipeInput input, HolderLookup.Provider provider) {
+    public ItemStack assemble(SmithingRecipeInput input) {
         return ArmorUpgradeHelper.applyUpgrade(input.base(), upgrade);
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return ItemStack.EMPTY;
+    public Optional<Ingredient> templateIngredient() {
+        return Optional.of(template);
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public Ingredient baseIngredient() {
+        return base;
+    }
+
+    @Override
+    public Optional<Ingredient> additionIngredient() {
+        return Optional.of(addition);
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.RecipeSerializer<? extends SmithingRecipe> getSerializer() {
         return SpelunkeryRecipeTypes.ARMOR_UPGRADE_SMITHING_SERIALIZER.get();
     }
 
     @Override
-    public boolean isTemplateIngredient(ItemStack stack) {
-        return template.test(stack);
+    public boolean showNotification() {
+        return true;
     }
 
     @Override
-    public boolean isBaseIngredient(ItemStack stack) {
-        return base.test(stack);
+    public String group() {
+        return "";
     }
 
     @Override
-    public boolean isAdditionIngredient(ItemStack stack) {
-        return addition.test(stack);
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
     }
 
-    public static final class Serializer implements RecipeSerializer<ArmorUpgradeSmithingRecipe> {
-        @Override
-        public MapCodec<ArmorUpgradeSmithingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ArmorUpgradeSmithingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return SmithingRecipe.super.recipeBookCategory();
     }
 }

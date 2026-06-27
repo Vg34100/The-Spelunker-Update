@@ -71,7 +71,7 @@ public final class ScorchedDripstoneFeature extends Feature<NoneFeatureConfigura
             }
 
             BlockPos supportPos = candidate.relative(direction.getOpposite());
-            if (level.getBlockState(supportPos).isSolidRender(level, supportPos) && level.getFluidState(supportPos).isEmpty()) {
+            if (level.getBlockState(supportPos).isSolid() && level.getFluidState(supportPos).isEmpty()) {
                 return candidate;
             }
         }

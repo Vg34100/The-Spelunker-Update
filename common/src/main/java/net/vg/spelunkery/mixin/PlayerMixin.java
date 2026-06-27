@@ -27,7 +27,7 @@ public abstract class PlayerMixin {
     }
 
     private static boolean isBoostedBlock(BlockState state) {
-        String path = state.getBlockHolder().unwrapKey().map(key -> key.location().getPath()).orElse("");
+        String path = state.getBlock().builtInRegistryHolder().unwrapKey().map(key -> key.identifier().getPath()).orElse("");
         return path.endsWith("_ore")
                 || state.is(Blocks.STONE)
                 || state.is(Blocks.DEEPSLATE)

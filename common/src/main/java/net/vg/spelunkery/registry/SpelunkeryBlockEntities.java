@@ -12,7 +12,7 @@ public final class SpelunkeryBlockEntities {
 
     public static final RegistrySupplier<BlockEntityType<FoundryBlockEntity>> FOUNDRY = BLOCK_ENTITY_TYPES.register(
             "foundry",
-            () -> BlockEntityType.Builder.of(FoundryBlockEntity::new, SpelunkeryBlocks.FOUNDRY.get()).build(null)
+            () -> new BlockEntityType<>(FoundryBlockEntity::new, java.util.Set.of(SpelunkeryBlocks.FOUNDRY.get()))
     );
 
     private static boolean initialized;

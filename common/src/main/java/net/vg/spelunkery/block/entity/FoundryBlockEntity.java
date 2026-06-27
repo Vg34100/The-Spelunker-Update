@@ -2,9 +2,9 @@ package net.vg.spelunkery.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -76,7 +76,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private void serverTick() {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide()) {
             return;
         }
 
@@ -190,6 +190,11 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        dropContents();
+    }
+
+    @Override
     public net.minecraft.network.chat.Component getDisplayName() {
         return net.minecraft.network.chat.Component.translatable("block.spelunkery.foundry");
     }
@@ -225,7 +230,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private Optional<RecipeHolder<FoundryRecipe>> getMatchingRecipe() {
-        if (level == null) {
+        if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) {
             return Optional.empty();
         }
 
@@ -235,8 +240,8 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
                 items.get(2).copy()
         ));
 
-        return level.getRecipeManager()
-                .getRecipeFor(SpelunkeryRecipeTypes.FOUNDRY_TYPE.get(), input, level)
+        return serverLevel.recipeAccess()
+                .getRecipeFor(SpelunkeryRecipeTypes.FOUNDRY_TYPE.get(), input, serverLevel)
                 .filter(holder -> holder.value().canOutput(items.get(OUTPUT_SLOT)));
     }
 
@@ -263,25 +268,22 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(ValueOutput tag) {
+        super.saveAdditional(tag);
         for (int slot = 0; slot < items.size(); slot++) {
-            if (!items.get(slot).isEmpty()) {
-                tag.put("Item" + slot, items.get(slot).saveOptional(registries));
-            }
+            tag.store("Item" + slot, ItemStack.OPTIONAL_CODEC, items.get(slot));
         }
         tag.putInt("Progress", progress);
         tag.putInt("MaxProgress", maxProgress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput tag) {
+        super.loadAdditional(tag);
         for (int slot = 0; slot < SLOT_COUNT; slot++) {
-            String key = "Item" + slot;
-            items.set(slot, ItemStack.parseOptional(registries, tag.getCompound(key)));
+            items.set(slot, tag.read("Item" + slot, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
         }
-        progress = tag.getInt("Progress");
-        maxProgress = tag.contains("MaxProgress") ? tag.getInt("MaxProgress") : 200;
+        progress = tag.getIntOr("Progress", 0);
+        maxProgress = tag.getIntOr("MaxProgress", 200);
     }
 }

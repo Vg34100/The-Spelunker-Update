@@ -1,11 +1,12 @@
 package net.vg.spelunkery.registry;
 
+import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.recipe.ArmorUpgradeSmithingRecipe;
 import net.vg.spelunkery.recipe.FoundryRecipe;
@@ -17,15 +18,18 @@ public final class SpelunkeryRecipeTypes {
 
     public static final RegistrySupplier<RecipeSerializer<FoundryRecipe>> FOUNDRY_SERIALIZER = RECIPE_SERIALIZERS.register(
             "foundry",
-            FoundryRecipe.Serializer::new
+            () -> new RecipeSerializer<>(FoundryRecipe.CODEC, FoundryRecipe.STREAM_CODEC)
     );
     public static final RegistrySupplier<RecipeSerializer<ArmorUpgradeSmithingRecipe>> ARMOR_UPGRADE_SMITHING_SERIALIZER = RECIPE_SERIALIZERS.register(
             "armor_upgrade_smithing",
-            ArmorUpgradeSmithingRecipe.Serializer::new
+            () -> new RecipeSerializer<>(ArmorUpgradeSmithingRecipe.CODEC, ArmorUpgradeSmithingRecipe.STREAM_CODEC)
     );
-    public static final RegistrySupplier<SimpleCraftingRecipeSerializer<MinerHelmetSocketRecipe>> MINER_HELMET_SOCKET_SERIALIZER = RECIPE_SERIALIZERS.register(
+    public static final RegistrySupplier<RecipeSerializer<MinerHelmetSocketRecipe>> MINER_HELMET_SOCKET_SERIALIZER = RECIPE_SERIALIZERS.register(
             "miner_helmet_socket",
-            () -> new SimpleCraftingRecipeSerializer<>(MinerHelmetSocketRecipe::new)
+            () -> new RecipeSerializer<>(
+                    MapCodec.unit(new MinerHelmetSocketRecipe()),
+                    StreamCodec.of((buf, r) -> {}, buf -> new MinerHelmetSocketRecipe())
+            )
     );
 
     public static final RegistrySupplier<RecipeType<FoundryRecipe>> FOUNDRY_TYPE = RECIPE_TYPES.register(

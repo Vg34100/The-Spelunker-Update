@@ -20,20 +20,20 @@ public class ElectrumBowItem extends BowItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
         if (!(livingEntity instanceof Player player)) {
-            return;
+            return false;
         }
 
         ItemStack projectile = player.getProjectile(stack);
         if (projectile.isEmpty()) {
-            return;
+            return false;
         }
 
         int useTicks = this.getUseDuration(stack, livingEntity) - timeLeft;
         float power = getPowerForTime(Math.round(useTicks * DRAW_SPEED_MULTIPLIER));
         if (power < 0.1F) {
-            return;
+            return false;
         }
 
         List<ItemStack> drawnProjectiles = draw(stack, projectile, player);
@@ -62,5 +62,6 @@ public class ElectrumBowItem extends BowItem {
                 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F
         );
         player.awardStat(Stats.ITEM_USED.get(this));
+        return true;
     }
 }

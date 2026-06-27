@@ -38,6 +38,6 @@ public final class RopeBundleItem extends Item {
         }
 
         level.playSound(context.getPlayer(), context.getClickedPos(), rope.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 0.9F);
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 }

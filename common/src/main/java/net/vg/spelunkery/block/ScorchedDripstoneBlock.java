@@ -21,9 +21,9 @@ public final class ScorchedDripstoneBlock extends SpelunkeryPointedDripstoneBloc
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance);
-        if (!level.isClientSide && state.getValue(TIP_DIRECTION) == Direction.UP && fallDistance > 0.5F) {
+        if (!level.isClientSide() && state.getValue(TIP_DIRECTION) == Direction.UP && fallDistance > 0.5) {
             entity.igniteForSeconds(4.0F);
         }
     }

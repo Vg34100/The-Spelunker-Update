@@ -3,14 +3,13 @@ package net.vg.spelunkery.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -26,7 +25,7 @@ public record FoundryRecipe(
 ) implements Recipe<FoundryRecipeInput> {
     public static final MapCodec<FoundryRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             FoundryIngredient.CODEC.listOf().fieldOf("ingredients").forGetter(FoundryRecipe::ingredients),
-            ItemStack.STRICT_CODEC.fieldOf("result").forGetter(FoundryRecipe::result),
+            ItemStack.CODEC.fieldOf("result").forGetter(FoundryRecipe::result),
             Codec.intRange(1, 1200).optionalFieldOf("process_time", 200).forGetter(FoundryRecipe::processTime),
             Codec.intRange(1, 8).optionalFieldOf("lava_cost", 1).forGetter(FoundryRecipe::lavaCost)
     ).apply(instance, FoundryRecipe::new));
@@ -49,6 +48,41 @@ public record FoundryRecipe(
         }
 
         return ingredients.stream().allMatch(ingredient -> countMatchingItems(input, ingredient) >= ingredient.count());
+    }
+
+    @Override
+    public ItemStack assemble(FoundryRecipeInput input) {
+        return result.copy();
+    }
+
+    @Override
+    public boolean showNotification() {
+        return true;
+    }
+
+    @Override
+    public String group() {
+        return "";
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return new RecipeBookCategory();
+    }
+
+    @Override
+    public RecipeSerializer<? extends Recipe<FoundryRecipeInput>> getSerializer() {
+        return SpelunkeryRecipeTypes.FOUNDRY_SERIALIZER.get();
+    }
+
+    @Override
+    public RecipeType<? extends Recipe<FoundryRecipeInput>> getType() {
+        return SpelunkeryRecipeTypes.FOUNDRY_TYPE.get();
     }
 
     public boolean canOutput(ItemStack output) {
@@ -79,42 +113,6 @@ public record FoundryRecipe(
         }
     }
 
-    @Override
-    public ItemStack assemble(FoundryRecipeInput input, HolderLookup.Provider provider) {
-        return result.copy();
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return result.copy();
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return SpelunkeryRecipeTypes.FOUNDRY_SERIALIZER.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return SpelunkeryRecipeTypes.FOUNDRY_TYPE.get();
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> expanded = NonNullList.create();
-        for (FoundryIngredient ingredient : ingredients) {
-            for (int count = 0; count < ingredient.count(); count++) {
-                expanded.add(ingredient.ingredient());
-            }
-        }
-        return expanded;
-    }
-
     private int countMatchingItems(FoundryRecipeInput input, FoundryIngredient ingredient) {
         int total = 0;
         for (int slot = 0; slot < input.size(); slot++) {
@@ -124,17 +122,5 @@ public record FoundryRecipe(
             }
         }
         return total;
-    }
-
-    public static final class Serializer implements RecipeSerializer<FoundryRecipe> {
-        @Override
-        public MapCodec<FoundryRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, FoundryRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

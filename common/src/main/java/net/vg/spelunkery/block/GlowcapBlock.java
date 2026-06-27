@@ -24,9 +24,10 @@ public final class GlowcapBlock extends BushBlock implements BonemealableBlock {
         super(properties);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected MapCodec<? extends BushBlock> codec() {
-        return CODEC;
+    public MapCodec<BushBlock> codec() {
+        return (MapCodec<BushBlock>) (MapCodec<?>) CODEC;
     }
 
     @Override

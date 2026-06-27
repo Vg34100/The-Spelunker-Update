@@ -1,19 +1,10 @@
 package net.vg.spelunkery.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.MinerHelmetGem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
@@ -28,28 +19,13 @@ public final class TopazPulseRenderer {
     private static final int PULSE_VISIBLE_TICKS = 50;
     private static final List<BlockPos> CACHED_TARGETS = new ArrayList<>();
     private static long lastRefreshTick = Long.MIN_VALUE;
-    private static final RenderType ORE_PULSE_LINES = RenderType.create(
-            "spelunkery:ore_pulse_lines",
-            DefaultVertexFormat.POSITION_COLOR_NORMAL,
-            VertexFormat.Mode.LINES,
-            1536,
-            false,
-            false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.RENDERTYPE_LINES_SHADER)
-                    .setLineState(new RenderType.LineStateShard(java.util.OptionalDouble.of(2.0D)))
-                    .setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
-                    .setCullState(RenderType.NO_CULL)
-                    .setDepthTestState(RenderType.NO_DEPTH_TEST)
-                    .createCompositeState(false)
-    );
 
     private TopazPulseRenderer() {
     }
 
-    public static void render(PoseStack poseStack, MultiBufferSource consumers, Camera camera) {
+    public static void render() {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null || minecraft.player == null || poseStack == null || consumers == null) {
+        if (minecraft.level == null || minecraft.player == null) {
             return;
         }
 
@@ -68,17 +44,8 @@ public final class TopazPulseRenderer {
             return;
         }
 
-        Vec3 cameraPos = camera.getPosition();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        var lineBuffer = consumers.getBuffer(ORE_PULSE_LINES);
-        for (BlockPos pos : CACHED_TARGETS) {
-            poseStack.pushPose();
-            poseStack.translate(pos.getX() - cameraPos.x, pos.getY() - cameraPos.y, pos.getZ() - cameraPos.z);
-            LevelRenderer.renderLineBox(poseStack, lineBuffer, 0.02D, 0.02D, 0.02D, 0.98D, 0.98D, 0.98D, 0.98F, 0.86F, 0.22F, 0.95F);
-            poseStack.popPose();
-        }
-        RenderSystem.disableBlend();
+        // TODO: Re-implement ore outline rendering using the MC 26.1.2 Gizmos API.
+        // LevelRenderer.renderLineBox was removed; the new system uses Gizmos.cuboid(pos, GizmoStyle.stroke(...)).
     }
 
     private static void refreshTargets(Minecraft minecraft) {
@@ -105,7 +72,8 @@ public final class TopazPulseRenderer {
     }
 
     private static boolean isValuableBlock(BlockState state) {
-        String path = state.getBlockHolder().unwrapKey().map(key -> key.location().getPath()).orElse("");
+        String path = state.getBlock().builtInRegistryHolder().unwrapKey()
+                .map(key -> key.identifier().getPath()).orElse("");
         return path.endsWith("_ore")
                 || path.equals("topaz_block")
                 || path.equals("ruby_block")

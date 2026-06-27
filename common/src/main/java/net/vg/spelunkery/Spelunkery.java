@@ -1,6 +1,6 @@
 package net.vg.spelunkery;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.vg.spelunkery.registry.SpelunkeryBlockEntities;
 import net.vg.spelunkery.registry.SpelunkeryBiomeSources;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
@@ -26,7 +26,7 @@ public final class Spelunkery {
         SpelunkeryCreativeTabs.init();
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

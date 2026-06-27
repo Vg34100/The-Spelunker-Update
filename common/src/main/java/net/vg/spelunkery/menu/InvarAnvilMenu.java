@@ -59,7 +59,7 @@ public class InvarAnvilMenu extends AnvilMenu {
             return;
         }
 
-        if (!player.getAbilities().instabuild && level.random.nextFloat() < DAMAGE_CHANCE) {
+        if (!player.getAbilities().instabuild && player.getRandom().nextFloat() < DAMAGE_CHANCE) {
             BlockState damaged = InvarAnvilBlock.damage(state);
             if (damaged == null) {
                 level.removeBlock(pos, false);

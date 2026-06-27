@@ -10,7 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,38 +31,38 @@ public final class TorchLauncherItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack launcher = player.getItemInHand(hand);
         if (!player.hasInfiniteMaterials() && !player.getInventory().contains(new ItemStack(Items.TORCH))) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(Component.literal("You need torches to load the launcher.").withStyle(ChatFormatting.GRAY), true);
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(Component.literal("You need torches to load the launcher.").withStyle(ChatFormatting.GRAY));
             }
-            return InteractionResultHolder.fail(launcher);
+            return InteractionResult.FAIL;
         }
 
         Vec3 start = player.getEyePosition();
         Vec3 end = start.add(player.getLookAngle().scale(RANGE));
         BlockHitResult hitResult = level.clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
         if (hitResult.getType() != net.minecraft.world.phys.HitResult.Type.BLOCK) {
-            return InteractionResultHolder.pass(launcher);
+            return InteractionResult.PASS;
         }
 
         BlockPos anchorPos = hitResult.getBlockPos();
         Direction hitDirection = hitResult.getDirection();
-        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             spawnTrail(serverLevel, player.getEyePosition(), hitResult.getLocation());
         }
         level.playSound(null, player.blockPosition(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 0.8F, 1.15F);
 
         if (tryPlaceTorch(level, player, launcher, anchorPos.relative(hitDirection), hitDirection)
                 || tryPlaceTorch(level, player, launcher, anchorPos.above(), Direction.UP)) {
-            return InteractionResultHolder.sidedSuccess(launcher, level.isClientSide);
+            return InteractionResult.SUCCESS;
         }
 
-        if (!level.isClientSide) {
-            player.displayClientMessage(Component.literal("No valid torch spot in range.").withStyle(ChatFormatting.GRAY), true);
+        if (!level.isClientSide()) {
+            player.sendOverlayMessage(Component.literal("No valid torch spot in range.").withStyle(ChatFormatting.GRAY));
         }
-        return InteractionResultHolder.fail(launcher);
+        return InteractionResult.FAIL;
     }
 
     private void spawnTrail(ServerLevel level, Vec3 start, Vec3 end) {
@@ -97,7 +97,7 @@ public final class TorchLauncherItem extends Item {
             return false;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             level.setBlock(placePos, placedState, 3);
             level.playSound(null, placePos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.1F);
             if (!player.hasInfiniteMaterials()) {
