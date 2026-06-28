@@ -259,7 +259,7 @@ public class FoundryBlockEntity extends BlockEntity implements MenuProvider {
         recipe.consumeInputs(items);
 
         ItemStack output = items.get(OUTPUT_SLOT);
-        ItemStack result = recipe.result().copy();
+        ItemStack result = recipe.result().create();
         if (output.isEmpty()) {
             items.set(OUTPUT_SLOT, result);
         } else {

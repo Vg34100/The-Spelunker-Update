@@ -446,6 +446,22 @@ Note: The `-raw.jar` files are intermediate builds missing the common module - d
 - This repo frequently has user-owned texture edits in `common/src/main/resources/assets/sagittary/textures/`
 - Do not stage or revert those files unless the user explicitly asks for that
 
+### MC 26.1.x Item Model Definitions (items/ directory)
+
+In MC 26.1.2, every item requires an explicit `assets/<ns>/items/<id>.json` file. Without it, the item shows as a missing texture (purple/black). The `models/item/<id>.json` files still define geometry and textures but are no longer auto-selected — they must be explicitly referenced from the item definition.
+
+Simple item definition format:
+```json
+{"model": {"type": "minecraft:model", "model": "spelunkery:item/<id>"}}
+```
+
+For items with animated states:
+- Shields: `minecraft:condition` + `minecraft:using_item` property (on_true = blocking model)
+- Bows: `minecraft:condition` + `minecraft:using_item`, with `minecraft:range_dispatch` + `minecraft:use_duration` (scale 0.05) on the true branch
+- Custom predicates (old `overrides` system): replace with `minecraft:range_dispatch` + `minecraft:custom_model_data` property; set `DataComponents.CUSTOM_MODEL_DATA` on the item when the state changes
+
+Recipe results also changed: `ItemStack.CODEC` fails for mod items at recipe-load time because mod item component defaults aren't initialized yet. Use `ItemStackTemplate.CODEC` / `ItemStackTemplate.STREAM_CODEC` instead, and call `.create()` instead of `.copy()` to produce the actual `ItemStack` at assemble time.
+
 ### MC 26.1.x Recipe Ingredient Format
 
 All recipe JSON ingredients changed format in MC 26.1.2:

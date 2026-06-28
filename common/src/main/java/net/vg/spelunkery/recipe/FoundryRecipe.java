@@ -7,6 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
@@ -19,20 +20,20 @@ import java.util.List;
 
 public record FoundryRecipe(
         List<FoundryIngredient> ingredients,
-        ItemStack result,
+        ItemStackTemplate result,
         int processTime,
         int lavaCost
 ) implements Recipe<FoundryRecipeInput> {
     public static final MapCodec<FoundryRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             FoundryIngredient.CODEC.listOf().fieldOf("ingredients").forGetter(FoundryRecipe::ingredients),
-            ItemStack.CODEC.fieldOf("result").forGetter(FoundryRecipe::result),
+            ItemStackTemplate.CODEC.fieldOf("result").forGetter(FoundryRecipe::result),
             Codec.intRange(1, 1200).optionalFieldOf("process_time", 200).forGetter(FoundryRecipe::processTime),
             Codec.intRange(1, 8).optionalFieldOf("lava_cost", 1).forGetter(FoundryRecipe::lavaCost)
     ).apply(instance, FoundryRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, FoundryRecipe> STREAM_CODEC = StreamCodec.composite(
             FoundryIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), FoundryRecipe::ingredients,
-            ItemStack.STREAM_CODEC, FoundryRecipe::result,
+            ItemStackTemplate.STREAM_CODEC, FoundryRecipe::result,
             ByteBufCodecs.VAR_INT, FoundryRecipe::processTime,
             ByteBufCodecs.VAR_INT, FoundryRecipe::lavaCost,
             FoundryRecipe::new
@@ -52,7 +53,7 @@ public record FoundryRecipe(
 
     @Override
     public ItemStack assemble(FoundryRecipeInput input) {
-        return result.copy();
+        return result.create();
     }
 
     @Override
@@ -90,8 +91,9 @@ public record FoundryRecipe(
             return true;
         }
 
-        return ItemStack.isSameItemSameComponents(output, result)
-                && output.getCount() + result.getCount() <= output.getMaxStackSize();
+        ItemStack resultStack = result.create();
+        return ItemStack.isSameItemSameComponents(output, resultStack)
+                && output.getCount() + resultStack.getCount() <= output.getMaxStackSize();
     }
 
     public void consumeInputs(List<ItemStack> items) {

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
@@ -52,6 +53,8 @@ public final class MinerHelmetHelper {
     public static ItemStack socket(ItemStack original, MinerHelmetGem gem) {
         ItemStack result = original.copy();
         CustomData.update(DataComponents.CUSTOM_DATA, result, tag -> tag.putString(GEM_KEY, gem.id()));
+        result.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(
+                List.of(modelPredicate(result)), List.of(), List.of(), List.of()));
         result.set(DataComponents.LORE, new ItemLore(List.of(
                 Component.literal("Socketed: " + gem.title()).withStyle(ChatFormatting.GRAY),
                 Component.literal(gem.effectText()).withStyle(ChatFormatting.AQUA)
