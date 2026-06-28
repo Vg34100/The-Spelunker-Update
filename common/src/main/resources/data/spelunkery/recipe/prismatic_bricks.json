@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:polished_prismatic_stone"
-    }
+    "#": "spelunkery:polished_prismatic_stone"
   },
   "pattern": [
     "##",

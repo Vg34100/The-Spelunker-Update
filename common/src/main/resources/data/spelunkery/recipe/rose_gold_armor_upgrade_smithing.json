@@ -1,13 +1,7 @@
 {
   "type": "spelunkery:armor_upgrade_smithing",
-  "template": {
-    "item": "spelunkery:rose_gold_filigree"
-  },
-  "base": {
-    "tag": "spelunkery:iron_armor"
-  },
-  "addition": {
-    "item": "spelunkery:rose_gold_ingot"
-  },
+  "template": "spelunkery:rose_gold_filigree",
+  "base": "#spelunkery:iron_armor",
+  "addition": "spelunkery:rose_gold_ingot",
   "upgrade": "rose_gold"
 }

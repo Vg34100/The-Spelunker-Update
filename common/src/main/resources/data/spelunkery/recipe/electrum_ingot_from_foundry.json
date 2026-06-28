@@ -2,15 +2,11 @@
   "type": "spelunkery:foundry",
   "ingredients": [
     {
-      "ingredient": {
-        "item": "minecraft:gold_ingot"
-      },
+      "ingredient": "minecraft:gold_ingot",
       "count": 1
     },
     {
-      "ingredient": {
-        "item": "spelunkery:silver_ingot"
-      },
+      "ingredient": "spelunkery:silver_ingot",
       "count": 1
     }
   ],

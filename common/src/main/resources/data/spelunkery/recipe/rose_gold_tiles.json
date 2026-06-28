@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:rose_gold_ingot"
-    }
+    "#": "spelunkery:rose_gold_ingot"
   },
   "pattern": [
     "##",

@@ -7,15 +7,9 @@
     " S "
   ],
   "key": {
-    "B": {
-      "item": "spelunkery:bronze_ingot"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "T": {
-      "item": "minecraft:torch"
-    }
+    "B": "spelunkery:bronze_ingot",
+    "S": "minecraft:stick",
+    "T": "minecraft:torch"
   },
   "result": {
     "id": "spelunkery:torch_launcher",

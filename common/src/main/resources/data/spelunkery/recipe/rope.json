@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spelunkery:rope_bundle"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
-    }
+    "spelunkery:rope_bundle",
+    "minecraft:string",
+    "minecraft:string",
+    "minecraft:string",
+    "minecraft:string"
   ],
   "result": {
     "id": "spelunkery:rope",

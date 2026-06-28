@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spelunkery:raw_silver_block"
-    }
+    "spelunkery:raw_silver_block"
   ],
   "result": {
     "count": 9,

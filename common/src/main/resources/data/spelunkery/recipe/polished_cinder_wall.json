@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:polished_cinder"
-    }
+    "#": "spelunkery:polished_cinder"
   },
   "pattern": [
     "###",

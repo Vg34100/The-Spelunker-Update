@@ -6,12 +6,8 @@
     " s "
   ],
   "key": {
-    "i": {
-      "item": "spelunkery:silver_ingot"
-    },
-    "s": {
-      "item": "minecraft:stick"
-    }
+    "i": "spelunkery:silver_ingot",
+    "s": "minecraft:stick"
   },
   "result": {
     "id": "spelunkery:silver_sword",

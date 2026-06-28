@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:cinder_tiles"
-    }
+    "#": "spelunkery:cinder_tiles"
   },
   "pattern": [
     "###",

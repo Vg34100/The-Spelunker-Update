@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:mycelium_mud_bricks"
-    }
+    "#": "spelunkery:mycelium_mud_bricks"
   },
   "pattern": [
     "#  ",

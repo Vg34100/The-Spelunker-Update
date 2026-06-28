@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:prismatic_tiles"
-    }
+    "#": "spelunkery:prismatic_tiles"
   },
   "pattern": [
     "#  ",

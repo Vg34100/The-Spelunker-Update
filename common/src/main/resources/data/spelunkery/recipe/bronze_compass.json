@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "B": {
-      "item": "spelunkery:bronze_ingot"
-    },
-    "C": {
-      "item": "minecraft:compass"
-    }
+    "B": "spelunkery:bronze_ingot",
+    "C": "minecraft:compass"
   },
   "pattern": [
     " B ",

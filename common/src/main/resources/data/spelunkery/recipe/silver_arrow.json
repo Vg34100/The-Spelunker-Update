@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "combat",
   "key": {
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "S": {
-      "item": "spelunkery:silver_ingot"
-    },
-    "T": {
-      "item": "minecraft:stick"
-    }
+    "F": "minecraft:flint",
+    "S": "spelunkery:silver_ingot",
+    "T": "minecraft:stick"
   },
   "pattern": [
     "F",

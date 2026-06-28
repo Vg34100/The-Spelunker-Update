@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "m": {
-      "item": "spelunkery:nickel_ingot"
-    },
-    "p": {
-      "item": "minecraft:paper"
-    }
+    "m": "spelunkery:nickel_ingot",
+    "p": "minecraft:paper"
   },
   "pattern": [
     " m ",

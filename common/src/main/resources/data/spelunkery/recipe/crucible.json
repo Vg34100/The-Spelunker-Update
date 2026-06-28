@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:deepslate_bricks"
-    },
-    "C": {
-      "item": "minecraft:cauldron"
-    }
+    "#": "minecraft:deepslate_bricks",
+    "C": "minecraft:cauldron"
   },
   "pattern": [
     "###",

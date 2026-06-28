@@ -6,12 +6,8 @@
     " si"
   ],
   "key": {
-    "i": {
-      "item": "spelunkery:electrum_ingot"
-    },
-    "s": {
-      "item": "minecraft:string"
-    }
+    "i": "spelunkery:electrum_ingot",
+    "s": "minecraft:string"
   },
   "result": {
     "id": "spelunkery:electrum_bow",

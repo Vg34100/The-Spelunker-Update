@@ -7,9 +7,7 @@
     "MMM"
   ],
   "key": {
-    "M": {
-      "item": "spelunkery:invar_ingot"
-    }
+    "M": "spelunkery:invar_ingot"
   },
   "result": {
     "id": "spelunkery:invar_chestplate",

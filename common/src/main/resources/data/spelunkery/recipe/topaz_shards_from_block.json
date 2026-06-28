@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spelunkery:topaz_block"
-    }
+    "spelunkery:topaz_block"
   ],
   "result": {
     "count": 4,

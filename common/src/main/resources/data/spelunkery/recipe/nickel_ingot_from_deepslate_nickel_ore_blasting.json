@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.7,
-  "ingredient": {
-    "item": "spelunkery:deepslate_nickel_ore"
-  },
+  "ingredient": "spelunkery:deepslate_nickel_ore",
   "result": {
     "id": "spelunkery:nickel_ingot"
   }

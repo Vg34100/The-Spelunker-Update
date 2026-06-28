@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spelunkery:tin_block"
-    }
+    "spelunkery:tin_block"
   ],
   "result": {
     "count": 9,

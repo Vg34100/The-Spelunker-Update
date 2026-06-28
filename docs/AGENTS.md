@@ -445,3 +445,27 @@ Note: The `-raw.jar` files are intermediate builds missing the common module - d
 
 - This repo frequently has user-owned texture edits in `common/src/main/resources/assets/sagittary/textures/`
 - Do not stage or revert those files unless the user explicitly asks for that
+
+### MC 26.1.x Recipe Ingredient Format
+
+All recipe JSON ingredients changed format in MC 26.1.2:
+
+- Shaped key values: `{"item": "mod:id"}` → `"mod:id"`, `{"tag": "mod:tag"}` → `"#mod:tag"`
+- Shapeless ingredient list elements: same transformation
+- Smelting/blasting `ingredient` field: same transformation
+- Custom recipe codecs using `Ingredient.CODEC`: same transformation applies automatically
+
+This affects **every single recipe file** in the mod. Fix with a recursive JSON transform that replaces `{"item": "x"}` → `"x"` and `{"tag": "x"}` → `"#x"` throughout. See `fix_recipes.py` approach.
+
+### MC 26.1.x Registration Warning
+
+If startup crashes contain:
+
+```text
+Block id not set
+Item id not set
+```
+
+check registration/property helpers first before debugging anything else.
+
+Recent Minecraft versions may require IDs to be assigned on `BlockBehaviour.Properties` and `Item.Properties` during construction. Fix the shared registration helpers before patching individual registrations.

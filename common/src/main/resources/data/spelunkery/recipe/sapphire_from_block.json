@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spelunkery:sapphire_block"
-    }
+    "spelunkery:sapphire_block"
   ],
   "result": {
     "count": 4,

@@ -6,15 +6,9 @@
     "r  "
   ],
   "key": {
-    "r": {
-      "item": "spelunkery:rose_gold_ingot"
-    },
-    "g": {
-      "item": "minecraft:glass_pane"
-    },
-    "s": {
-      "item": "minecraft:spyglass"
-    }
+    "r": "spelunkery:rose_gold_ingot",
+    "g": "minecraft:glass_pane",
+    "s": "minecraft:spyglass"
   },
   "result": {
     "id": "spelunkery:prospector_lens",

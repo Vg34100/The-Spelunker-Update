@@ -6,12 +6,8 @@
     "TLT"
   ],
   "key": {
-    "T": {
-      "item": "spelunkery:tin_ingot"
-    },
-    "L": {
-      "item": "minecraft:lantern"
-    }
+    "T": "spelunkery:tin_ingot",
+    "L": "minecraft:lantern"
   },
   "result": {
     "id": "spelunkery:miners_helmet",

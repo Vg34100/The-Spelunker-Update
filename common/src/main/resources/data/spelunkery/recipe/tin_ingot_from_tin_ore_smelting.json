@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.7,
-  "ingredient": {
-    "item": "spelunkery:tin_ore"
-  },
+  "ingredient": "spelunkery:tin_ore",
   "result": {
     "id": "spelunkery:tin_ingot"
   }

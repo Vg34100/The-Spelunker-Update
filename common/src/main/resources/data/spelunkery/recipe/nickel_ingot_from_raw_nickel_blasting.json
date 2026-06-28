@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.1,
-  "ingredient": {
-    "item": "spelunkery:raw_nickel"
-  },
+  "ingredient": "spelunkery:raw_nickel",
   "result": {
     "id": "spelunkery:nickel_ingot"
   }

@@ -7,9 +7,7 @@
     "MMM"
   ],
   "key": {
-    "M": {
-      "item": "spelunkery:silver_ingot"
-    }
+    "M": "spelunkery:silver_ingot"
   },
   "result": {
     "id": "spelunkery:silver_chestplate",

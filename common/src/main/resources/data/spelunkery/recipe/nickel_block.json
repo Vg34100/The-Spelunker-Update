@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spelunkery:nickel_ingot"
-    }
+    "#": "spelunkery:nickel_ingot"
   },
   "pattern": [
     "###",
