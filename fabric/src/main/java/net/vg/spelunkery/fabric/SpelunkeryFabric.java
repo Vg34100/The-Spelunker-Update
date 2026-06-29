@@ -30,9 +30,9 @@ public final class SpelunkeryFabric implements ModInitializer {
         Spelunkery.init();
         registerVanillaCreativeTabs();
         FabricPotionBrewingBuilder.BUILD.register(builder -> {
-            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
-            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
-            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());
+            builder.registerItemRecipe(Items.POTION, Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
+            builder.registerItemRecipe(Items.POTION, Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
+            builder.registerItemRecipe(Items.POTION, Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());
         });
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
