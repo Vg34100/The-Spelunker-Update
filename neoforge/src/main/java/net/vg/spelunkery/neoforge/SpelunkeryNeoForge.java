@@ -1,11 +1,15 @@
 package net.vg.spelunkery.neoforge;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.vg.spelunkery.Spelunkery;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -63,9 +67,25 @@ public final class SpelunkeryNeoForge {
 
     private void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
         var builder = event.getBuilder();
-        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), new ItemStack(SpelunkeryItems.SPELUNKERS_BREW.get()));
-        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(SpelunkeryItems.BAT_WING.get()), new ItemStack(SpelunkeryItems.DANGERSENSE_TONIC.get()));
-        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.IRON_INGOT), new ItemStack(SpelunkeryItems.MINERS_TONIC.get()));
+        builder.addRecipe(tonicRecipe(Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), new ItemStack(SpelunkeryItems.SPELUNKERS_BREW.get())));
+        builder.addRecipe(tonicRecipe(Ingredient.of(SpelunkeryItems.BAT_WING.get()), new ItemStack(SpelunkeryItems.DANGERSENSE_TONIC.get())));
+        builder.addRecipe(tonicRecipe(Ingredient.of(Items.IRON_INGOT), new ItemStack(SpelunkeryItems.MINERS_TONIC.get())));
+    }
+
+    private static IBrewingRecipe tonicRecipe(Ingredient reagent, ItemStack output) {
+        return new IBrewingRecipe() {
+            @Override
+            public boolean isInput(ItemStack input) {
+                if (!input.is(Items.POTION)) return false;
+                return input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
+                        .potion().map(p -> p.is(Potions.THICK)).orElse(false);
+            }
+            @Override public boolean isIngredient(ItemStack ingredient) { return reagent.test(ingredient); }
+            @Override
+            public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
+                return isInput(input) && isIngredient(ingredient) ? output.copy() : ItemStack.EMPTY;
+            }
+        };
     }
 
     private void onLivingDrops(LivingDropsEvent event) {
