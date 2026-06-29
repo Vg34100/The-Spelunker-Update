@@ -10,14 +10,16 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.level.Level;
 
-public final class TonicItem extends Item {
+public final class TonicItem extends PotionItem {
     private final Holder<MobEffect> effect;
     private final int duration;
     private final int amplifier;
@@ -68,5 +70,10 @@ public final class TonicItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, player, hand);
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.translatable(getDescriptionId());
     }
 }
