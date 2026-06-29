@@ -165,5 +165,8 @@
   "biome.spelunkery.crystal_caverns": "Crystal Caverns",
   "biome.spelunkery.marble_caves": "Marble Caves",
   "biome.spelunkery.magma_vaults": "Magma Vaults",
-  "biome.spelunkery.fungal_grottos": "Fungal Grottos"
+  "biome.spelunkery.fungal_grottos": "Fungal Grottos",
+  "effect.spelunkery.spelunking": "Spelunking",
+  "effect.spelunkery.danger_sense": "Danger Sense",
+  "effect.spelunkery.miners_focus": "Miner's Focus"
 }

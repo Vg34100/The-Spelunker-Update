@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -17,6 +18,7 @@ import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryBrewingRecipes;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
@@ -26,6 +28,7 @@ public final class SpelunkeryFabric implements ModInitializer {
     public void onInitialize() {
         Spelunkery.init();
         registerVanillaCreativeTabs();
+        FabricPotionBrewingBuilder.BUILD.register(SpelunkeryBrewingRecipes::register);
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);

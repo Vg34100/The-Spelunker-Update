@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "spelunkery:invar"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "spelunkery:invar"
+      }
+    ]
+  }
+}

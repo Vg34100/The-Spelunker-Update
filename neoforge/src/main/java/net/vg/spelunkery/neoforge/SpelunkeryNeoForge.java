@@ -7,6 +7,7 @@ import net.minecraft.world.level.ItemLike;
 import net.vg.spelunkery.Spelunkery;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -19,6 +20,7 @@ import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
+import net.vg.spelunkery.registry.SpelunkeryBrewingRecipes;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
@@ -30,6 +32,7 @@ public final class SpelunkeryNeoForge {
         NeoForge.EVENT_BUS.addListener(this::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(this::onBlockBreak);
         NeoForge.EVENT_BUS.addListener(this::onLivingDrops);
+        NeoForge.EVENT_BUS.addListener(this::onRegisterBrewingRecipes);
     }
 
     private void onShieldBlock(LivingShieldBlockEvent event) {
@@ -55,6 +58,10 @@ public final class SpelunkeryNeoForge {
         if (event.getPlayer() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
             MinerHelmetHelper.onBlockMined(serverPlayer, event.getPos(), event.getState());
         }
+    }
+
+    private void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        SpelunkeryBrewingRecipes.register(event.getBuilder());
     }
 
     private void onLivingDrops(LivingDropsEvent event) {

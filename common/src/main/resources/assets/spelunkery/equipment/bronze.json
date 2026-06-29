@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "spelunkery:bronze"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "spelunkery:bronze"
+      }
+    ]
+  }
+}

@@ -20,6 +20,7 @@ import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
+import net.vg.spelunkery.registry.SpelunkeryEffects;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
 import java.util.List;
@@ -97,8 +98,7 @@ public final class MinerHelmetHelper {
             case RUBY -> apply(player, MobEffects.FIRE_RESISTANCE);
             case SAPPHIRE -> apply(player, MobEffects.NIGHT_VISION);
             case DIAMOND -> apply(player, MobEffects.RESISTANCE);
-            case TOPAZ -> {
-            }
+            case TOPAZ -> apply(player, SpelunkeryGameplayHelper.holder(SpelunkeryEffects.SPELUNKING.get()));
             case AMETHYST -> pulseMobs(player);
             case EMERALD -> {
             }
