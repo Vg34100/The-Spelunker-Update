@@ -24,7 +24,6 @@
   "mixins": [
     "spelunkery.mixins.json"
   ],
-  "accessWidener": "spelunkery.accesswidener",
   "depends": {
     "fabricloader": ">=0.19.3",
     "minecraft": "~26.1.2",

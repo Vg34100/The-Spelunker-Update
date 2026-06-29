@@ -3,6 +3,8 @@ package net.vg.spelunkery.registry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChainBlock;
@@ -39,7 +41,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.STONE)
                     .strength(3.0F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("tin_ore")))
     );
 
     public static final RegistrySupplier<Block> DEEPSLATE_TIN_ORE = registerBlock(
@@ -48,7 +50,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.DEEPSLATE)
                     .strength(4.5F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.DEEPSLATE))
+                    .sound(SoundType.DEEPSLATE).setId(blockKey("deepslate_tin_ore")))
     );
 
     public static final RegistrySupplier<Block> RAW_TIN_BLOCK = registerBlock(
@@ -57,7 +59,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("raw_tin_block")))
     );
 
     public static final RegistrySupplier<Block> TIN_BLOCK = registerBlock(
@@ -66,7 +68,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("tin_block")))
     );
 
     public static final RegistrySupplier<Block> NICKEL_ORE = registerBlock(
@@ -75,7 +77,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.STONE)
                     .strength(4.0F, 4.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("nickel_ore")))
     );
 
     public static final RegistrySupplier<Block> DEEPSLATE_NICKEL_ORE = registerBlock(
@@ -84,7 +86,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.DEEPSLATE)
                     .strength(5.0F, 4.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.DEEPSLATE))
+                    .sound(SoundType.DEEPSLATE).setId(blockKey("deepslate_nickel_ore")))
     );
 
     public static final RegistrySupplier<Block> RAW_NICKEL_BLOCK = registerBlock(
@@ -93,7 +95,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("raw_nickel_block")))
     );
 
     public static final RegistrySupplier<Block> NICKEL_BLOCK = registerBlock(
@@ -102,7 +104,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("nickel_block")))
     );
 
     public static final RegistrySupplier<Block> SILVER_ORE = registerBlock(
@@ -111,7 +113,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.STONE)
                     .strength(3.5F, 3.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("silver_ore")))
     );
 
     public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = registerBlock(
@@ -120,7 +122,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.DEEPSLATE)
                     .strength(4.5F, 4.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.DEEPSLATE))
+                    .sound(SoundType.DEEPSLATE).setId(blockKey("deepslate_silver_ore")))
     );
 
     public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = registerBlock(
@@ -129,7 +131,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("raw_silver_block")))
     );
 
     public static final RegistrySupplier<Block> SILVER_BLOCK = registerBlock(
@@ -138,7 +140,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("silver_block")))
     );
 
     public static final RegistrySupplier<Block> TOPAZ_BLOCK = registerBlock(
@@ -148,7 +150,7 @@ public final class SpelunkeryBlocks {
                     .strength(1.5F, 1.5F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
-                    .lightLevel(state -> 5))
+                    .lightLevel(state -> 5).setId(blockKey("topaz_block")))
     );
 
     public static final RegistrySupplier<Block> RUBY_BLOCK = registerBlock(
@@ -158,7 +160,7 @@ public final class SpelunkeryBlocks {
                     .strength(1.7F, 1.8F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
-                    .lightLevel(state -> 5))
+                    .lightLevel(state -> 5).setId(blockKey("ruby_block")))
     );
 
     public static final RegistrySupplier<Block> SAPPHIRE_BLOCK = registerBlock(
@@ -168,7 +170,7 @@ public final class SpelunkeryBlocks {
                     .strength(1.7F, 1.8F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
-                    .lightLevel(state -> 5))
+                    .lightLevel(state -> 5).setId(blockKey("sapphire_block")))
     );
 
     public static final RegistrySupplier<Block> GEM_POCKET = registerBlock(
@@ -178,7 +180,7 @@ public final class SpelunkeryBlocks {
                     .strength(2.4F, 3.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("gem_pocket")))
     );
 
     public static final RegistrySupplier<Block> MARBLE = registerBlock(
@@ -187,82 +189,82 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.QUARTZ)
                     .strength(1.5F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.TUFF))
+                    .sound(SoundType.TUFF).setId(blockKey("marble")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_STAIRS = registerBlock(
             "marble_stairs",
-            () -> new StairBlock(MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE.get()))
+            () -> new StairBlock(MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).setId(blockKey("marble_stairs")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_SLAB = registerBlock(
             "marble_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).setId(blockKey("marble_slab")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_WALL = registerBlock(
             "marble_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).forceSolidOn().setId(blockKey("marble_wall")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_MARBLE = registerBlock(
             "polished_marble",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.POLISHED_DEEPSLATE))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.POLISHED_DEEPSLATE).setId(blockKey("polished_marble")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_MARBLE_STAIRS = registerBlock(
             "polished_marble_stairs",
-            () -> new StairBlock(POLISHED_MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()))
+            () -> new StairBlock(POLISHED_MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()).setId(blockKey("polished_marble_stairs")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_MARBLE_SLAB = registerBlock(
             "polished_marble_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()).setId(blockKey("polished_marble_slab")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_MARBLE_WALL = registerBlock(
             "polished_marble_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_MARBLE.get()).forceSolidOn().setId(blockKey("polished_marble_wall")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_BRICKS = registerBlock(
             "marble_bricks",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_BRICKS))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_BRICKS).setId(blockKey("marble_bricks")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_BRICK_STAIRS = registerBlock(
             "marble_brick_stairs",
-            () -> new StairBlock(MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()))
+            () -> new StairBlock(MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()).setId(blockKey("marble_brick_stairs")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_BRICK_SLAB = registerBlock(
             "marble_brick_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()).setId(blockKey("marble_brick_slab")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_BRICK_WALL = registerBlock(
             "marble_brick_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_BRICKS.get()).forceSolidOn().setId(blockKey("marble_brick_wall")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_TILES = registerBlock(
             "marble_tiles",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_TILES))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MARBLE.get()).sound(SoundType.DEEPSLATE_TILES).setId(blockKey("marble_tiles")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_TILE_STAIRS = registerBlock(
             "marble_tile_stairs",
-            () -> new StairBlock(MARBLE_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()))
+            () -> new StairBlock(MARBLE_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).setId(blockKey("marble_tile_stairs")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_TILE_SLAB = registerBlock(
             "marble_tile_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).setId(blockKey("marble_tile_slab")))
     );
 
     public static final RegistrySupplier<Block> MARBLE_TILE_WALL = registerBlock(
             "marble_tile_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MARBLE_TILES.get()).forceSolidOn().setId(blockKey("marble_tile_wall")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_STONE = registerBlock(
@@ -272,82 +274,82 @@ public final class SpelunkeryBlocks {
                     .strength(1.8F, 6.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("prismatic_stone")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_STONE_STAIRS = registerBlock(
             "prismatic_stone_stairs",
-            () -> new StairBlock(PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()))
+            () -> new StairBlock(PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).setId(blockKey("prismatic_stone_stairs")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_STONE_SLAB = registerBlock(
             "prismatic_stone_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).setId(blockKey("prismatic_stone_slab")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_STONE_WALL = registerBlock(
             "prismatic_stone_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).forceSolidOn().setId(blockKey("prismatic_stone_wall")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE = registerBlock(
             "polished_prismatic_stone",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST_CLUSTER))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST_CLUSTER).setId(blockKey("polished_prismatic_stone")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_STAIRS = registerBlock(
             "polished_prismatic_stone_stairs",
-            () -> new StairBlock(POLISHED_PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()))
+            () -> new StairBlock(POLISHED_PRISMATIC_STONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()).setId(blockKey("polished_prismatic_stone_stairs")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_SLAB = registerBlock(
             "polished_prismatic_stone_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()).setId(blockKey("polished_prismatic_stone_slab")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_PRISMATIC_STONE_WALL = registerBlock(
             "polished_prismatic_stone_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_PRISMATIC_STONE.get()).forceSolidOn().setId(blockKey("polished_prismatic_stone_wall")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_BRICKS = registerBlock(
             "prismatic_bricks",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST).setId(blockKey("prismatic_bricks")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_BRICK_STAIRS = registerBlock(
             "prismatic_brick_stairs",
-            () -> new StairBlock(PRISMATIC_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()))
+            () -> new StairBlock(PRISMATIC_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()).setId(blockKey("prismatic_brick_stairs")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_BRICK_SLAB = registerBlock(
             "prismatic_brick_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()).setId(blockKey("prismatic_brick_slab")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_BRICK_WALL = registerBlock(
             "prismatic_brick_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_BRICKS.get()).forceSolidOn().setId(blockKey("prismatic_brick_wall")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_TILES = registerBlock(
             "prismatic_tiles",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_STONE.get()).sound(SoundType.AMETHYST).setId(blockKey("prismatic_tiles")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_TILE_STAIRS = registerBlock(
             "prismatic_tile_stairs",
-            () -> new StairBlock(PRISMATIC_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()))
+            () -> new StairBlock(PRISMATIC_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).setId(blockKey("prismatic_tile_stairs")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_TILE_SLAB = registerBlock(
             "prismatic_tile_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).setId(blockKey("prismatic_tile_slab")))
     );
 
     public static final RegistrySupplier<Block> PRISMATIC_TILE_WALL = registerBlock(
             "prismatic_tile_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(PRISMATIC_TILES.get()).forceSolidOn().setId(blockKey("prismatic_tile_wall")))
     );
 
     public static final RegistrySupplier<Block> BLUE_CRYSTAL = registerBlock(
@@ -358,7 +360,7 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .randomTicks()
                     .noOcclusion()
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("blue_crystal")))
     );
 
     public static final RegistrySupplier<Block> GREEN_CRYSTAL = registerBlock(
@@ -369,7 +371,7 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .randomTicks()
                     .noOcclusion()
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("green_crystal")))
     );
 
     public static final RegistrySupplier<Block> RED_CRYSTAL = registerBlock(
@@ -380,7 +382,7 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .randomTicks()
                     .noOcclusion()
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("red_crystal")))
     );
 
     public static final RegistrySupplier<Block> YELLOW_CRYSTAL = registerBlock(
@@ -391,7 +393,7 @@ public final class SpelunkeryBlocks {
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .randomTicks()
                     .noOcclusion()
-                    .lightLevel(state -> 4))
+                    .lightLevel(state -> 4).setId(blockKey("yellow_crystal")))
     );
 
     public static final RegistrySupplier<Block> CINDER_ROCK = registerBlock(
@@ -400,82 +402,82 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_RED)
                     .strength(1.7F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.TUFF))
+                    .sound(SoundType.TUFF).setId(blockKey("cinder_rock")))
     );
 
     public static final RegistrySupplier<Block> CINDER_ROCK_STAIRS = registerBlock(
             "cinder_rock_stairs",
-            () -> new StairBlock(CINDER_ROCK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()))
+            () -> new StairBlock(CINDER_ROCK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).setId(blockKey("cinder_rock_stairs")))
     );
 
     public static final RegistrySupplier<Block> CINDER_ROCK_SLAB = registerBlock(
             "cinder_rock_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).setId(blockKey("cinder_rock_slab")))
     );
 
     public static final RegistrySupplier<Block> CINDER_ROCK_WALL = registerBlock(
             "cinder_rock_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).forceSolidOn().setId(blockKey("cinder_rock_wall")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_CINDER = registerBlock(
             "polished_cinder",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.POLISHED_DEEPSLATE))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.POLISHED_DEEPSLATE).setId(blockKey("polished_cinder")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_CINDER_STAIRS = registerBlock(
             "polished_cinder_stairs",
-            () -> new StairBlock(POLISHED_CINDER.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()))
+            () -> new StairBlock(POLISHED_CINDER.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()).setId(blockKey("polished_cinder_stairs")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_CINDER_SLAB = registerBlock(
             "polished_cinder_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()).setId(blockKey("polished_cinder_slab")))
     );
 
     public static final RegistrySupplier<Block> POLISHED_CINDER_WALL = registerBlock(
             "polished_cinder_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_CINDER.get()).forceSolidOn().setId(blockKey("polished_cinder_wall")))
     );
 
     public static final RegistrySupplier<Block> CINDER_BRICKS = registerBlock(
             "cinder_bricks",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_BRICKS))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_BRICKS).setId(blockKey("cinder_bricks")))
     );
 
     public static final RegistrySupplier<Block> CINDER_BRICK_STAIRS = registerBlock(
             "cinder_brick_stairs",
-            () -> new StairBlock(CINDER_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()))
+            () -> new StairBlock(CINDER_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()).setId(blockKey("cinder_brick_stairs")))
     );
 
     public static final RegistrySupplier<Block> CINDER_BRICK_SLAB = registerBlock(
             "cinder_brick_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()).setId(blockKey("cinder_brick_slab")))
     );
 
     public static final RegistrySupplier<Block> CINDER_BRICK_WALL = registerBlock(
             "cinder_brick_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_BRICKS.get()).forceSolidOn().setId(blockKey("cinder_brick_wall")))
     );
 
     public static final RegistrySupplier<Block> CINDER_TILES = registerBlock(
             "cinder_tiles",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_TILES))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(CINDER_ROCK.get()).sound(SoundType.DEEPSLATE_TILES).setId(blockKey("cinder_tiles")))
     );
 
     public static final RegistrySupplier<Block> CINDER_TILE_STAIRS = registerBlock(
             "cinder_tile_stairs",
-            () -> new StairBlock(CINDER_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()))
+            () -> new StairBlock(CINDER_TILES.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()).setId(blockKey("cinder_tile_stairs")))
     );
 
     public static final RegistrySupplier<Block> CINDER_TILE_SLAB = registerBlock(
             "cinder_tile_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()).setId(blockKey("cinder_tile_slab")))
     );
 
     public static final RegistrySupplier<Block> CINDER_TILE_WALL = registerBlock(
             "cinder_tile_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(CINDER_TILES.get()).forceSolidOn().setId(blockKey("cinder_tile_wall")))
     );
 
     public static final RegistrySupplier<Block> ASHEN_DIRT = registerBlock(
@@ -483,7 +485,7 @@ public final class SpelunkeryBlocks {
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(0.6F)
-                    .sound(SoundType.ROOTED_DIRT))
+                    .sound(SoundType.ROOTED_DIRT).setId(blockKey("ashen_dirt")))
     );
 
     public static final RegistrySupplier<Block> SCORCHED_DRIPSTONE = registerBlock(
@@ -493,7 +495,7 @@ public final class SpelunkeryBlocks {
                     .strength(1.5F)
                     .sound(SoundType.POINTED_DRIPSTONE)
                     .randomTicks()
-                    .noOcclusion())
+                    .noOcclusion().setId(blockKey("scorched_dripstone")))
     );
 
     public static final RegistrySupplier<Block> CHARRED_BONES = registerBlock(
@@ -502,7 +504,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_BLACK)
                     .strength(2.0F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.BONE_BLOCK))
+                    .sound(SoundType.BONE_BLOCK).setId(blockKey("charred_bones")))
     );
 
     public static final RegistrySupplier<Block> MYCELIUM_MUD = registerBlock(
@@ -510,27 +512,27 @@ public final class SpelunkeryBlocks {
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(0.6F)
-                    .sound(SoundType.MUD))
+                    .sound(SoundType.MUD).setId(blockKey("mycelium_mud")))
     );
 
     public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICKS = registerBlock(
             "mycelium_mud_bricks",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD.get()).requiresCorrectToolForDrops().sound(SoundType.MUD_BRICKS))
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD.get()).requiresCorrectToolForDrops().sound(SoundType.MUD_BRICKS).setId(blockKey("mycelium_mud_bricks")))
     );
 
     public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_STAIRS = registerBlock(
             "mycelium_mud_brick_stairs",
-            () -> new StairBlock(MYCELIUM_MUD_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()))
+            () -> new StairBlock(MYCELIUM_MUD_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()).setId(blockKey("mycelium_mud_brick_stairs")))
     );
 
     public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_SLAB = registerBlock(
             "mycelium_mud_brick_slab",
-            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()))
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()).setId(blockKey("mycelium_mud_brick_slab")))
     );
 
     public static final RegistrySupplier<Block> MYCELIUM_MUD_BRICK_WALL = registerBlock(
             "mycelium_mud_brick_wall",
-            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()).forceSolidOn())
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(MYCELIUM_MUD_BRICKS.get()).forceSolidOn().setId(blockKey("mycelium_mud_brick_wall")))
     );
 
     public static final RegistrySupplier<Block> FUNGAL_MAT = registerBlock(
@@ -540,7 +542,7 @@ public final class SpelunkeryBlocks {
                     .strength(0.1F)
                     .noCollision()
                     .noOcclusion()
-                    .sound(SoundType.MOSS))
+                    .sound(SoundType.MOSS).setId(blockKey("fungal_mat")))
     );
 
     public static final RegistrySupplier<Block> BIOLUMINESCENT_MOSS = registerBlock(
@@ -549,7 +551,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.TERRACOTTA_CYAN)
                     .strength(0.2F)
                     .sound(SoundType.MOSS)
-                    .lightLevel(state -> 8))
+                    .lightLevel(state -> 8).setId(blockKey("bioluminescent_moss")))
     );
 
     public static final RegistrySupplier<Block> GLOWCAP = registerBlock(
@@ -560,7 +562,7 @@ public final class SpelunkeryBlocks {
                     .instabreak()
                     .noOcclusion()
                     .sound(SoundType.FUNGUS)
-                    .lightLevel(state -> 10))
+                    .lightLevel(state -> 10).setId(blockKey("glowcap")))
     );
 
     public static final RegistrySupplier<Block> BLUE_MUSHROOM_BLOCK = registerBlock(
@@ -568,7 +570,7 @@ public final class SpelunkeryBlocks {
             () -> new HugeMushroomBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_BLUE)
                     .strength(0.2F)
-                    .sound(SoundType.WOOD))
+                    .sound(SoundType.WOOD).setId(blockKey("blue_mushroom_block")))
     );
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = registerBlock(
@@ -577,7 +579,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("bronze_block")))
     );
 
     public static final RegistrySupplier<Block> BRONZE_TILES = registerBlock(
@@ -586,7 +588,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("bronze_tiles")))
     );
 
     public static final RegistrySupplier<Block> BRONZE_BARS = registerBlock(
@@ -596,7 +598,7 @@ public final class SpelunkeryBlocks {
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.CHAIN)
-                    .noOcclusion())
+                    .noOcclusion().setId(blockKey("bronze_bars")))
     );
 
     public static final RegistrySupplier<Block> BRONZE_CHAIN = registerBlock(
@@ -606,7 +608,7 @@ public final class SpelunkeryBlocks {
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.CHAIN)
-                    .noOcclusion())
+                    .noOcclusion().setId(blockKey("bronze_chain")))
     );
 
     public static final RegistrySupplier<Block> BRONZE_LANTERN = registerBlock(
@@ -617,7 +619,7 @@ public final class SpelunkeryBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.LANTERN)
                     .noOcclusion()
-                    .lightLevel(state -> 15))
+                    .lightLevel(state -> 15).setId(blockKey("bronze_lantern")))
     );
 
     public static final RegistrySupplier<Block> INVAR_BLOCK = registerBlock(
@@ -626,7 +628,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(5.5F, 6.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("invar_block")))
     );
 
     public static final RegistrySupplier<Block> INVAR_TILES = registerBlock(
@@ -635,7 +637,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(5.5F, 6.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("invar_tiles")))
     );
 
     public static final RegistrySupplier<Block> DAMAGED_INVAR_ANVIL = registerBlock(
@@ -644,7 +646,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(6.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.ANVIL), null)
+                    .sound(SoundType.ANVIL).setId(blockKey("damaged_invar_anvil")), null)
     );
 
     public static final RegistrySupplier<Block> CHIPPED_INVAR_ANVIL = registerBlock(
@@ -653,7 +655,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(6.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.ANVIL), DAMAGED_INVAR_ANVIL::get)
+                    .sound(SoundType.ANVIL).setId(blockKey("chipped_invar_anvil")), DAMAGED_INVAR_ANVIL::get)
     );
 
     public static final RegistrySupplier<Block> INVAR_ANVIL = registerBlock(
@@ -662,7 +664,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(6.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.ANVIL), CHIPPED_INVAR_ANVIL::get)
+                    .sound(SoundType.ANVIL).setId(blockKey("invar_anvil")), CHIPPED_INVAR_ANVIL::get)
     );
 
     public static final RegistrySupplier<Block> ROSE_GOLD_BLOCK = registerBlock(
@@ -671,7 +673,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_PINK)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("rose_gold_block")))
     );
 
     public static final RegistrySupplier<Block> ROSE_GOLD_TILES = registerBlock(
@@ -680,7 +682,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_PINK)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("rose_gold_tiles")))
     );
 
     public static final RegistrySupplier<Block> ELECTRUM_BLOCK = registerBlock(
@@ -689,7 +691,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.GOLD)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("electrum_block")))
     );
 
     public static final RegistrySupplier<Block> ELECTRUM_TILES = registerBlock(
@@ -698,7 +700,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.GOLD)
                     .strength(5.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL))
+                    .sound(SoundType.METAL).setId(blockKey("electrum_tiles")))
     );
 
     public static final RegistrySupplier<Block> ROPE = registerBlockWithoutItem(
@@ -708,7 +710,7 @@ public final class SpelunkeryBlocks {
                     .strength(0.3F)
                     .sound(SoundType.CHAIN)
                     .noCollision()
-                    .noOcclusion())
+                    .noOcclusion().setId(blockKey("rope")))
     );
 
     public static final RegistrySupplier<Block> CRUCIBLE = registerBlock(
@@ -717,7 +719,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(3.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("crucible")))
     );
 
     public static final RegistrySupplier<Block> FOUNDRY = registerBlock(
@@ -726,7 +728,7 @@ public final class SpelunkeryBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(4.0F, 6.0F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE))
+                    .sound(SoundType.STONE).setId(blockKey("foundry")))
     );
 
     private static boolean initialized;
@@ -741,6 +743,11 @@ public final class SpelunkeryBlocks {
 
         initialized = true;
         BLOCKS.register();
+    }
+
+
+    private static ResourceKey<Block> blockKey(String name) {
+        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Spelunkery.MOD_ID, name));
     }
 
     private static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> supplier) {
