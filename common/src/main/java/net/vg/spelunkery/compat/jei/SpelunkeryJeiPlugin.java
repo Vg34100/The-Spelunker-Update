@@ -9,11 +9,9 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
-import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
 import java.util.List;
 
@@ -38,11 +36,12 @@ public class SpelunkeryJeiPlugin implements IModPlugin {
         if (server == null) return;
 
         List<FoundryRecipe> foundryRecipes = server.getRecipeManager().getRecipes().stream()
-                .filter(holder -> holder.value().getType() == SpelunkeryRecipeTypes.FOUNDRY_TYPE.get())
-                .map(holder -> (RecipeHolder<FoundryRecipe>) holder)
-                .map(RecipeHolder::value)
+                .filter(h -> h.value() instanceof FoundryRecipe)
+                .map(h -> (FoundryRecipe) h.value())
                 .toList();
-        registration.addRecipes(FoundryCategory.TYPE, foundryRecipes);
+        if (!foundryRecipes.isEmpty()) {
+            registration.addRecipes(FoundryCategory.TYPE, foundryRecipes);
+        }
     }
 
     @Override

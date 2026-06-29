@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
@@ -29,11 +28,9 @@ public final class SpelunkeryFabric implements ModInitializer {
     public void onInitialize() {
         Spelunkery.init();
         registerVanillaCreativeTabs();
-        FabricPotionBrewingBuilder.BUILD.register(builder -> {
-            builder.registerItemRecipe(Items.POTION, Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
-            builder.registerItemRecipe(Items.POTION, Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
-            builder.registerItemRecipe(Items.POTION, Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());
-        });
+        ThickPotionBrewingRegistry.register(Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
+        ThickPotionBrewingRegistry.register(Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
+        ThickPotionBrewingRegistry.register(Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);

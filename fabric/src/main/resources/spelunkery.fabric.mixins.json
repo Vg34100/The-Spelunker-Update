@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.vg.spelunkery.fabric.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "minVersion": "0.8",
+  "mixins": [
+    "PotionBrewingMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
