@@ -11,14 +11,15 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
-import net.vg.spelunkery.registry.SpelunkeryBrewingRecipes;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 import net.vg.spelunkery.worldgen.SpelunkeryWorldgen;
@@ -28,7 +29,11 @@ public final class SpelunkeryFabric implements ModInitializer {
     public void onInitialize() {
         Spelunkery.init();
         registerVanillaCreativeTabs();
-        FabricPotionBrewingBuilder.BUILD.register(SpelunkeryBrewingRecipes::register);
+        FabricPotionBrewingBuilder.BUILD.register(builder -> {
+            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
+            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
+            builder.registerItemRecipe(Items.GLASS_BOTTLE, Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());
+        });
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ArmorUpgradeHelper.updateEquippedArmorEffects(player);

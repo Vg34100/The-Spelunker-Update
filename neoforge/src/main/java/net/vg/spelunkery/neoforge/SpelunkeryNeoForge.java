@@ -3,6 +3,8 @@ package net.vg.spelunkery.neoforge;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.vg.spelunkery.Spelunkery;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,7 +22,6 @@ import net.vg.spelunkery.gameplay.SpelunkeryGameplayHelper;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.item.BronzeShieldItem;
 import net.vg.spelunkery.item.MinerHelmetHelper;
-import net.vg.spelunkery.registry.SpelunkeryBrewingRecipes;
 import net.vg.spelunkery.registry.SpelunkeryCreativeTabs;
 import net.vg.spelunkery.registry.SpelunkeryItems;
 
@@ -61,7 +62,10 @@ public final class SpelunkeryNeoForge {
     }
 
     private void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        SpelunkeryBrewingRecipes.register(event.getBuilder());
+        var builder = event.getBuilder();
+        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), new ItemStack(SpelunkeryItems.SPELUNKERS_BREW.get()));
+        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(SpelunkeryItems.BAT_WING.get()), new ItemStack(SpelunkeryItems.DANGERSENSE_TONIC.get()));
+        builder.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.IRON_INGOT), new ItemStack(SpelunkeryItems.MINERS_TONIC.get()));
     }
 
     private void onLivingDrops(LivingDropsEvent event) {
