@@ -19,6 +19,9 @@
     ],
     "client": [
       "net.vg.spelunkery.fabric.client.SpelunkeryFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "net.vg.spelunkery.compat.jei.SpelunkeryJeiPlugin"
     ]
   },
   "mixins": [
