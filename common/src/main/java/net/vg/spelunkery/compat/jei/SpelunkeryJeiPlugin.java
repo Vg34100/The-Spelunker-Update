@@ -62,20 +62,20 @@ public class SpelunkeryJeiPlugin implements IModPlugin {
 
         List<IJeiBrewingRecipe> brewingRecipes = List.of(
                 factory.createBrewingRecipe(
-                        List.of(thickPotion),
-                        new ItemStack(SpelunkeryItems.TOPAZ_SHARD.get()),
+                        List.of(new ItemStack(SpelunkeryItems.TOPAZ_SHARD.get())),
+                        thickPotion,
                         new ItemStack(SpelunkeryItems.SPELUNKERS_BREW.get()),
                         Identifier.fromNamespaceAndPath(Spelunkery.MOD_ID, "brewing/spelunkers_brew")
                 ),
                 factory.createBrewingRecipe(
-                        List.of(thickPotion),
-                        new ItemStack(SpelunkeryItems.BAT_WING.get()),
+                        List.of(new ItemStack(SpelunkeryItems.BAT_WING.get())),
+                        thickPotion,
                         new ItemStack(SpelunkeryItems.DANGERSENSE_TONIC.get()),
                         Identifier.fromNamespaceAndPath(Spelunkery.MOD_ID, "brewing/dangersense_tonic")
                 ),
                 factory.createBrewingRecipe(
-                        List.of(thickPotion),
-                        new ItemStack(Items.IRON_INGOT),
+                        List.of(new ItemStack(Items.IRON_INGOT)),
+                        thickPotion,
                         new ItemStack(SpelunkeryItems.MINERS_TONIC.get()),
                         Identifier.fromNamespaceAndPath(Spelunkery.MOD_ID, "brewing/miners_tonic")
                 )
