@@ -1,13 +1,14 @@
 package net.vg.spelunkery.fabric.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.vg.spelunkery.client.SpelunkeryClient;
+import net.vg.spelunkery.client.TopazPulseRenderer;
 
 public final class SpelunkeryFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SpelunkeryClient.init();
-        // Block render layers are now data-driven — set via block state JSON render_type field.
-        // Item model predicates (bow/shield/helmet) are now data-driven — see assets/spelunkery/items/.
+        LevelRenderEvents.BEFORE_GIZMOS.register(ctx -> TopazPulseRenderer.render());
     }
 }

@@ -2,6 +2,8 @@ package net.vg.spelunkery.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.gizmos.GizmoStyle;
+import net.minecraft.gizmos.Gizmos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,8 +46,14 @@ public final class TopazPulseRenderer {
             return;
         }
 
-        // TODO: Re-implement ore outline rendering using the MC 26.1.2 Gizmos API.
-        // LevelRenderer.renderLineBox was removed; the new system uses Gizmos.cuboid(pos, GizmoStyle.stroke(...)).
+        long phase = tick % PULSE_PERIOD_TICKS;
+        float alpha = brewActive ? 1.0f : (float) Math.sin(Math.PI * phase / PULSE_VISIBLE_TICKS);
+        int a = Math.max(1, (int) (alpha * 200));
+        int color = (a << 24) | 0xFFAA00;
+        GizmoStyle style = GizmoStyle.stroke(color);
+        for (BlockPos target : CACHED_TARGETS) {
+            Gizmos.cuboid(target, style).setAlwaysOnTop();
+        }
     }
 
     private static void refreshTargets(Minecraft minecraft) {
