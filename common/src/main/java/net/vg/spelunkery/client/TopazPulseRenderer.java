@@ -42,12 +42,12 @@ public final class TopazPulseRenderer {
 
         long tick = minecraft.level.getGameTime();
         refreshTargets(minecraft);
-        if (CACHED_TARGETS.isEmpty() || (!brewActive && tick % PULSE_PERIOD_TICKS >= PULSE_VISIBLE_TICKS)) {
+        long phase = tick % PULSE_PERIOD_TICKS;
+        if (CACHED_TARGETS.isEmpty() || phase >= PULSE_VISIBLE_TICKS) {
             return;
         }
 
-        long phase = tick % PULSE_PERIOD_TICKS;
-        float alpha = brewActive ? 1.0f : (float) Math.sin(Math.PI * phase / PULSE_VISIBLE_TICKS);
+        float alpha = (float) Math.sin(Math.PI * phase / PULSE_VISIBLE_TICKS);
         int a = Math.max(1, (int) (alpha * 200));
         int color = (a << 24) | 0xFFAA00;
         GizmoStyle style = GizmoStyle.stroke(color);
