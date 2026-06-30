@@ -9,13 +9,12 @@ import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.RecipeAccess;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.vg.spelunkery.Spelunkery;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
@@ -26,14 +25,6 @@ import java.util.List;
 @JeiPlugin
 public class SpelunkeryJeiPlugin implements IModPlugin {
     private static final Identifier PLUGIN_ID = Identifier.fromNamespaceAndPath(Spelunkery.MOD_ID, "jei_plugin");
-
-    private static volatile RecipeManager cachedRecipeManager = null;
-
-    public static void onRecipesUpdated(RecipeAccess access) {
-        if (access instanceof RecipeManager manager) {
-            cachedRecipeManager = manager;
-        }
-    }
 
     @Override
     public Identifier getPluginUid() {
@@ -53,10 +44,10 @@ public class SpelunkeryJeiPlugin implements IModPlugin {
     }
 
     private void registerFoundryRecipes(IRecipeRegistration registration) {
-        RecipeManager manager = cachedRecipeManager;
-        if (manager == null) return;
+        var server = Minecraft.getInstance().getSingleplayerServer();
+        if (server == null) return;
 
-        List<FoundryRecipe> foundryRecipes = manager.getRecipes().stream()
+        List<FoundryRecipe> foundryRecipes = server.getRecipeManager().getRecipes().stream()
                 .filter(h -> h.value() instanceof FoundryRecipe)
                 .map(h -> (FoundryRecipe) h.value())
                 .toList();
