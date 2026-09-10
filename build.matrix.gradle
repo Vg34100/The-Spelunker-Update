@@ -85,7 +85,7 @@ loom {
 
 sourceSets {
     main {
-        if (minecraftVersion == '26.2') {
+        if (legacy || minecraftVersion == '26.2') {
             java.setSrcDirs([
                     layout.buildDirectory.dir('matrix-sources/common').get().asFile,
                     layout.buildDirectory.dir("matrix-sources/${loader}").get().asFile
@@ -101,10 +101,149 @@ sourceSets {
                     rootProject.file("${loader}/src/main/java")
             ])
         }
-        resources.setSrcDirs([
+        resources.setSrcDirs(legacy ? [
+                layout.buildDirectory.dir('matrix-resources/common').get().asFile,
+                layout.buildDirectory.dir("matrix-resources/${loader}").get().asFile
+        ] : [
                 rootProject.file('common/src/main/resources'),
                 rootProject.file("${loader}/src/main/resources")
         ])
+    }
+}
+
+if (legacy) {
+    ['common', loader].each { sourceName ->
+        tasks.register("prepare${sourceName.capitalize()}LegacyResources", Sync) {
+            from rootProject.file("${sourceName}/src/main/resources")
+            into layout.buildDirectory.dir("matrix-resources/${sourceName}")
+            filteringCharset = 'UTF-8'
+            doLast {
+                def resourceRoot = destinationDir
+                copy {
+                    from rootProject.file("gradle/compat/legacy/${sourceName}/src/main/resources")
+                    into resourceRoot
+                }
+                project.delete(new File(resourceRoot, 'assets/spelunkery/items'))
+                project.delete(new File(resourceRoot, 'assets/spelunkery/equipment'))
+                project.delete(new File(resourceRoot, 'spelunkery.accesswidener'))
+
+                fileTree(resourceRoot).matching {
+                    include 'data/**/recipe/**/*.json'
+                    include 'data/**/recipes/**/*.json'
+                }.files.each { recipeFile ->
+                    def ingredientForLegacy = { value ->
+                        value.startsWith('#') ? [tag: value.substring(1)] : [item: value]
+                    }
+                    def recipe = new groovy.json.JsonSlurper().parse(recipeFile)
+                    if (recipe instanceof Map) {
+                        if (recipe.ingredient instanceof String) recipe.ingredient = ingredientForLegacy(recipe.ingredient)
+                        if (recipe.ingredients instanceof List) {
+                            recipe.ingredients = recipe.ingredients.collect { value ->
+                                value instanceof String ? ingredientForLegacy(value) : value
+                            }
+                        }
+                        if (recipe.key instanceof Map) {
+                            recipe.key.each { key, value ->
+                                if (value instanceof String) recipe.key[key] = ingredientForLegacy(value)
+                            }
+                        }
+                        recipeFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(recipe)) + '\n', 'UTF-8')
+                    }
+                }
+
+                fileTree(resourceRoot).matching { include '**/*.mixins.json' }.files.each { mixinFile ->
+                    mixinFile.setText(mixinFile.getText('UTF-8').replace('"JAVA_25"', '"JAVA_21"'), 'UTF-8')
+                }
+            }
+        }
+    }
+
+    ['common', loader].each { sourceName ->
+        tasks.register("prepare${sourceName.capitalize()}LegacySources", Sync) {
+            from rootProject.file("${sourceName}/src/main/java")
+            into layout.buildDirectory.dir("matrix-sources/${sourceName}")
+            filteringCharset = 'UTF-8'
+            doLast {
+                copy {
+                    from rootProject.file("gradle/compat/legacy/${sourceName}/src/main/java")
+                    into destinationDir
+                }
+                def replacements = [
+                        'net.minecraft.resources.Identifier': 'net.minecraft.resources.ResourceLocation',
+                        'Identifier.fromNamespaceAndPath': 'ResourceLocation.fromNamespaceAndPath',
+                        'Identifier': 'ResourceLocation',
+                        '.identifier()': '.location()',
+                        '.isClientSide()': '.isClientSide',
+                        '.noCollision()': '.noCollission()'
+                ]
+                fileTree(destinationDir).matching { include '**/*.java' }.files.each { sourceFile ->
+                    def source = sourceFile.getText('UTF-8')
+                    replacements.each { from, to -> source = source.replace(from, to) }
+                    source = source.replaceAll(/\.setId\(blockKey\("[^"]+"\)\)/, '')
+                    source = source.replaceAll(/\.setId\(itemKey\("[^"]+"\)\)/, '')
+                    source = source.replace('.setId(itemKey(name))', '')
+                    if (sourceFile.name == 'SpelunkeryNeoForge.java' || sourceFile.name == 'SpelunkeryNeoForgeClient.java') {
+                        source = source.replace(
+                                '@EventBusSubscriber(modid = Spelunkery.MOD_ID)',
+                                '@EventBusSubscriber(modid = Spelunkery.MOD_ID, bus = EventBusSubscriber.Bus.MOD)'
+                        )
+                        source = source.replace(
+                                'import net.neoforged.neoforge.event.level.block.BreakBlockEvent;',
+                                'import net.neoforged.neoforge.event.level.BlockEvent;'
+                        ).replace('BreakBlockEvent event', 'BlockEvent.BreakEvent event')
+                    }
+                    if (sourceFile.name == 'TonicItem.java') {
+                        source = source.replace('import net.minecraft.world.item.Item;', 'import net.minecraft.world.item.Item;\nimport net.minecraft.world.item.PotionItem;')
+                                .replace('public final class TonicItem extends Item {', 'public final class TonicItem extends PotionItem {')
+                    }
+                    if (sourceFile.name == 'SpelunkeryFabric.java') {
+                        source = source.replace('import net.minecraft.world.item.CreativeModeTabs;', '''import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;''')
+                        source = source.replace('registerVanillaCreativeTabs();', '''registerVanillaCreativeTabs();
+        ThickPotionBrewingRegistry.register(Ingredient.of(SpelunkeryItems.TOPAZ_SHARD.get()), SpelunkeryItems.SPELUNKERS_BREW.get());
+        ThickPotionBrewingRegistry.register(Ingredient.of(SpelunkeryItems.BAT_WING.get()), SpelunkeryItems.DANGERSENSE_TONIC.get());
+        ThickPotionBrewingRegistry.register(Ingredient.of(Items.IRON_INGOT), SpelunkeryItems.MINERS_TONIC.get());''')
+                    }
+                    if (sourceFile.name == 'ArmorUpgradeSmithingExtension.java') {
+                        source = source.replace('import java.util.List;', 'import java.util.Arrays;\nimport java.util.List;')
+                                .replace('recipe.base().items()\n                .map(holder -> ArmorUpgradeHelper.applyUpgrade(new ItemStack(holder.value()), recipe.upgrade()))', 'Arrays.stream(recipe.base().getItems())\n                .map(stack -> ArmorUpgradeHelper.applyUpgrade(stack.copy(), recipe.upgrade()))')
+                    }
+                    if (sourceFile.name == 'FoundryCategory.java') {
+                        source = source.replace('import java.util.List;', 'import java.util.Arrays;\nimport java.util.List;')
+                                .replace('fi.ingredient().items()\n                    .map(holder -> { ItemStack s = new ItemStack(holder); s.setCount(fi.count()); return s; })', 'Arrays.stream(fi.ingredient().getItems())\n                    .map(stack -> { ItemStack s = stack.copy(); s.setCount(fi.count()); return s; })')
+                                .replace('.addItemStack(recipe.result().create());', '.addItemStack(recipe.result().copy());')
+                        if (minecraftVersion == '1.21') {
+                            source = source.replace('import mezz.jei.api.recipe.IFocusGroup;', 'import mezz.jei.api.recipe.IFocusGroup;\nimport mezz.jei.api.recipe.RecipeIngredientRole;')
+                                    .replace('private final IDrawable icon;', 'private final IDrawable icon;\n    private final IDrawable background;')
+                                    .replace('this.icon = guiHelper.createDrawableItemStack', 'this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);\n        this.icon = guiHelper.createDrawableItemStack')
+                                    .replace('@Override public Component getTitle()', '@Override public IDrawable getBackground() { return background; }\n    @Override public Component getTitle()')
+                                    .replace('builder.addInputSlot(', 'builder.addSlot(RecipeIngredientRole.INPUT, ')
+                                    .replace('builder.addOutputSlot(', 'builder.addSlot(RecipeIngredientRole.OUTPUT, ')
+                                    .replace('                    .setStandardSlotBackground()\n', '')
+                                    .replace('                .setOutputSlotBackground()\n', '')
+                                    .replace('        builder.addRecipeArrow().setPosition(ARROW_X, ARROW_Y);', '')
+                        }
+                    }
+                    if (sourceFile.name == 'ArmorUpgradeSmithingExtension.java' && minecraftVersion == '1.21') {
+                        source = source.replace('    @Override\n    public <T extends IIngredientAcceptor<T>> void setOutput', '    public <T extends IIngredientAcceptor<T>> void setOutput')
+                    }
+                    if (sourceFile.name == 'SpelunkeryFabric.java' && minecraftVersion == '1.21') {
+                        source = source.replace('ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {\n            if (!blocked) {\n                return;\n            }', 'ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {\n            if (!entity.isBlocking()) {\n                return true;\n            }')
+                                .replace('                BronzeShieldItem.tryBash(entity, attacker);\n            }\n        });', '                BronzeShieldItem.tryBash(entity, attacker);\n            }\n            return true;\n        });')
+                    }
+                    sourceFile.setText(source, 'UTF-8')
+                }
+            }
+        }
+    }
+    tasks.named('compileJava') {
+        dependsOn tasks.named('prepareCommonLegacySources')
+        dependsOn tasks.named("prepare${loader.capitalize()}LegacySources")
+    }
+    tasks.named('processResources') {
+        dependsOn tasks.named('prepareCommonLegacyResources')
+        dependsOn tasks.named("prepare${loader.capitalize()}LegacyResources")
     }
 }
 
@@ -226,12 +365,17 @@ processResources {
                     minecraft_version: minecraftVersion,
                     neoforge_version: matrixValue('neoforge_version'),
                     architectury_api_version: matrixValue('architectury_api_version')
+            if (minecraftVersion == '26.2') {
+                filter { line -> line.replace('logoFile =', 'iconFile =') }
+            }
         }
     }
 }
 
 tasks.named('jar') {
-    destinationDirectory = rootProject.layout.buildDirectory.dir("libs/${project.name}")
+    destinationDirectory = legacy
+            ? layout.buildDirectory.dir('matrix-intermediates')
+            : rootProject.layout.buildDirectory.dir("libs/${project.name}")
 }
 
 if (legacy) {

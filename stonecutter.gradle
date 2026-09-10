@@ -25,6 +25,17 @@ tasks.register('packageMatrix') {
                 ? ":${target}:remapJar"
                 : ":${target}:jar"
     }
+    doLast {
+        def releaseRoot = rootProject.layout.buildDirectory.dir('libs').get().asFile
+        project.delete(fileTree(releaseRoot) { include '**/*-dev.jar' })
+        def releaseJars = fileTree(releaseRoot) { include '**/*.jar' }.files
+        if (releaseJars.size() != matrixTargets.size()) {
+            throw new GradleException("Expected ${matrixTargets.size()} installable matrix jars, found ${releaseJars.size()}")
+        }
+        if (releaseJars.any { it.name.endsWith('-dev.jar') }) {
+            throw new GradleException('Development jars must not be present in the release artifact tree')
+        }
+    }
 }
 
 tasks.register('verifyServerLaunchSetup') {
