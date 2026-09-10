@@ -2,6 +2,7 @@ package net.vg.spelunkery.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -80,5 +81,10 @@ public final class TonicItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, player, hand);
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.translatable(getDescriptionId());
     }
 }

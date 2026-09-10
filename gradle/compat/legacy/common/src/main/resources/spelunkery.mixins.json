@@ -9,6 +9,7 @@
     "client.RecipeBookPageAccessor"
   ],
   "mixins": [
+    "LivingEntityMixin",
     "PlayerMixin"
   ],
   "injectors": {

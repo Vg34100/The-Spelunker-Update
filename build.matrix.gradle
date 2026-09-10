@@ -115,6 +115,8 @@ if (legacy) {
     ['common', loader].each { sourceName ->
         tasks.register("prepare${sourceName.capitalize()}LegacyResources", Sync) {
             from rootProject.file("${sourceName}/src/main/resources")
+            def compatibilityResources = rootProject.file("gradle/compat/legacy/${sourceName}/src/main/resources")
+            if (compatibilityResources.isDirectory()) inputs.dir compatibilityResources
             into layout.buildDirectory.dir("matrix-resources/${sourceName}")
             filteringCharset = 'UTF-8'
             doLast {
@@ -136,17 +138,31 @@ if (legacy) {
                     }
                     def recipe = new groovy.json.JsonSlurper().parse(recipeFile)
                     if (recipe instanceof Map) {
-                        if (recipe.ingredient instanceof String) recipe.ingredient = ingredientForLegacy(recipe.ingredient)
-                        if (recipe.ingredients instanceof List) {
-                            recipe.ingredients = recipe.ingredients.collect { value ->
-                                value instanceof String ? ingredientForLegacy(value) : value
+                        def ingredientFields = ['ingredient', 'template', 'base', 'addition'] as Set
+                        def rewriteIngredients
+                        rewriteIngredients = { value ->
+                            if (value instanceof Map) {
+                                value.each { key, nested ->
+                                    if (ingredientFields.contains(key) && nested instanceof String) {
+                                        value[key] = ingredientForLegacy(nested)
+                                    } else if (key == 'ingredients' && nested instanceof List) {
+                                        value[key] = nested.collect { entry ->
+                                            entry instanceof String ? ingredientForLegacy(entry) : rewriteIngredients(entry)
+                                        }
+                                    } else if (key == 'key' && nested instanceof Map) {
+                                        nested.each { symbol, entry ->
+                                            if (entry instanceof String) nested[symbol] = ingredientForLegacy(entry)
+                                            else rewriteIngredients(entry)
+                                        }
+                                    } else {
+                                        rewriteIngredients(nested)
+                                    }
+                                }
+                            } else if (value instanceof List) {
+                                value.each { rewriteIngredients(it) }
                             }
                         }
-                        if (recipe.key instanceof Map) {
-                            recipe.key.each { key, value ->
-                                if (value instanceof String) recipe.key[key] = ingredientForLegacy(value)
-                            }
-                        }
+                        rewriteIngredients(recipe)
                         recipeFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(recipe)) + '\n', 'UTF-8')
                     }
                 }
@@ -161,6 +177,8 @@ if (legacy) {
     ['common', loader].each { sourceName ->
         tasks.register("prepare${sourceName.capitalize()}LegacySources", Sync) {
             from rootProject.file("${sourceName}/src/main/java")
+            def compatibilitySources = rootProject.file("gradle/compat/legacy/${sourceName}/src/main/java")
+            if (compatibilitySources.isDirectory()) inputs.dir compatibilitySources
             into layout.buildDirectory.dir("matrix-sources/${sourceName}")
             filteringCharset = 'UTF-8'
             doLast {

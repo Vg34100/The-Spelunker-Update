@@ -64,10 +64,12 @@ public final class TopazPulseRenderer {
 
         long tick = minecraft.level.getGameTime();
         refreshTargets(minecraft);
-        if (CACHED_TARGETS.isEmpty() || (!brewActive && tick % PULSE_PERIOD_TICKS >= PULSE_VISIBLE_TICKS)) {
+        long phase = tick % PULSE_PERIOD_TICKS;
+        if (CACHED_TARGETS.isEmpty() || phase >= PULSE_VISIBLE_TICKS) {
             return;
         }
 
+        float alpha = (float) Math.sin(Math.PI * phase / PULSE_VISIBLE_TICKS);
         Vec3 cameraPos = camera.getPosition();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -75,7 +77,7 @@ public final class TopazPulseRenderer {
         for (BlockPos pos : CACHED_TARGETS) {
             poseStack.pushPose();
             poseStack.translate(pos.getX() - cameraPos.x, pos.getY() - cameraPos.y, pos.getZ() - cameraPos.z);
-            LevelRenderer.renderLineBox(poseStack, lineBuffer, 0.02D, 0.02D, 0.02D, 0.98D, 0.98D, 0.98D, 0.98F, 0.86F, 0.22F, 0.95F);
+            LevelRenderer.renderLineBox(poseStack, lineBuffer, 0.02D, 0.02D, 0.02D, 0.98D, 0.98D, 0.98D, 0.98F, 0.86F, 0.22F, alpha);
             poseStack.popPose();
         }
         RenderSystem.disableBlend();

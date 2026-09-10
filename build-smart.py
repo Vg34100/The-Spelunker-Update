@@ -66,6 +66,21 @@ ERROR_INDICATORS = [
     "Legacy resource transform failed",
 ]
 
+RUNTIME_INDICATORS = [
+    re.compile(pattern, re.IGNORECASE) for pattern in (
+        r'\bDone \([0-9.]+s\)!',
+        r'OpenAL initialized',
+        r'Created: \d+x\d+x\d+ .*atlas',
+        r'Stopping server',
+        r'All dimensions are saved',
+        r'blocks? filled',
+        r'No blocks were filled',
+        r'\[(?:main|Render thread|Server thread)/ERROR\]',
+        r'Exception in thread',
+        r'Caused by:',
+    )
+]
+
 def find_project_root():
     """Find project root by looking for gradlew"""
     current = Path.cwd()
@@ -91,7 +106,7 @@ def extract_file_location(line):
         return f"{match.group(1)}:{match.group(2)}"
     return None
 
-def run_gradle(tasks):
+def run_gradle(tasks, auto_stop_server=False):
     """Run gradle with given tasks and capture output"""
     project_root = find_project_root()
     os.chdir(project_root)
@@ -108,13 +123,22 @@ def run_gradle(tasks):
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
+        stdin=subprocess.PIPE if auto_stop_server else None,
         text=True,
         shell=(os.name == "nt")
     )
 
+    stream_runtime = any(task.lower().endswith(("runclient", "runserver")) for task in tasks)
     output_lines = []
     for line in process.stdout:
-        output_lines.append(line.rstrip())
+        stripped = line.rstrip()
+        output_lines.append(stripped)
+        plain = re.sub(r'\x1b\[[0-9;?]*[ -/]*[@-~]', '', stripped)
+        if stream_runtime and any(pattern.search(plain) for pattern in RUNTIME_INDICATORS):
+            print(plain, flush=True)
+        if auto_stop_server and re.search(r'\bDone \([0-9.]+s\)!', plain):
+            process.stdin.write("stop\n")
+            process.stdin.flush()
 
     process.wait()
     return process.returncode, output_lines
@@ -215,9 +239,37 @@ def process_output(lines, return_code):
 def main():
     task_arg = sys.argv[1] if len(sys.argv) > 1 else "compile"
     extra_args = sys.argv[2:]
+    auto_stop_server = False
+
+    if task_arg == "matrix:servers-runtime":
+        targets = [
+            f"{version}-{loader}"
+            for version in ("1.21", "1.21.1", "26.1", "26.1.1", "26.1.2", "26.2")
+            for loader in ("fabric", "neoforge")
+        ]
+        for target in targets:
+            return_code, lines = run_gradle([f":{target}:runServer"], auto_stop_server=True)
+            process_output(lines, return_code)
+            unexpected_errors = [
+                line for line in lines
+                if ("/ERROR]" in line or "Exception in thread" in line)
+                and "Failed to load properties from file: server.properties" not in line
+                and "Yggdrasil Key Fetcher/ERROR" not in line
+            ]
+            if return_code != 0 or unexpected_errors:
+                if unexpected_errors:
+                    print(f"Unexpected runtime errors for {target}:")
+                    for line in unexpected_errors[:20]:
+                        print(line)
+                return return_code or 1
+        return 0
 
     # Map shortcuts to actual gradle tasks
-    if task_arg == "compile":
+    if task_arg.startswith("smoke-server:"):
+        target = task_arg.removeprefix("smoke-server:")
+        tasks = [f":{target}:runServer"]
+        auto_stop_server = True
+    elif task_arg == "compile":
         # Fast compile check - all supported Minecraft-version and loader targets.
         tasks = ["compileMatrix"]
     elif task_arg == "compile:fabric":
@@ -245,7 +297,7 @@ def main():
 
     tasks.extend(extra_args)
 
-    return_code, lines = run_gradle(tasks)
+    return_code, lines = run_gradle(tasks, auto_stop_server=auto_stop_server)
     process_output(lines, return_code)
 
     return return_code
