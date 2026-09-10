@@ -185,10 +185,10 @@ def process_output(lines, return_code):
     if errors:
         print("\nErrors found:")
         print("-" * 60)
-        for err in errors[:30]:  # Limit to 30 errors
+        for err in errors[:100]:  # Keep focused target failures complete without raw Gradle noise.
             print(err)
-        if len(errors) > 30:
-            print(f"\n... and {len(errors) - 30} more errors")
+        if len(errors) > 100:
+            print(f"\n... and {len(errors) - 100} more errors")
     else:
         # Couldn't parse errors - show last part of output
         print("\nCouldn't parse specific errors. Last 30 lines:")

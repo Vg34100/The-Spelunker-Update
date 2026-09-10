@@ -1,0 +1,38 @@
+plugins {
+    id 'dev.kikugie.stonecutter'
+}
+
+stonecutter.active '26.1.2-fabric'
+
+def matrixTargets = [
+        '1.21-fabric', '1.21-neoforge',
+        '1.21.1-fabric', '1.21.1-neoforge',
+        '26.1-fabric', '26.1-neoforge',
+        '26.1.1-fabric', '26.1.1-neoforge',
+        '26.1.2-fabric', '26.1.2-neoforge',
+        '26.2-fabric', '26.2-neoforge'
+]
+
+tasks.register('compileMatrix') {
+    group = 'verification'
+    dependsOn matrixTargets.collect { ":${it}:compileJava" }
+}
+
+tasks.register('packageMatrix') {
+    group = 'build'
+    dependsOn matrixTargets.collect { target ->
+        (target.startsWith('1.21-') || target.startsWith('1.21.1-'))
+                ? ":${target}:remapJar"
+                : ":${target}:jar"
+    }
+}
+
+tasks.register('verifyServerLaunchSetup') {
+    group = 'verification'
+    dependsOn matrixTargets.collect { ":${it}:configureLaunch" }
+}
+
+tasks.register('verifyMatrix') {
+    group = 'verification'
+    dependsOn 'compileMatrix', 'packageMatrix', 'verifyServerLaunchSetup'
+}
