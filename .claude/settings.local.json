@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -p /home/pablo/.gradle/caches/fabric-loom/26.1.2/minecraft-merged.jar net/minecraft/world/item/crafting/RecipePropertySet.class)",
+      "Bash(javap -p /tmp/RPS.class)",
+      "Bash(unzip -p /home/pablo/.gradle/caches/fabric-loom/26.1.2/minecraft-merged.jar net/minecraft/world/item/crafting/PlacementInfo.class)",
+      "Bash(javap -p /tmp/PI.class)",
+      "Bash(unzip -p /home/pablo/.gradle/caches/fabric-loom/26.1.2/minecraft-merged.jar net/minecraft/world/item/crafting/RecipeManager.class)",
+      "Bash(javap -p -c /tmp/RM2.class)",
+      "Bash(unzip -p /home/pablo/.gradle/caches/fabric-loom/26.1.2/minecraft-merged.jar net/minecraft/world/item/crafting/SmithingRecipeInput.class)",
+      "Bash(javap -p /tmp/SRI.class)",
+      "Bash(git -C \"/mnt/a/Projects/The Experiment Lab/Minecraft/spelunkery\" log --oneline)"
+    ]
+  }
+}

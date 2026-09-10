@@ -25,6 +25,22 @@
     "minecraft:netherite_chestplate",
     "minecraft:netherite_leggings",
     "minecraft:netherite_boots",
-    "minecraft:turtle_helmet"
+    "minecraft:turtle_helmet",
+    "spelunkery:bronze_helmet",
+    "spelunkery:bronze_chestplate",
+    "spelunkery:bronze_leggings",
+    "spelunkery:bronze_boots",
+    "spelunkery:silver_helmet",
+    "spelunkery:silver_chestplate",
+    "spelunkery:silver_leggings",
+    "spelunkery:silver_boots",
+    "spelunkery:invar_helmet",
+    "spelunkery:invar_chestplate",
+    "spelunkery:invar_leggings",
+    "spelunkery:invar_boots",
+    "spelunkery:rose_gold_helmet",
+    "spelunkery:rose_gold_chestplate",
+    "spelunkery:rose_gold_leggings",
+    "spelunkery:rose_gold_boots"
   ]
 }

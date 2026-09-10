@@ -9,13 +9,17 @@ import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.vg.spelunkery.Spelunkery;
+import net.vg.spelunkery.recipe.ArmorUpgradeSmithingRecipe;
 import net.vg.spelunkery.recipe.FoundryRecipe;
 import net.vg.spelunkery.registry.SpelunkeryBlocks;
 import net.vg.spelunkery.registry.SpelunkeryItems;
@@ -38,9 +42,15 @@ public class SpelunkeryJeiPlugin implements IModPlugin {
     }
 
     @Override
+    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+        registration.getSmithingCategory().addExtension(ArmorUpgradeSmithingRecipe.class, new ArmorUpgradeSmithingExtension());
+    }
+
+    @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registerFoundryRecipes(registration);
         registerBrewingRecipes(registration);
+        registerSmithingRecipes(registration);
     }
 
     private void registerFoundryRecipes(IRecipeRegistration registration) {
@@ -81,6 +91,20 @@ public class SpelunkeryJeiPlugin implements IModPlugin {
                 )
         );
         registration.addRecipes(RecipeTypes.BREWING, brewingRecipes);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void registerSmithingRecipes(IRecipeRegistration registration) {
+        var server = Minecraft.getInstance().getSingleplayerServer();
+        if (server == null) return;
+
+        List<RecipeHolder<SmithingRecipe>> holders = server.getRecipeManager().getRecipes().stream()
+                .filter(h -> h.value() instanceof ArmorUpgradeSmithingRecipe)
+                .map(h -> (RecipeHolder<SmithingRecipe>) (RecipeHolder<?>) h)
+                .toList();
+        if (!holders.isEmpty()) {
+            registration.addRecipes(RecipeTypes.SMITHING, holders);
+        }
     }
 
     @Override

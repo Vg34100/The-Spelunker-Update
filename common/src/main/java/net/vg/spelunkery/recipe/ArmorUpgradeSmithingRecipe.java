@@ -14,6 +14,7 @@ import net.vg.spelunkery.item.ArmorUpgrade;
 import net.vg.spelunkery.item.ArmorUpgradeHelper;
 import net.vg.spelunkery.registry.SpelunkeryRecipeTypes;
 
+import java.util.List;
 import java.util.Optional;
 
 public record ArmorUpgradeSmithingRecipe(
@@ -83,7 +84,7 @@ public record ArmorUpgradeSmithingRecipe(
 
     @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
+        return PlacementInfo.createFromOptionals(List.of(Optional.of(template), Optional.of(base), Optional.of(addition)));
     }
 
     @Override
