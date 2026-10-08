@@ -1,0 +1,43 @@
+// Stage only the actual release JAR and its required production dependencies.
+def pins = new Properties()
+rootProject.file("gradle/matrix/${project.name}.properties").withInputStream { pins.load(it) }
+def loader = pins.getProperty('loader')
+def legacy = pins.getProperty('loom_generation') == 'legacy'
+def smokeDirectory = providers.gradleProperty('release_smoke_dir')
+def artifact = rootProject.file("build/libs/${project.name}/${rootProject.archives_name}-${loader}-${pins.minecraft_version}-${rootProject.mod_version}.jar")
+def releaseRuntime = configurations.detachedConfiguration(
+        dependencies.create("dev.architectury:architectury-${loader}:${pins.architectury_api_version}"))
+releaseRuntime.transitive = false
+if (loader == 'fabric') {
+    releaseRuntime.dependencies.add(dependencies.create("net.fabricmc.fabric-api:fabric-api:${pins.fabric_api_version}"))
+}
+
+tasks.register('stageReleaseClient', Sync) {
+    group = 'verification'
+    description = 'Stage the verified installable JAR with required mods in an isolated client.'
+    from artifact
+    from releaseRuntime
+    into providers.provider { new File(smokeDirectory.get(), 'mods') }
+    doFirst {
+        if (!artifact.isFile()) throw new GradleException("Missing packaged release: ${artifact}")
+    }
+}
+
+// Legacy Loom has no production-client task; the seeded PortableMC monitor runs it.
+if (loader == 'fabric' && !legacy) {
+    def productionTaskType = loom.getClass().classLoader.loadClass('net.fabricmc.loom.task.prod.ClientProductionRunTask')
+    tasks.register('runReleaseClient', productionTaskType) {
+        dependsOn tasks.named('stageReleaseClient')
+        mods.setFrom(providers.provider {
+            fileTree(new File(smokeDirectory.get(), 'mods')) { include '*.jar' }
+        })
+        runDir.set(layout.dir(providers.provider { file(smokeDirectory.get()) }))
+        javaLauncher.set(javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(pins.getProperty('java_version') as int)
+        })
+        useXVFB = false
+        jvmArgs.add('-Xmx2G')
+        jvmArgs.add('-Xlog:class+load=info:file=class-load-%p.log')
+        programArgs.addAll('--username', 'SpelunkSmoke')
+    }
+}
