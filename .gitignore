@@ -105,7 +105,10 @@ build/
 
 # Local publication credentials and Python caches
 .env
+.env.*
+!.env.example
 __pycache__/
+*.py[cod]
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -118,6 +121,9 @@ gradle-app.setting
 # Common working directory
 run/
 runs/
+
+# Stonecutter generated target workspaces
+versions/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
