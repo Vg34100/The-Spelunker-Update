@@ -27,7 +27,11 @@ def javaVersion = matrix.getProperty('java_version', '25') as int
 def legacy = matrix.getProperty('loom_generation', 'current') == 'legacy'
 def isFabric = loader == 'fabric'
 def isNeoForge = loader == 'neoforge'
-if (!isFabric && !isNeoForge) throw new GradleException("Unsupported loader '${loader}'")
+def isForge = loader == 'forge'
+def is120 = minecraftVersion == '1.20.1'
+def is263 = minecraftVersion == '26.3'
+def devIntegrations = !(is120 || is263) || providers.gradleProperty('dev_integrations').getOrElse('true').toBoolean()
+if (!isFabric && !isNeoForge && !isForge) throw new GradleException("Unsupported loader '${loader}'")
 
 group = rootProject.maven_group
 version = rootProject.mod_version
@@ -52,6 +56,7 @@ repositories {
 if (!legacy) {
     architectury {
         minecraft = minecraftVersion
+        if (is263) compileOnly()
         platformSetupLoomIde()
         if (isFabric) fabric() else neoForge()
     }
@@ -59,6 +64,10 @@ if (!legacy) {
 
 if (legacy) {
     loom { silentMojangMappingsLicense() }
+}
+
+if (isForge) {
+    loom { forge { mixinConfig 'spelunkery.mixins.json' } }
 }
 
 if (isNeoForge) {
@@ -87,7 +96,7 @@ loom {
 
 sourceSets {
     main {
-        if (legacy || minecraftVersion == '26.2') {
+        if (legacy || minecraftVersion in ['26.2', '26.3']) {
             java.setSrcDirs([
                     layout.buildDirectory.dir('matrix-sources/common').get().asFile,
                     layout.buildDirectory.dir("matrix-sources/${loader}").get().asFile
@@ -103,9 +112,9 @@ sourceSets {
                     rootProject.file("${loader}/src/main/java")
             ])
         }
-        resources.setSrcDirs(legacy ? [
+        resources.setSrcDirs(legacy || is263 ? [
                 layout.buildDirectory.dir('matrix-resources/common').get().asFile,
-                layout.buildDirectory.dir("matrix-resources/${loader}").get().asFile
+                is263 ? rootProject.file("${loader}/src/main/resources") : layout.buildDirectory.dir("matrix-resources/${loader}").get().asFile
         ] : [
                 rootProject.file('common/src/main/resources'),
                 rootProject.file("${loader}/src/main/resources")
@@ -119,6 +128,11 @@ if (legacy) {
             from rootProject.file("${sourceName}/src/main/resources")
             def compatibilityResources = rootProject.file("gradle/compat/legacy/${sourceName}/src/main/resources")
             if (compatibilityResources.isDirectory()) inputs.dir compatibilityResources
+            if (is120) {
+                def oldResources = rootProject.file("gradle/compat/1.20.1/${sourceName}/src/main/resources")
+                if (oldResources.isDirectory()) inputs.dir oldResources
+                inputs.file rootProject.file('gradle/compat/1.20.1.gradle')
+            }
             into layout.buildDirectory.dir("matrix-resources/${sourceName}")
             filteringCharset = 'UTF-8'
             doLast {
@@ -126,6 +140,12 @@ if (legacy) {
                 copy {
                     from rootProject.file("gradle/compat/legacy/${sourceName}/src/main/resources")
                     into resourceRoot
+                }
+                if (is120) {
+                    copy {
+                        from rootProject.file("gradle/compat/1.20.1/${sourceName}/src/main/resources")
+                        into resourceRoot
+                    }
                 }
                 project.delete(new File(resourceRoot, 'assets/spelunkery/items'))
                 project.delete(new File(resourceRoot, 'assets/spelunkery/equipment'))
@@ -170,7 +190,7 @@ if (legacy) {
                 }
 
                 fileTree(resourceRoot).matching { include '**/*.mixins.json' }.files.each { mixinFile ->
-                    mixinFile.setText(mixinFile.getText('UTF-8').replace('"JAVA_25"', '"JAVA_21"'), 'UTF-8')
+                    mixinFile.setText(mixinFile.getText('UTF-8').replace('"JAVA_25"', '"JAVA_' + javaVersion + '"'), 'UTF-8')
                 }
             }
         }
@@ -187,6 +207,12 @@ if (legacy) {
                 copy {
                     from rootProject.file("gradle/compat/legacy/${sourceName}/src/main/java")
                     into destinationDir
+                }
+                if (is120) {
+                    copy {
+                        from rootProject.file("gradle/compat/1.20.1/${sourceName}/src/main/java")
+                        into destinationDir
+                    }
                 }
                 def replacements = [
                         'net.minecraft.resources.Identifier': 'net.minecraft.resources.ResourceLocation',
@@ -284,7 +310,7 @@ if (isNeoForge && (minecraftVersion == '26.1' || minecraftVersion == '26.1.1')) 
     }
 }
 
-if (minecraftVersion == '26.2') {
+if (minecraftVersion in ['26.2', '26.3']) {
     def replacements26_2 = [
             'net.minecraft.world.level.block.state.properties.DripstoneThickness': 'net.minecraft.world.level.block.state.properties.SpeleothemThickness',
             'DripstoneThickness': 'SpeleothemThickness',
@@ -318,6 +344,28 @@ if (minecraftVersion == '26.2') {
     }
 }
 
+
+if (is263) {
+    def prepared = tasks.register('prepareCommon26_3Resources', Sync) {
+        from rootProject.file('common/src/main/resources')
+        into layout.buildDirectory.dir('matrix-resources/common')
+        doLast {
+            fileTree(destinationDir).matching { include 'data/**/advancement/**/*.json' }.files.each { file ->
+                def advancement = new groovy.json.JsonSlurper().parse(file)
+                def changed = false
+                advancement.criteria?.each { key, criterion ->
+                    if (criterion.trigger == 'minecraft:recipe_unlocked' && criterion.conditions?.recipe instanceof String) {
+                        criterion.conditions.recipes = [criterion.conditions.remove('recipe')]
+                        changed = true
+                    }
+                }
+                if (changed) file.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(advancement)) + '\n', 'UTF-8')
+            }
+        }
+    }
+    tasks.named('processResources') { dependsOn prepared }
+}
+
 dependencies {
     minecraft "net.minecraft:minecraft:${minecraftVersion}"
     if (legacy) mappings loom.officialMojangMappings()
@@ -330,12 +378,20 @@ dependencies {
         if (legacy) {
             modCompileOnly "mezz.jei:jei-${minecraftVersion}-common-api:${matrixValue('jei_version')}"
             modCompileOnly "mezz.jei:jei-${minecraftVersion}-fabric-api:${matrixValue('jei_version')}"
-            modLocalRuntime "mezz.jei:jei-${minecraftVersion}-fabric:${matrixValue('jei_version')}"
+            if (devIntegrations) modLocalRuntime "mezz.jei:jei-${minecraftVersion}-fabric:${matrixValue('jei_version')}"
+            if (is120 && devIntegrations) modLocalRuntime "net.mezzdev.config:mezz_config-${minecraftVersion}-fabric:${matrixValue('jei_config_version')}"
         } else {
             compileOnly "mezz.jei:jei-${minecraftVersion}-common-api:${matrixValue('jei_version')}"
             compileOnly "mezz.jei:jei-${minecraftVersion}-fabric-api:${matrixValue('jei_version')}"
-            runtimeOnly "mezz.jei:jei-${minecraftVersion}-fabric:${matrixValue('jei_version')}"
+            if (devIntegrations) runtimeOnly "mezz.jei:jei-${minecraftVersion}-fabric:${matrixValue('jei_version')}"
+            if (is263 && devIntegrations) runtimeOnly "net.mezzdev.config:mezz_config-${minecraftVersion}-fabric:${matrixValue('jei_config_version')}"
         }
+    } else if (isForge) {
+        forge "net.minecraftforge:forge:${minecraftVersion}-${matrixValue('forge_version')}"
+        modImplementation "dev.architectury:architectury-forge:${matrixValue('architectury_api_version')}"
+        modCompileOnly "mezz.jei:jei-${minecraftVersion}-common-api:${matrixValue('jei_version')}"
+        modCompileOnly "mezz.jei:jei-${minecraftVersion}-forge-api:${matrixValue('jei_version')}"
+        if (providers.gradleProperty('dev_integrations').getOrElse('true').toBoolean()) modLocalRuntime("mezz.jei:jei-${minecraftVersion}-forge:${matrixValue('jei_version')}") { transitive = false }
     } else {
         neoForge "net.neoforged:neoforge:${matrixValue('neoforge_version')}"
         implementation "dev.architectury:architectury-neoforge:${matrixValue('architectury_api_version')}"
@@ -346,7 +402,7 @@ dependencies {
         } else {
             compileOnly "mezz.jei:jei-${minecraftVersion}-common-api:${matrixValue('jei_version')}"
             compileOnly "mezz.jei:jei-${minecraftVersion}-neoforge-api:${matrixValue('jei_version')}"
-            runtimeOnly "mezz.jei:jei-${minecraftVersion}-neoforge:${matrixValue('jei_version')}"
+            if (devIntegrations) runtimeOnly "mezz.jei:jei-${minecraftVersion}-neoforge:${matrixValue('jei_version')}"
         }
     }
 }
@@ -365,6 +421,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
+    if (is120 || is263) exclude('assets/spelunkery/textures/block/ashen_dirt - Copy.png')
     inputs.property 'version', project.version
     inputs.property 'minecraft_version', minecraftVersion
     inputs.property 'java_version', javaVersion
@@ -378,21 +435,33 @@ processResources {
                     fabric_loader_version: matrixValue('fabric_loader_version'),
                     architectury_api_version: matrixValue('architectury_api_version')
         }
+    } else if (isForge) {
+        inputs.property 'forge_version', matrixValue('forge_version')
+        filesMatching('META-INF/mods.toml') {
+            expand version: project.version, minecraft_version: minecraftVersion,
+                    forge_version: matrixValue('forge_version'),
+                    architectury_api_version: matrixValue('architectury_api_version')
+        }
     } else {
         inputs.property 'neoforge_version', matrixValue('neoforge_version')
+        if (is263) inputs.property 'fml_language_version', matrixValue('fml_loader_version').tokenize('.')[0]
         filesMatching('META-INF/neoforge.mods.toml') {
             expand version: project.version,
                     minecraft_version: minecraftVersion,
                     neoforge_version: matrixValue('neoforge_version'),
                     architectury_api_version: matrixValue('architectury_api_version')
-            if (minecraftVersion == '26.2') {
-                filter { line -> line.replace('logoFile =', 'iconFile =') }
+            if (minecraftVersion in ['26.2', '26.3']) {
+                filter { line ->
+                    def adjusted = line.replace('logoFile =', 'iconFile =')
+                    is263 ? adjusted.replace('loaderVersion = "[2,)"', 'loaderVersion = "[' + matrixValue('fml_loader_version').tokenize('.')[0] + ',)"') : adjusted
+                }
             }
         }
     }
 }
 
 tasks.named('jar') {
+    if (isForge) manifest.attributes('MixinConfigs': 'spelunkery.mixins.json')
     destinationDirectory = legacy
             ? layout.buildDirectory.dir('matrix-intermediates')
             : rootProject.layout.buildDirectory.dir("libs/${project.name}")
@@ -418,6 +487,10 @@ if (legacy) {
         }
     }
 }
+
+if (is120) apply from: rootProject.file('gradle/compat/1.20.1.gradle')
+if (is263) apply from: rootProject.file('gradle/compat/26.3.gradle')
+if (is120 && isForge && providers.gradleProperty('port_tests').isPresent()) apply from: rootProject.file('gradle/port-tests.gradle')
 
 // Release hooks consume existing installable artifacts; compatibility stays above.
 tasks.register('packageTarget') {

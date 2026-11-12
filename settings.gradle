@@ -19,23 +19,18 @@ stonecutter {
     kotlinController = false
 
     create(rootProject) {
-        version('1.21-fabric', '1.21')
-        version('1.21-neoforge', '1.21')
-        version('1.21.1-fabric', '1.21.1')
-        version('1.21.1-neoforge', '1.21.1')
-        version('26.1-fabric', '26.1')
-        version('26.1-neoforge', '26.1')
-        version('26.1.1-fabric', '26.1.1')
-        version('26.1.1-neoforge', '26.1.1')
-        version('26.1.2-fabric', '26.1.2')
-        version('26.1.2-neoforge', '26.1.2')
-        version('26.2-fabric', '26.2')
-        version('26.2-neoforge', '26.2')
+        fileTree('gradle/matrix').matching { include '*.properties' }.files.sort().each { pinsFile ->
+            def pins = new Properties()
+            pinsFile.withInputStream { pins.load(it) }
+            version(pinsFile.name - '.properties', pins.getProperty('minecraft_version'))
+        }
     }
 }
 
 gradle.beforeProject { project ->
     if (project.name.endsWith('-neoforge')) {
         project.extensions.extraProperties.set('loom.platform', 'neoforge')
+    } else if (project.name.endsWith('-forge')) {
+        project.extensions.extraProperties.set('loom.platform', 'forge')
     }
 }

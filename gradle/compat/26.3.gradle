@@ -1,0 +1,197 @@
+// 26.3 removed configured-feature wrappers and moved tool/brewing behavior to data.
+// Keep the shared placement algorithms; adapt only their API boundary.
+def pins = new Properties()
+rootProject.file("gradle/matrix/${project.name}.properties").withInputStream { pins.load(it) }
+def loader = pins.loader
+
+def replaceRequired = { String text, String before, String after ->
+    if (!text.contains(before)) throw new GradleException("Missing 26.3 compatibility anchor: ${before}")
+    text.replace(before, after)
+}
+['common', loader].each { sourceName ->
+    tasks.named("prepare${sourceName.capitalize()}26_2Sources", Sync) {
+        inputs.file rootProject.file('gradle/compat/26.3.gradle')
+        doLast {
+            fileTree(destinationDir).matching { include '**/*.java' }.files.each { file ->
+                def source = file.getText('UTF-8').replace('\r\n', '\n')
+                source = source.replace('target.invulnerableTime = 0;', 'target.setInvulnerableTime(0);')
+                        .replace('.hurtMarked = true;', '.syncVelocity = true;')
+                        .replace('inventory.placeItemBackInInventory(stack.copy(), false)', 'inventory.placeItemBackInInventory(stack.copy(), net.minecraft.util.Prediction.SERVER_ONLY)')
+                        .replace('player.drop(bottle, false)', 'player.drop(bottle, false, net.minecraft.util.Prediction.SERVER_ONLY)')
+                        .replace('serverPlayer.swing(player.getUsedItemHand(), true)', 'serverPlayer.swing(player.getUsedItemHand(), net.minecraft.world.item.component.SwingAnimation.DEFAULT, true)')
+                if (file.name == 'SpelunkeryItems.java') {
+                    ['Axe', 'Shovel', 'Hoe'].each { tool ->
+                        source = source.replace("import net.minecraft.world.item.${tool}Item;", '')
+                        def pattern = ~/new ${tool}Item\((SpelunkeryEquipmentMaterials\.[A-Z_]+), ([0-9.]+F), (-[0-9.]+F), (props\("[^"]+"\))\)/
+                        source = source.replaceAll(pattern) { all, material, damage, speed, props ->
+                            "new Item(${props}.${tool.toLowerCase()}(${material}, ${damage}, ${speed}))"
+                        }
+                    }
+                }
+                // Blocks are no longer codec-dispatched in 26.3.
+                if (file.parentFile.name == 'block') {
+                    source = source.replaceAll(/(?m)^    public static final MapCodec<[^\n]+ CODEC = simpleCodec\([^\n]+\);\n/, '')
+                    source = source.replaceAll(/(?s)    (?:@SuppressWarnings\("unchecked"\)\n    )?@Override\n    (?:public|protected) MapCodec<[^\n]+ codec\(\) \{.*?\n    }\n/, '')
+                }
+                if (file.name == 'GlowcapBlock.java') {
+                    source = source.replace('BlockState state) {\n        return true;', 'BlockState state, net.minecraft.world.level.block.BonemealSource source) {\n        return true;')
+                            .replace('performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state)', 'performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, net.minecraft.world.level.block.BonemealSource source)')
+                            .replace('(GiantMushroomFeature) SpelunkeryFeatures.GIANT_BLUE_MUSHROOM.get()', 'new GiantMushroomFeature(SpelunkeryBlocks.BLUE_MUSHROOM_BLOCK, GiantMushroomFeature.CapShape.BLUE)')
+                }
+                def simpleFeatures = ['CrystalSpikesFeature', 'ScorchedDripstoneFeature', 'FungalOvergrowthFeature']
+                def featureName = file.name - '.java'
+                if (featureName in simpleFeatures || featureName in ['GiantMushroomFeature', 'BlobReplaceFeature']) {
+                    source = source.replace('import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;', '')
+                            .replace('import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;', '')
+                            .replace('extends Feature<NoneFeatureConfiguration>', 'implements Feature')
+                            .replace('extends Feature<BlobReplaceConfiguration>', 'implements Feature')
+                    source = source.replaceAll(/public boolean place\(FeaturePlaceContext<[^>]+> context\) \{/, 'public boolean place(WorldGenLevel level, net.minecraft.world.level.chunk.ChunkGenerator generator, RandomSource random, BlockPos origin) {')
+                    ['        WorldGenLevel level = context.level();\n', '        RandomSource random = context.random();\n', '        BlockPos origin = context.origin();\n'].each { source = replaceRequired(source, it, '') }
+                    if (featureName in simpleFeatures) {
+                        source = replaceRequired(source, "    public ${featureName}(Codec<NoneFeatureConfiguration> codec) {\n        super(codec);\n    }", """    public static final com.mojang.serialization.MapCodec<${featureName}> CODEC = com.mojang.serialization.MapCodec.unit(${featureName}::new);
+    @Override public com.mojang.serialization.MapCodec<${featureName}> codec() { return CODEC; }""")
+                    } else if (featureName == 'GiantMushroomFeature') {
+                        source = replaceRequired(source, 'Codec<NoneFeatureConfiguration> codec, Supplier<Block> capBlock', 'Supplier<Block> capBlock')
+                        source = source.replace('        super(codec);\n', '')
+                        source = source.replace('    private final Supplier<Block> capBlock;', '''    public static final com.mojang.serialization.MapCodec<GiantMushroomFeature> BROWN_CODEC = com.mojang.serialization.MapCodec.unit(() -> new GiantMushroomFeature(() -> Blocks.BROWN_MUSHROOM_BLOCK, CapShape.BROWN));
+    public static final com.mojang.serialization.MapCodec<GiantMushroomFeature> RED_CODEC = com.mojang.serialization.MapCodec.unit(() -> new GiantMushroomFeature(() -> Blocks.RED_MUSHROOM_BLOCK, CapShape.RED));
+    public static final com.mojang.serialization.MapCodec<GiantMushroomFeature> BLUE_CODEC = com.mojang.serialization.MapCodec.unit(() -> new GiantMushroomFeature(SpelunkeryBlocks.BLUE_MUSHROOM_BLOCK, CapShape.BLUE));
+    @Override public com.mojang.serialization.MapCodec<GiantMushroomFeature> codec() {
+        return switch (capShape) { case BROWN -> BROWN_CODEC; case RED -> RED_CODEC; case BLUE -> BLUE_CODEC; };
+    }
+    private final Supplier<Block> capBlock;''')
+                    } else {
+                        source = replaceRequired(source, '    public BlobReplaceFeature(Codec<BlobReplaceConfiguration> codec) {\n        super(codec);\n    }', '''    public static final com.mojang.serialization.MapCodec<BlobReplaceFeature> CODEC = BlobReplaceConfiguration.CODEC.xmap(BlobReplaceFeature::new, feature -> feature.config);
+    private final BlobReplaceConfiguration config;
+    public BlobReplaceFeature(BlobReplaceConfiguration config) { this.config = config; }
+    @Override public com.mojang.serialization.MapCodec<BlobReplaceFeature> codec() { return CODEC; }''')
+                        source = source.replace('        BlobReplaceConfiguration config = context.config();\n', '')
+                    }
+                }
+                if (file.name == 'BlobReplaceConfiguration.java') {
+                    source = source.replace('import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;', '')
+                            .replace('import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;', '')
+                            .replace(' implements FeatureConfiguration', '')
+                            .replace('Codec<BlobReplaceConfiguration> CODEC = RecordCodecBuilder.create', 'com.mojang.serialization.MapCodec<BlobReplaceConfiguration> CODEC = RecordCodecBuilder.mapCodec')
+                            .replace('OreConfiguration.TargetBlockState', 'net.minecraft.world.level.levelgen.feature.BlockReplacement')
+                            .replace('target.target, target.state', 'target.target(), target.state()')
+                }
+                if (file.name == 'CrystalCavernsBiomeSource.java') {
+                    source = source.replace('    @Override\n    public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler)', '    public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler)')
+                    source = source.replace('    private boolean shouldUseMarbleCaves', '''    @Override
+    public net.minecraft.world.level.biome.BiomeResolver createResolver(Climate.Sampler sampler) {
+        return (x, y, z) -> getNoiseBiome(x, y, z, sampler);
+    }
+
+    private boolean shouldUseMarbleCaves''')
+                }
+                if (file.name == 'BlobReplaceFeature.java') source = source.replace('target.target().test(state, random)', 'target.target().test(state, pos, random)')
+                if (file.name == 'SpelunkeryFeatures.java') {
+                    source = source.replace('import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;', '')
+                            .replace('DeferredRegister<Feature<?>>', 'DeferredRegister<com.mojang.serialization.MapCodec<? extends Feature>>')
+                            .replace('Registries.FEATURE)', 'Registries.FEATURE_TYPE)')
+                            .replace('RegistrySupplier<Feature<NoneFeatureConfiguration>>', 'RegistrySupplier<com.mojang.serialization.MapCodec<? extends Feature>>')
+                            .replace('RegistrySupplier<Feature<BlobReplaceConfiguration>>', 'RegistrySupplier<com.mojang.serialization.MapCodec<? extends Feature>>')
+                    (simpleFeatures + ['BlobReplaceFeature']).each { feature ->
+                        source = source.replaceAll(/new / + feature + /\([^;]*?\.CODEC\)/, "${feature}.CODEC")
+                    }
+                    ['BROWN', 'RED', 'BLUE'].each { shape ->
+                        source = source.replaceAll(/new GiantMushroomFeature\(NoneFeatureConfiguration\.CODEC, [^;]*?CapShape\./ + shape + /\)/, "GiantMushroomFeature.${shape}_CODEC")
+                    }
+                }
+                if (file.name == 'SpelunkeryNeoForge.java') {
+                    source = source.replace('import net.neoforged.neoforge.common.brewing.IBrewingRecipe;', '')
+                            .replace('import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;', '')
+                            .replace('        NeoForge.EVENT_BUS.addListener(this::onRegisterBrewingRecipes);\n', '')
+                    def first = source.indexOf('    private void onRegisterBrewingRecipes(')
+                    def last = source.indexOf('    private void onLivingDrops(', first)
+                    source = source.substring(0, first) + source.substring(last)
+                }
+                file.setText(source, 'UTF-8')
+            }
+            if (sourceName == 'fabric') project.delete(new File(destinationDir, 'net/vg/spelunkery/fabric/mixin/PotionBrewingMixin.java'))
+        }
+    }
+}
+
+tasks.named('prepareCommon26_3Resources', Sync) {
+    inputs.file rootProject.file('gradle/compat/26.3.gradle')
+    doLast {
+        def root = destinationDir
+        def flatten
+        flatten = { value ->
+            if (value instanceof List) return value.collect { flatten(it) }
+            if (!(value instanceof Map)) return value
+            def result = value.collectEntries { key, entry -> [(key): flatten(entry)] }
+            if (result.type == 'minecraft:simple_state_provider') return result.state
+            if (result.Name instanceof String) {
+                result.id = result.remove('Name')
+                if (result.Properties instanceof Map) result.properties = result.remove('Properties')
+            }
+            if (result.type == 'minecraft:random_offset') {
+                result.type = 'minecraft:offset'
+                result.x = result.remove('xz_spread')
+                result.z = result.x
+                result.y = result.remove('y_spread')
+            }
+            if (result.type instanceof String && result.config instanceof Map) {
+                result = result + result.remove('config')
+            }
+            return result
+        }
+        fileTree(new File(root, 'data')).matching { include '**/worldgen/configured_feature/*.json' }.files.each { file ->
+            def destination = new File(file.parentFile.parentFile, "feature/${file.name}")
+            destination.parentFile.mkdirs()
+            destination.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(flatten(new groovy.json.JsonSlurper().parse(file)))) + '\n', 'UTF-8')
+        }
+        project.delete(new File(root, 'data/spelunkery/worldgen/configured_feature'))
+        fileTree(new File(root, 'data')).matching { include '**/worldgen/**/*.json' }.files.each { file ->
+            file.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(flatten(new groovy.json.JsonSlurper().parse(file)))) + '\n', 'UTF-8')
+        }
+        def convertLoot
+        convertLoot = { value ->
+            if (value instanceof List) return value.collect { convertLoot(it) }
+            if (!(value instanceof Map)) return value
+            def result = value.collectEntries { key, entry -> [(key): convertLoot(entry)] }
+            if (result.condition instanceof String) result.type = result.remove('condition')
+            if (result.function instanceof String) result.type = result.remove('function')
+            if (result.type == 'minecraft:block_state_property') {
+                result.type = 'minecraft:match_block'
+                result.blocks = result.remove('block')
+                result.state = result.remove('properties')
+            }
+            if (result.conditions instanceof List) {
+                def conditions = result.remove('conditions')
+                if (!conditions.empty) result.condition = conditions.size() == 1 ? conditions[0] : [type: 'minecraft:all_of', terms: conditions]
+            }
+            if (result.functions instanceof List) {
+                def functions = result.remove('functions')
+                if (!functions.empty) result.modifier = functions.size() == 1 ? functions[0] : [type: 'minecraft:sequence', functions: functions]
+            }
+            return result
+        }
+        fileTree(new File(root, 'data')).matching { include '**/loot_table/**/*.json' }.files.each { file ->
+            file.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(convertLoot(new groovy.json.JsonSlurper().parse(file)))) + '\n', 'UTF-8')
+        }
+        fileTree(new File(root, 'data')).matching { include '**/recipe/*.json' }.files.each { file ->
+            def recipe = new groovy.json.JsonSlurper().parse(file)
+            if (recipe.category in ['decorations', 'combat']) {
+                // Older parsers defaulted these unknown category values to misc.
+                recipe.category = 'misc'
+                file.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(recipe)) + '\n', 'UTF-8')
+            }
+        }
+        ['spelunkers_brew': 'spelunkery:topaz_shard', 'dangersense_tonic': 'spelunkery:bat_wing', 'miners_tonic': 'minecraft:iron_ingot'].each { output, reagent ->
+            def recipe = [type: 'minecraft:brewing', input: [item: 'minecraft:potion', potion_contents: [potions: ['minecraft:thick']]],
+                          reagent: [item: reagent], output: [id: "spelunkery:${output}", count: 1]]
+            new File(root, "data/spelunkery/recipe/brewing_${output}.json").setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(recipe)) + '\n', 'UTF-8')
+        }
+    }
+}
+if (loader == 'fabric') {
+    tasks.named('processResources') {
+        filesMatching('spelunkery.fabric.mixins.json') {
+            filter { line -> line.replace('"PotionBrewingMixin"', '') }
+        }
+    }
+}

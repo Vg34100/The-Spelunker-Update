@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+[[mods]]
+modId="spelunkery_port_tests"
+version="1"
+displayName="Spelunkery port checks"
+[[dependencies.spelunkery_port_tests]]
+modId="spelunkery"
+mandatory=true
+versionRange="[1.0.2,)"
+ordering="AFTER"
+side="BOTH"

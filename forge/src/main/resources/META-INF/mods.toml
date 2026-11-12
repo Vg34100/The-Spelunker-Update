@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "spelunkery"
+version = "${version}"
+displayName = "The Spelunker Update"
+authors = "VgLevelUp"
+description = '''
+
+'''
+logoFile = "assets/spelunkery/icon.png"
+
+[[dependencies.spelunkery]]
+modId = "forge"
+mandatory = true
+versionRange = "[${forge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.spelunkery]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.spelunkery]]
+modId = "architectury"
+mandatory = true
+versionRange = "[${architectury_api_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[features.spelunkery]
+javaVersion = "[17,)"

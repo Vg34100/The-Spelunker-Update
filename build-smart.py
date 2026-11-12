@@ -791,9 +791,9 @@ def plan(project, task_arg):
 
     if task_arg.startswith("smoke-release-client:"):
         name = task_arg.split(":", 1)[1]
-        selected = [t for t in project.targets if t.name == name and t.loader in ("fabric", "neoforge")]
+        selected = [t for t in project.targets if t.name == name and t.loader in ("fabric", "neoforge", "forge")]
         if not selected:
-            raise PlanError("Packaged client smoke needs an exact registered Fabric/NeoForge target")
+            raise PlanError("Packaged client smoke needs an exact registered Fabric/Forge/NeoForge target")
         return "release-client", selected
 
     if task_arg == "release-smoke":
@@ -920,9 +920,8 @@ def main(argv=None):
             except (OSError, RuntimeError, subprocess.SubprocessError) as error:
                 print(f"ERROR: Packaged production launcher prerequisites: {error}")
                 return 2
-            launcher_version = (target.props["neoforge_version"] if target.loader == "neoforge"
-                                else f"fabric:{target.version}:{target.props['fabric_loader_version']}")
-            neoforge = (native_root, executable, launcher_version)
+            launcher_version = target.props[{"neoforge": "neoforge_version", "forge": "forge_version", "fabric": "fabric_loader_version"}[target.loader]]
+            neoforge = (native_root, executable, launcher_version, target.loader, target.version)
         client_tasks = [f":{target.name}:runReleaseClient", f"-Prelease_smoke_dir={run_dir}"] + extra_args
         if neoforge:
             client_tasks[0] = f":{target.name}:stageReleaseClient"
@@ -942,7 +941,7 @@ def main(argv=None):
             print("  Package: " + " ".join(gradle_command(project, [f":{target.name}:packageTarget"] + extra_args, java_home)))
             print(("  Stage: " if neoforge else "  Launch: ") + " ".join(gradle_command(project, client_tasks, java_home)))
             if neoforge:
-                print("  Launch: " + " ".join(smoke["neoforge_command"](executable, native_root, neoforge[2], target.legacy)))
+                print("  Launch: " + " ".join(smoke["neoforge_command"](executable, native_root, neoforge[2], target.legacy, target.loader, target.version)))
                 print(f"  PortableMC cache: {executable.parent}\n  Monitor logs: {log_dir}")
         elif kind == "servers":
             for task in tasks:

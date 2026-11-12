@@ -44,12 +44,12 @@ class PublishingSafety(unittest.TestCase):
             data = PUBLISH["publication_plan"]()
         self.assertEqual({r["target"] for r in data["entries"]}, {p.stem for p in (ROOT / 'gradle/matrix').glob('*.properties')})
         self.assertEqual(len({r['version_number'] for r in data['entries']}), len(data['entries']))
-        self.assertEqual(len(data['entries']), 12)
+        self.assertEqual(len(data['entries']), len(list((ROOT / 'gradle/matrix').glob('*.properties'))))
         self.assertEqual(data['project_id'], 'RLyGc4q3')
         self.assertEqual(data['curseforge_project_id'], '1597427')
         self.assertEqual(data['modrinth_environments'], dict(client_side='required', server_side='required'))
         for row in data['entries']:
-            loader = {'fabric': 'Fabric', 'neoforge': 'NeoForge'}[row['loader']]
+            loader = {'fabric': 'Fabric', 'neoforge': 'NeoForge', 'forge': 'Forge'}[row['loader']]
             self.assertEqual(row['version_name'], f"[{loader}] The Spelunker Update {data['mod_version']} ({row['minecraft']})")
             self.assertEqual(row['version_number'], f"{data['mod_version']}-{row['minecraft']}-{row['loader']}")
             self.assertEqual(row['artifact'], f"build/libs/{row['target']}/spelunkery-{row['loader']}-{row['minecraft']}-{data['mod_version']}.jar")
@@ -67,6 +67,30 @@ class PublishingSafety(unittest.TestCase):
                 self.assertEqual(kinds['fabric-api'], 'required')
             self.assertEqual(row['curseforge_versions'], [row['minecraft'], loader, f"Java {row['java']}", 'Client', 'Server'])
             self.assertEqual(row['environments'], ['Client', 'Server'])
+
+    def test_forge_native_metadata_and_release_launcher(self):
+        config = PUBLISH['properties'](ROOT / 'gradle/publishing.properties')
+        metadata = (ROOT / 'forge/src/main/resources/META-INF/mods.toml').read_text()
+        deps = PUBLISH['dependencies'](metadata, 'forge', {}, config)
+        self.assertEqual([(d['mod_id'], d['dependency_type']) for d in deps], [('architectury', 'required')])
+        with self.assertRaisesRegex(ValueError, 'mandatory'):
+            PUBLISH['dependencies'](metadata.replace('mandatory = true', ''), 'forge', {}, config)
+        smoke = runpy.run_path(str(ROOT / 'scripts/smoke-release-client.py'))
+        with patch.dict(os.environ, {}, clear=True):
+            command = smoke['neoforge_command'](Path('/tmp/portablemc'), '/tmp/client', '47.4.28', True, 'forge', '1.20.1')
+        self.assertEqual(command[-1], 'forge::1.20.1-47.4.28')
+
+    def test_forge_semantic_duplicate_is_distinct_from_neoforge(self):
+        data = PUBLISH['publication_plan']()
+        row = next(r for r in data['entries'] if r['target'] == '1.20.1-forge')
+        file = dict(id=123, name=Path(row['artifact']).name, display=row['version_name'], versions=row['curseforge_versions'])
+        existing = dict(id=data['curseforge_project_id'], files=[file])
+        self.assertEqual(set(PUBLISH['curseforge_nodes'](data, existing)), {'1.20.1-forge'})
+        existing['files'] = [dict(file, versions=['1.20.1', 'NeoForge'])]
+        with self.assertRaisesRegex(ValueError, 'conflicting target metadata'):
+            PUBLISH['curseforge_nodes'](data, existing)
+        existing['files'] = [dict(file, name='other-1.0.2-1.20.1-neoforge.jar', display='NeoForge 1.0.2', versions=['1.20.1', 'NeoForge'])]
+        self.assertEqual(PUBLISH['curseforge_nodes'](data, existing), {})
 
     def test_curseforge_exact_metadata_and_duplicate_guard(self):
         data = PUBLISH['publication_plan']()
@@ -113,7 +137,7 @@ class PublishingSafety(unittest.TestCase):
                         name='The Spelunker Update ' + data['mod_version'], game_versions=['26.2'], loaders=['fabric'])
         with self.assertRaisesRegex(ValueError, 'Existing Modrinth'):
             PUBLISH['check_duplicates'](data, [existing])
-        for change in ({'name': 'The Spelunker Update ' + data['mod_version'] + '0'}, {'loaders': ['quilt']}, {'game_versions': ['1.20.1']}):
+        for change in ({'name': 'The Spelunker Update ' + data['mod_version'] + '0'}, {'loaders': ['quilt']}, {'game_versions': ['0.0']}):
             PUBLISH['check_duplicates'](data, [dict(existing, **change)])
         file = dict(id=1, name='spelunkery-' + data['mod_version'] + '-v26.2-fabric.jar', versions=['26.2', 'Fabric'])
         with self.assertRaisesRegex(ValueError, 'Existing CurseForge'):
@@ -173,7 +197,7 @@ class PublishingSafety(unittest.TestCase):
         config = PUBLISH['properties'](ROOT / 'gradle/publishing.properties')
         with self.assertRaisesRegex(ValueError, 'Unmapped'):
             PUBLISH['dependencies']('{"depends":{"unexpected-mod":"*"}}', 'fabric', {}, config)
-        with self.assertRaisesRegex(ValueError, 'Missing NeoForge dependency'):
+        with self.assertRaisesRegex(ValueError, 'Missing loader dependency'):
             PUBLISH['dependencies']('[[dependencies.unrelated]]\nmodId="architectury"\ntype="required"\n', 'neoforge', {}, config)
 
     def test_cli_overrides_cannot_bypass_confirmation_or_debug_mode(self):
@@ -303,7 +327,7 @@ class PublishingSafety(unittest.TestCase):
             with patch.dict(PUBLISH['collect'].__globals__, replacements), patch.dict(os.environ, {}, clear=True), patch('builtins.print'):
                 PUBLISH['collect']()
                 bundle = root / 'build/publishing/github-assets'
-                self.assertEqual(len(list(bundle.glob('*.jar'))), 12)
+                self.assertEqual(len(list(bundle.glob('*.jar'))), len(data['entries']))
                 PUBLISH['restore'](bundle)
                 extra = bundle / 'unexpected-dev.jar'
                 extra.touch()

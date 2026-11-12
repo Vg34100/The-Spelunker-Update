@@ -4,14 +4,12 @@ plugins {
 
 stonecutter.active '26.1.2-fabric'
 
-def matrixTargets = [
-        '1.21-fabric', '1.21-neoforge',
-        '1.21.1-fabric', '1.21.1-neoforge',
-        '26.1-fabric', '26.1-neoforge',
-        '26.1.1-fabric', '26.1.1-neoforge',
-        '26.1.2-fabric', '26.1.2-neoforge',
-        '26.2-fabric', '26.2-neoforge'
-]
+def matrixPins = fileTree('gradle/matrix').matching { include '*.properties' }.files.sort().collectEntries { pinsFile ->
+    def pins = new Properties()
+    pinsFile.withInputStream { pins.load(it) }
+    [(pinsFile.name - '.properties'): pins]
+}
+def matrixTargets = matrixPins.keySet()
 
 tasks.register('compileMatrix') {
     group = 'verification'
@@ -21,7 +19,7 @@ tasks.register('compileMatrix') {
 tasks.register('packageMatrix') {
     group = 'build'
     dependsOn matrixTargets.collect { target ->
-        (target.startsWith('1.21-') || target.startsWith('1.21.1-'))
+        matrixPins[target].getProperty('loom_generation', 'current') == 'legacy'
                 ? ":${target}:remapJar"
                 : ":${target}:jar"
     }

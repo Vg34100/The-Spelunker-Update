@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "net.vg.spelunkery.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "client.ClientRecipeBookMixin",
+    "client.RecipeBookComponentMixin",
+    "client.RecipeBookPageAccessor"
+  ],
+  "mixins": [
+    "LivingEntityMixin",
+    "PlayerMixin",
+    "ItemStackUpgradeMixin",
+    "AnvilMenuAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

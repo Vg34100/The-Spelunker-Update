@@ -1,0 +1,34 @@
+// Opt-in native Forge world checks; their code/resources never enter a release JAR.
+def checks = sourceSets.create('portTest') {
+    java.srcDirs = [rootProject.file('tests/port/1.20.1/java')]
+    resources.srcDirs = [rootProject.file('tests/port/1.20.1/resources')]
+    compileClasspath += sourceSets.main.output
+    runtimeClasspath += sourceSets.main.output
+}
+configurations.portTestCompileClasspath.extendsFrom(configurations.compileClasspath)
+configurations.portTestRuntimeClasspath.extendsFrom(configurations.runtimeClasspath)
+def runDirectory = rootProject.file('runs/1.20.1-forge/port-tests')
+loom {
+    mods {
+        spelunkery { sourceSet sourceSets.main }
+        spelunkery_port_tests { sourceSet checks }
+    }
+    runs {
+        portTest {
+            server()
+            source checks
+            runDir = runDirectory
+            vmArg '-Dforge.gameTestServer=true'
+            if (providers.gradleProperty('port_test_cases').isPresent()) vmArg '-Dspelunkery.port.cases=' + providers.gradleProperty('port_test_cases').get()
+            vmArg '-Dforge.enabledGameTestNamespaces=spelunkery_port_tests'
+        }
+    }
+}
+tasks.named('runPortTest') {
+    dependsOn tasks.named('portTestClasses')
+    doFirst {
+        runDirectory.mkdirs()
+        new File(runDirectory, 'eula.txt').setText('eula=true\n', 'UTF-8')
+        if (!new File(runDirectory, 'server.properties').exists()) new File(runDirectory, 'server.properties').setText('online-mode=false\nserver-port=25580\n', 'UTF-8')
+    }
+}

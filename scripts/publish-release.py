@@ -36,12 +36,18 @@ def dependencies(metadata, loader, pins, config):
     else:
         blocks = re.findall(r'\[\[dependencies\.' + re.escape(config['mod_id']) + r'\]\](.*?)(?=\n\[|\Z)', metadata, re.DOTALL)
         if not blocks:
-            raise ValueError('Missing NeoForge dependency declarations for ' + config['mod_id'])
+            raise ValueError('Missing loader dependency declarations for ' + config['mod_id'])
         declared = {}
         for block in blocks:
             fields = dict(re.findall(r'^\s*(\w+)\s*=\s*"([^"\n]*)"', block, re.MULTILINE))
-            declared[fields["modId"]] = fields["type"]
-    for key in ("minecraft", "java", "fabricloader", "neoforge"):
+            if loader == 'forge':
+                mandatory = re.search(r'^\s*mandatory\s*=\s*(true|false)\s*$', block, re.MULTILINE)
+                if not mandatory: raise ValueError('Missing Forge mandatory dependency flag')
+                kind = 'required' if mandatory[1] == 'true' else 'optional'
+            else:
+                kind = fields['type']
+            declared[fields["modId"]] = kind
+    for key in ("minecraft", "java", "fabricloader", "neoforge", "forge"):
         declared.pop(key, None)
     result = []
     for mod_id, kind in sorted(declared.items()):
@@ -77,13 +83,13 @@ def publication_plan(root=ROOT):
     for matrix in sorted((root / "gradle/matrix").glob("*.properties")):
         target = properties(matrix)
         minecraft, loader = target["minecraft_version"], target["loader"]
-        if matrix.stem != f"{minecraft}-{loader}" or loader not in ("fabric", "neoforge"):
+        if matrix.stem != f"{minecraft}-{loader}" or loader not in ("fabric", "neoforge", "forge"):
             raise ValueError(f"Invalid publishing target: {matrix}")
         values = dict(mod_version=version, mod_name=config['mod_name'], minecraft_version=minecraft, loader=loader,
-                      loader_name={"fabric": "Fabric", "neoforge": "NeoForge"}[loader])
+                      loader_name={"fabric": "Fabric", "neoforge": "NeoForge", "forge": "Forge"}[loader])
         artifact = f"build/libs/{matrix.stem}/{pins['archives_name']}-{loader}-{minecraft}-{version}.jar"
         source = root / loader / "src/main/resources" / (
-            "fabric.mod.json" if loader == "fabric" else "META-INF/neoforge.mods.toml")
+            "fabric.mod.json" if loader == "fabric" else "META-INF/mods.toml" if loader == "forge" else "META-INF/neoforge.mods.toml")
         metadata = source.read_text(encoding="utf-8")
         if loader == 'fabric':
             environment = json.loads(metadata).get('environment', '*')
@@ -92,7 +98,8 @@ def publication_plan(root=ROOT):
             environments = ['Client', 'Server'] if environment == '*' else [environment.title()]
         else:
             sides = re.findall(r'^\s*side\s*=\s*"([^"]+)"', metadata, re.MULTILINE)
-            bootstrap = root / 'neoforge/src/main/java/net/vg/spelunkery/neoforge/SpelunkeryNeoForge.java'
+            entrypoint = 'SpelunkeryForge' if loader == 'forge' else 'SpelunkeryNeoForge'
+            bootstrap = root / f'{loader}/src/main/java/net/vg/spelunkery/{loader}/{entrypoint}.java'
             if not sides or set(sides) != {'BOTH'} or 'dist = Dist.CLIENT' in bootstrap.read_text():
                 raise ValueError('NeoForge publication differs from both-side metadata/bootstrap')
             environments = ['Client', 'Server']
@@ -140,7 +147,7 @@ def verified_plan(root=ROOT):
         if artifact.resolve() != (root / row["artifact"]).resolve():
             raise ValueError(f"Unexpected verified artifact: {artifact}")
         with ZipFile(artifact) as jar:
-            meta = jar.read("fabric.mod.json" if row["loader"] == "fabric" else "META-INF/neoforge.mods.toml").decode()
+            meta = jar.read("fabric.mod.json" if row["loader"] == "fabric" else "META-INF/mods.toml" if row["loader"] == "forge" else "META-INF/neoforge.mods.toml").decode()
         actual = dependencies(meta, row["loader"], properties(matrix), config)
         if actual != row["dependencies"]:
             raise ValueError(f"Packaged dependency metadata differs from publication plan: {row['target']}")
@@ -279,7 +286,7 @@ def curseforge_nodes(data, existing=None):
             names = [file.get('name', ''), file.get('display', '')]
             same_node = (any(has_mod_version(name, data['mod_version']) for name in names)
                          and row['minecraft'] in file.get('versions', [])
-                         and {'fabric': 'Fabric', 'neoforge': 'NeoForge'}[row['loader']] in file.get('versions', []))
+                         and {'fabric': 'Fabric', 'neoforge': 'NeoForge', 'forge': 'Forge'}[row['loader']] in file.get('versions', []))
             exact = any(name in (row['version_name'], Path(row['artifact']).name) for name in names)
             if exact and not same_node:
                 raise ValueError('Existing CurseForge file has conflicting target metadata: ' + row['target'])
