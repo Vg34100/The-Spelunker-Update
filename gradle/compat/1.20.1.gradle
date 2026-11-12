@@ -1,0 +1,257 @@
+// Target-only deltas from the proven 1.21 compatibility view.
+def pins = new Properties()
+rootProject.file("gradle/matrix/${project.name}.properties").withInputStream { pins.load(it) }
+def loader = pins.loader
+
+['common', loader].each { sourceName ->
+    tasks.named("prepare${sourceName.capitalize()}LegacySources", Sync) {
+        inputs.dir rootProject.file('gradle/compat/1.20.1')
+        doLast {
+            fileTree(destinationDir).matching { include '**/*.java' }.files.each { file ->
+                def source = file.getText('UTF-8')
+                source = source.replace('ResourceLocation.fromNamespaceAndPath(', 'new ResourceLocation(')
+                        .replace('ResourceLocation.withDefaultNamespace(', 'new ResourceLocation(')
+                        .replace('Holder<MobEffect>', 'MobEffect')
+                        .replace('ItemStack.isSameItemSameComponents(', 'ItemStack.isSameItemSameTags(')
+                        .replace('TooltipContext context', 'net.minecraft.world.level.Level context')
+                        .replace('import net.minecraft.world.item.Item.TooltipContext;', '')
+                        .replace('getUseDuration(entity)', 'getUseDuration()')
+                        .replace('.saturationModifier(', '.saturationMod(')
+                source = source.replace('Item.TooltipContext tooltipContext', 'net.minecraft.world.level.Level tooltipContext')
+                        .replace('net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>', 'net.minecraft.world.effect.MobEffect')
+                        .replace('RecipeBookMenu<?, ?>', 'RecipeBookMenu<?>')
+                        .replace('player.hasInfiniteMaterials()', 'player.getAbilities().instabuild')
+                        .replace('getUseDuration(ItemStack stack, LivingEntity entity)', 'getUseDuration(ItemStack stack)')
+                if (file.name in ['FoundryMenu.java', 'FoundryBlockEntity.java', 'ClientRecipeBookMixin.java', 'FoundryRecipeBookComponent.java', 'SpelunkeryJeiPlugin.java']) {
+                    source = source.replace('import net.minecraft.world.item.crafting.RecipeHolder;', 'import net.minecraft.world.item.crafting.Recipe;')
+                            .replace('net.minecraft.world.item.crafting.RecipeHolder<?>', 'net.minecraft.world.item.crafting.Recipe<?>')
+                            .replace('RecipeHolder<?>', 'Recipe<?>')
+                            .replace('RecipeHolder<FoundryRecipe>', 'FoundryRecipe')
+                            .replace('recipeHolder.value()', 'recipeHolder')
+                            .replace('match.get().value()', 'match.get()')
+                            .replace('holder.value()', 'holder')
+                            .replace('ghostRecipe.getRecipe().value()', 'ghostRecipe.getRecipe()')
+                }
+                if (file.name == 'FoundryMenu.java') {
+                    source = source.replace('RecipeBookMenu<FoundryRecipeInput, FoundryRecipe>', 'RecipeBookMenu<FoundryRecipeInput>')
+                            .replace('recipeMatches(net.minecraft.world.item.crafting.FoundryRecipe recipeHolder)', 'recipeMatches(Recipe<? super FoundryRecipeInput> recipeHolder)')
+                            .replace('new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder)', 'new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder.getId())')
+                }
+                if (file.name == 'FoundryBlockEntity.java') {
+                    source = source.replace('saveAdditional(CompoundTag tag, HolderLookup.Provider registries)', 'saveAdditional(CompoundTag tag)')
+                            .replace('super.saveAdditional(tag, registries)', 'super.saveAdditional(tag)')
+                            .replace('protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries)', 'public void load(CompoundTag tag)')
+                            .replace('super.loadAdditional(tag, registries)', 'super.load(tag)')
+                            .replace('.saveOptional(registries)', '.save(new CompoundTag())')
+                            .replace('ItemStack.parseOptional(registries, tag.getCompound(key))', 'ItemStack.of(tag.getCompound(key))')
+                }
+                if (file.name == 'RecipeBookComponentMixin.java') source = source.replace('holder.value()', 'holder')
+                if (file.name == 'InvarAnvilMenu.java') {
+                    source = source.replace('import net.minecraft.core.component.DataComponents;', '')
+                            .replaceAll(/(?m)^    private static final Field [^\n]+\n/, '')
+                    def first = source.indexOf('    private int getRepairItemCountCost()')
+                    source = source.substring(0, first) + '''    private int getRepairItemCountCost() {
+        return ((net.vg.spelunkery.mixin.AnvilMenuAccessor) this).spelunkery$repairItemCountCost();
+    }
+    private DataSlot getCostSlot() {
+        return ((net.vg.spelunkery.mixin.AnvilMenuAccessor) this).spelunkery$cost();
+    }
+}
+'''
+                }
+                if (file.name == 'SilverSwordItem.java') source = source.replace('super(tier, properties)', 'super(tier, 3, -2.4F, properties)')
+                if (file.name == 'SpelunkeryEquipmentMaterials.java') {
+                    source = source.replace('Holder<ArmorMaterial>', 'ArmorMaterial').replace('Holder.direct(material(', 'material(')
+                            .replace('    ));', '    );')
+                            .replace('BlockTags.INCORRECT_FOR_IRON_TOOL', '2').replace('BlockTags.INCORRECT_FOR_DIAMOND_TOOL', '3')
+                    def first = source.indexOf('        return new ArmorMaterial(')
+                    source = source.substring(0, first) + '        return new net.vg.spelunkery.item.LegacyArmorMaterial(name, defense, enchantmentValue, toughness, knockbackResistance, repairIngredient);\n    }\n}\n'
+                }
+                if (file.name == 'SimpleSpelunkeryTier.java') {
+                    source = source.replace('TagKey<Block> incorrectBlocksForDrops', 'int level')
+                            .replace('public TagKey<Block> getIncorrectBlocksForDrops() {\n        return incorrectBlocksForDrops;', 'public int getLevel() {\n        return level;')
+                }
+                if (file.name == 'SpelunkeryItems.java') {
+                    source = source.replace('.attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4F))', '')
+                            .replace('                tier,\n                new Item.Properties()', '                tier, attackDamageBonus, -2.4F,\n                new Item.Properties()')
+                            .replace('.attributes(SwordItem.createAttributes(tier, attackDamageBonus, -2.4F))', '')
+                            .replace('type.getDurability(durabilityMultiplier)', '(switch (type) { case BOOTS -> 13; case LEGGINGS -> 15; case CHESTPLATE -> 16; case HELMET -> 11; }) * durabilityMultiplier')
+                    ['Pickaxe': '1, -2.8F', 'Axe': '6.0F, -3.1F', 'Shovel': '1.5F, -3.0F', 'Hoe': '-2, -1.0F'].each { tool, stats ->
+                        source = source.replaceAll(/new / + tool + /Item\((SpelunkeryEquipmentMaterials\.[A-Z_]+), toolProperties/, 'new ' + tool + 'Item($1, ' + stats + ', toolProperties')
+                    }
+                }
+                if (file.parentFile.name == 'block') {
+                    source = source.replaceAll(/(?m)^    public static final MapCodec<[^\n]+ CODEC = simpleCodec\([^\n]+\);\n/, '')
+                            .replaceAll(/(?s)    (?:@SuppressWarnings\("unchecked"\)\n    )?@Override\n    (?:public|protected) MapCodec<[^\n]+ codec\(\) \{.*?\n    }\n/, '')
+                    // The old block interaction method handles both held and empty hands.
+                    source = source.replace('import net.minecraft.world.ItemInteractionResult;', '')
+                            .replace('protected ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, net.minecraft.world.phys.BlockHitResult hitResult) {', 'public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, net.minecraft.world.phys.BlockHitResult hitResult) {')
+                            .replace('protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult) {', 'public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult) {\n        ItemStack stack = player.getItemInHand(hand);')
+                            .replace('ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION', 'InteractionResult.PASS')
+                            .replace('ItemInteractionResult.SUCCESS', 'InteractionResult.SUCCESS')
+                    if (file.name == 'InvarAnvilBlock.java') source = source.replace('protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)', 'public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult)')
+                    source = source.replaceAll(/(?s)    @Override\n    protected InteractionResult useWithoutItem\([^\n]+\) \{.*?\n    }\n/, '')
+                    source = source.replace('    protected ', '    public ')
+                }
+                if (file.name == 'CrucibleBlock.java') {
+                    source = source.replace('        return InteractionResult.PASS;', '''        if (!level.isClientSide) player.displayClientMessage(Component.literal(lavaLevel > 0 ? "The crucible has " + lavaLevel + " lava uses left." : "The crucible is empty."), true);
+        return InteractionResult.SUCCESS;''')
+                }
+                if (file.name == 'CrystalCavernsBiomeSource.java') {
+                    source = source.replace('MapCodec<CrystalCavernsBiomeSource> CODEC = RecordCodecBuilder.mapCodec', 'com.mojang.serialization.Codec<CrystalCavernsBiomeSource> CODEC = RecordCodecBuilder.create')
+                            .replace('protected MapCodec<? extends BiomeSource> codec()', 'protected com.mojang.serialization.Codec<? extends BiomeSource> codec()')
+                }
+                if (file.name == 'SpelunkeryBiomeSources.java') source = source.replace('MapCodec<? extends BiomeSource>', 'com.mojang.serialization.Codec<? extends BiomeSource>')
+                if (file.name == 'SpelunkeryJeiPlugin.java') {
+                    source = source.replace('import net.minecraft.world.item.alchemy.PotionContents;', 'import net.minecraft.world.item.alchemy.PotionUtils;')
+                            .replace('PotionContents.createItemStack(Items.POTION, Potions.THICK)', 'PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.THICK)')
+                            .replace('h.value()', 'h')
+                            .replace('RecipeHolder<SmithingRecipe>', 'SmithingRecipe')
+                            .replace('(RecipeHolder<?>) h', '(Recipe<?>) h')
+                    source = source.replaceAll(/,\n                        new ResourceLocation\(Spelunkery.MOD_ID, "brewing\/[^\n]+\)\n/, '\n')
+                }
+                source = source.replace('Holder<ArmorMaterial>', 'ArmorMaterial')
+                        .replace('.hasInfiniteMaterials()', '.getAbilities().instabuild')
+                        .replace('BlockBehaviour.Properties.ofFullCopy(', 'BlockBehaviour.Properties.copy(')
+                        .replace('effect.getEffect().is(MobEffects.WITHER)', '(effect.getEffect() == MobEffects.WITHER)')
+                        .replace('target.getType().is(EntityTypeTags.UNDEAD)', 'target.getMobType() == net.minecraft.world.entity.MobType.UNDEAD')
+                        .replace('.igniteForSeconds(', '.setSecondsOnFire(')
+                if (file.name == 'SpelunkeryGameplayHelper.java') source = source.replace('return BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect);', 'return effect;')
+                if (file.name == 'FoundryMenu.java') source = source.replace('new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder.getId())', 'new ClientboundPlaceGhostRecipePacket(containerId, recipeHolder)')
+                if (file.name == 'SilverArrow.java') {
+                    source = source.replace('super(level, shooter, ammo, weapon);', 'super(level, shooter);\n        this.pickupStack = ammo.copyWithCount(1);')
+                            .replace('public class SilverArrow extends Arrow {', '''public class SilverArrow extends Arrow {
+    private ItemStack pickupStack;
+    @Override protected ItemStack getPickupItem() { return pickupStack.copy(); }''')
+                }
+                if (file.name == 'SilverArrowItem.java') source = source.replace('LivingEntity shooter, ItemStack weapon)', 'LivingEntity shooter)').replace('ammo.copyWithCount(1), weapon', 'ammo.copyWithCount(1), ItemStack.EMPTY')
+                if (file.name == 'FoundryScreen.java') {
+                    source = source.replace('RecipeBookComponent.RECIPE_BUTTON_SPRITES,', '0, 0, 19, new ResourceLocation("minecraft", "textures/gui/recipe_button.png"),')
+                            .replace('renderBackground(guiGraphics, mouseX, mouseY, partialTick)', 'renderBackground(guiGraphics)')
+                }
+                if (file.name == 'TopazPulseRenderer.java') {
+                    def first = source.indexOf('RenderType.create(')
+                    def last = source.indexOf('    );', first) + '    );'.length()
+                    source = source.substring(0, first) + 'net.vg.spelunkery.client.LegacyOrePulseRenderType.createLines();' + source.substring(last)
+                }
+                if (file.name == 'TorchLauncherItem.java') source = source.replace('player.getUsedItemHand() == InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND', 'entity -> entity.broadcastBreakEvent(player.getUsedItemHand())')
+                if (file.name == 'GlowcapBlock.java') source = source.replace('isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state)', 'isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean client)')
+                if (file.name == 'SpelunkeryBlocks.java') {
+                    source = source.replaceAll(/new DropExperienceBlock\(UniformInt.of\((\d+), (\d+)\), (BlockBehaviour.Properties.of\(\)[\s\S]*?\.sound\(SoundType\.[A-Z_]+\))\)/, 'new DropExperienceBlock($3, UniformInt.of($1, $2))')
+                }
+                if (file.name == 'ScorchedDripstoneBlock.java') source = source.replace('setSecondsOnFire(4.0F)', 'setSecondsOnFire(4)')
+                if (file.name == 'PotionBrewingMixin.java') {
+                    source = source.replace('import net.minecraft.core.component.DataComponents;', '')
+                            .replace('import net.minecraft.world.item.alchemy.PotionContents;', 'import net.minecraft.world.item.alchemy.PotionUtils;')
+                            .replace('stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)\n                .potion().map(p -> p.is(Potions.THICK)).orElse(false)', 'PotionUtils.getPotion(stack) == Potions.THICK')
+                    // Brewing methods were static before the recipe-data migration.
+                    source = source.replace('    private void spelunkery$', '    private static void spelunkery$')
+                }
+                if (file.name == 'SpelunkeryFabric.java') {
+                    def first = source.indexOf('        ServerLivingEntityEvents.AFTER_DAMAGE.register(')
+                    def last = source.indexOf('        ServerLivingEntityEvents.AFTER_DEATH.register(', first)
+                    source = source.substring(0, first) + source.substring(last)
+                }
+                file.setText(source, 'UTF-8')
+            }
+        }
+    }
+}
+
+['common', loader].each { sourceName ->
+tasks.named("prepare${sourceName.capitalize()}LegacyResources", Sync) {
+    doLast {
+        def root = destinationDir
+        // 1.20.1 recipes and item predicates use their pre-component shapes.
+        def rewrite
+        rewrite = { value ->
+            if (value instanceof List) return value.collect { rewrite(it) }
+            if (!(value instanceof Map)) return value
+            def result = value.collectEntries { key, entry -> [(key): rewrite(entry)] }
+            if (result.predicates instanceof Map && result.predicates.containsKey('minecraft:enchantments')) {
+                if (result.predicates.keySet() != ['minecraft:enchantments'] as Set) throw new GradleException('Unsupported legacy component predicate')
+                result.enchantments = result.remove('predicates')['minecraft:enchantments'].collect { enchantment ->
+                    if (!(enchantment.enchantments instanceof String) || enchantment.enchantments.startsWith('#')) throw new GradleException('Expected explicit legacy enchantment')
+                    enchantment + [enchantment: enchantment.remove('enchantments')]
+                }
+            }
+            if (result.type == 'minecraft:uniform' && result.min_inclusive instanceof Number) {
+                return [type: result.type, value: result.findAll { key, entry -> key != 'type' }]
+            }
+            if (result.type == 'minecraft:trapezoid' && result.min instanceof Number) {
+                return [type: result.type, value: result.findAll { key, entry -> key != 'type' }]
+            }
+            if (result.type == 'minecraft:loot_table' && result.value instanceof String) {
+                // 1.20.1's LootTableReference serializer reads `name`.
+                result.name = result.remove('value')
+            }
+            if (result.items instanceof String) {
+                if (result.items.startsWith('#')) {
+                    result.tag = result.remove('items').substring(1)
+                } else {
+                    result.items = [result.items]
+                }
+            }
+            if (result.condition == 'minecraft:location_check' && result.predicate?.biome instanceof String
+                    && result.predicate.biome.startsWith('#')) {
+                def id = result.predicate.biome.substring(1).split(':', 2)
+                def tagFile = new File(root, "data/${id[0]}/tags/worldgen/biome/${id[1]}.json")
+                if (!tagFile.isFile()) throw new GradleException("Missing 1.20.1 biome-tag source: ${tagFile}")
+                def biomes = new groovy.json.JsonSlurper().parse(tagFile).values
+                if (!biomes.every { it instanceof String && !it.startsWith('#') }) {
+                    throw new GradleException('The 1.20.1 biome-tag expansion requires explicit biome IDs')
+                }
+                return [condition: 'minecraft:any_of', terms: biomes.collect { biome ->
+                    result + [predicate: result.predicate + [biome: biome]]
+                }]
+            }
+            return result
+        }
+        fileTree(root).matching { include 'data/**/*.json' }.files.each { file ->
+            def json = rewrite(new groovy.json.JsonSlurper().parse(file))
+            if (file.path.replace('\\', '/').contains('/worldgen/biome/')) {
+                json.features = json.features.collect { step -> step.collect { id -> id == 'minecraft:ore_diamond_medium' ? 'spelunkery:ore_diamond_medium' : id } }
+            }
+            if (file.path.replace('\\', '/').contains('/recipe/') && json.result instanceof Map) {
+                def id = json.result.remove('id')
+                if (id != null) {
+                    if (json.type in ['minecraft:smelting', 'minecraft:blasting', 'minecraft:smoking', 'minecraft:campfire_cooking']) {
+                        if (json.result.get('count', 1) != 1) throw new GradleException('Legacy cooking recipes require a single output')
+                        json.result = id
+                    } else {
+                        json.result.item = id
+                    }
+                }
+            }
+            file.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)) + '\n', 'UTF-8')
+        }
+        if (loader == 'forge' && sourceName == 'common') {
+            def modifiers = new File(root, 'data/spelunkery/neoforge/biome_modifier')
+            fileTree(modifiers).matching { include '*.json' }.files.each { file ->
+                def json = new groovy.json.JsonSlurper().parse(file)
+                json.type = json.type.replace('neoforge:', 'forge:')
+                def target = new File(root, "data/spelunkery/forge/biome_modifier/${file.name}")
+                target.parentFile.mkdirs()
+                target.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)) + '\n', 'UTF-8')
+            }
+            project.delete(new File(root, 'data/spelunkery/neoforge'))
+        }
+        // Registry data directories were singularized after 1.20.1.
+        def renamed = [recipe: 'recipes', advancement: 'advancements', loot_table: 'loot_tables',
+                       'tags/item': 'tags/items', 'tags/block': 'tags/blocks', 'tags/entity_type': 'tags/entity_types']
+        new File(root, 'data').listFiles().findAll { it.isDirectory() }.each { namespace ->
+            renamed.each { before, after ->
+                def dir = new File(namespace, before)
+                if (dir.isDirectory()) {
+                    def destination = new File(namespace, after)
+                    destination.parentFile.mkdirs()
+                    if (!dir.renameTo(destination)) throw new GradleException("Could not migrate ${dir}")
+                }
+            }
+        }
+        if (sourceName == 'common') new File(root, 'pack.mcmeta').setText(groovy.json.JsonOutput.toJson(
+                [pack: [pack_format: 15, description: 'The Spelunker Update resources']]) + '\n', 'UTF-8')
+    }
+}
+
+}

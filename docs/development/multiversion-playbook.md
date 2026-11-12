@@ -9,6 +9,8 @@ Move a working Architectury/Fabric/NeoForge mod into one maintainable Stonecutte
 Current suite target set:
 
 ```text
+1.20.1-fabric
+1.20.1-forge
 1.21-fabric
 1.21-neoforge
 1.21.1-fabric
@@ -21,6 +23,8 @@ Current suite target set:
 26.1.2-neoforge
 26.2-fabric
 26.2-neoforge
+26.3-fabric
+26.3-neoforge
 ```
 
 ## Architecture
@@ -33,6 +37,7 @@ gradle/matrix/*.properties
 
 common/
 fabric/
+forge/
 neoforge/
 
 gradle/compat/             # only when real divergence requires it
@@ -161,3 +166,16 @@ For normal future features:
 4. add compatibility only where a real difference appears
 5. sentinel-check during port
 6. save aggregate/release gates for release preparation
+
+## 1.20.1 / 26.3 boundaries
+
+Register targets and choose remapping from `gradle/matrix/*.properties`.
+1.20.1 uses Java 17 and Fabric/native Forge; 1.21/1.21.1 retain Java 21;
+26.x uses Java 25. New 26.3 nodes use native loader initialization and
+Architectury's standalone `compileOnly()` mode. Existing nodes keep their pipeline.
+
+Forge world fixtures are opt-in with
+`-Pport_tests`; their classes, mod metadata and datapack never ship in release JARs.
+Use `-Pdev_integrations=false` to omit JEI in new-target development runs.
+`-Prelease_smoke_jei=true` explicitly tests its presence in an isolated packaged client.
+Neither flag changes publication dependency declarations.

@@ -8,6 +8,11 @@ def artifact = rootProject.file("build/libs/${project.name}/${rootProject.archiv
 def releaseRuntime = configurations.detachedConfiguration(
         dependencies.create("dev.architectury:architectury-${loader}:${pins.architectury_api_version}"))
 releaseRuntime.transitive = false
+// Explicit test fixture only; publication dependencies remain metadata-derived.
+if (providers.gradleProperty('release_smoke_jei').getOrElse('false').toBoolean()) {
+    releaseRuntime.dependencies.add(dependencies.create("mezz.jei:jei-${pins.minecraft_version}-${loader}:${pins.jei_version}"))
+    if (loader == 'fabric' && pins.jei_config_version) releaseRuntime.dependencies.add(dependencies.create("net.mezzdev.config:mezz_config-${pins.minecraft_version}-fabric:${pins.jei_config_version}"))
+}
 if (loader == 'fabric') {
     releaseRuntime.dependencies.add(dependencies.create("net.fabricmc.fabric-api:fabric-api:${pins.fabric_api_version}"))
 }

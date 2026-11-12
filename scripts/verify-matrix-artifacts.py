@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Verify The Spelunker Update's exact installable matrix JARs."""
 import json
+from functools import lru_cache
 from pathlib import Path
 import re
 import struct
@@ -43,6 +44,64 @@ def release_jar(matrix):
     return jars[0]
 
 
+
+@lru_cache(maxsize=None)
+def resource_inventory(base):
+    return {p.relative_to(base).as_posix() for p in base.rglob('*') if p.is_file()}
+
+
+def resource_path(name, pins):
+    if pins['minecraft_version'] == '1.20.1':
+        if pins['loader'] == 'forge': name = name.replace('/neoforge/biome_modifier/', '/forge/biome_modifier/')
+        for before, after in (('/recipe/', '/recipes/'), ('/loot_table/', '/loot_tables/'),
+                              ('/advancement/', '/advancements/'), ('/tags/item/', '/tags/items/'),
+                              ('/tags/block/', '/tags/blocks/'), ('/tags/entity_type/', '/tags/entity_types/')):
+            name = name.replace(before, after)
+    elif pins['minecraft_version'] == '26.3':
+        name = name.replace('/worldgen/configured_feature/', '/worldgen/feature/')
+    return name
+
+
+
+def verify_data_formats(jar, pins):
+    """Reject schema drift before spending time on another runtime launch."""
+    old = pins['minecraft_version'] == '1.20.1'
+    current = pins['minecraft_version'] == '26.3'
+    if not (old or current): return
+    def visit(value, path):
+        if isinstance(value, list):
+            for entry in value: visit(entry, path)
+        elif isinstance(value, dict):
+            if current and '/loot_table/' in path:
+                assert value.get('type') != 'minecraft:block_state_property', f'Old block-state loot predicate: {path}'
+                assert 'conditions' not in value and 'function' not in value, f'Old loot dispatch/condition list: {path}'
+                assert 'functions' not in value or value.get('type') == 'minecraft:sequence', f'Old loot modifier list: {path}'
+                assert not isinstance(value.get('condition'), str), f'Old loot predicate type field: {path}'
+            if old and '/loot_tables/' in path:
+                assert 'predicates' not in value, f'Component predicate ignored by legacy loot parser: {path}'
+            if current and '/worldgen/' in path:
+                assert not {'Name', 'Properties'} & value.keys(), f'Old block-state shape: {path}'
+                assert value.get('type') not in ('minecraft:random_offset', 'minecraft:simple_state_provider'), f'Old worldgen type: {path}'
+                assert not (isinstance(value.get('type'), str) and isinstance(value.get('config'), dict)), f'Configured feature wrapper: {path}'
+            if old and '/worldgen/' in path and value.get('type') == 'minecraft:uniform' and isinstance(value.get('min_inclusive'), (int, float)):
+                raise AssertionError(f'Unwrapped legacy number provider: {path}')
+            for entry in value.values(): visit(entry, path)
+    for path in jar.namelist():
+        if not path.startswith('data/') or not path.endswith('.json'): continue
+        data = json.loads(jar.read(path))
+        visit(data, path)
+        if old:
+            assert not any(part in path for part in ('/recipe/', '/loot_table/', '/advancement/', '/tags/item/', '/tags/block/')), f'Singular legacy data directory: {path}'
+            if '/recipes/' in path and isinstance(data.get('result'), dict):
+                assert 'item' in data['result'] and 'id' not in data['result'], f'Wrong legacy recipe output: {path}'
+            if pins['loader'] == 'forge' and '/biome_modifier/' in path:
+                assert '/forge/' in path and data['type'].startswith('forge:'), f'Wrong Forge biome modifier: {path}'
+        elif '/advancement/' in path:
+            for criterion in data.get('criteria', {}).values():
+                if criterion.get('trigger') == 'minecraft:recipe_unlocked':
+                    assert 'recipes' in criterion['conditions'] and 'recipe' not in criterion['conditions']
+
+
 def inspect(matrix, artifact=None):
     pins = properties(matrix)
     assert matrix.stem == f"{pins['minecraft_version']}-{pins['loader']}", 'Target/property mismatch'
@@ -54,8 +113,13 @@ def inspect(matrix, artifact=None):
     if legacy:
         resource_roots += [ROOT / 'gradle/compat/legacy' / source / 'src/main/resources'
                            for source in ('common', pins['loader'])]
-    owned_resources = {p.relative_to(base).as_posix() for base in resource_roots
-                       for p in base.rglob('*') if p.is_file()}
+    if pins['minecraft_version'] == '1.20.1':
+        resource_roots += [ROOT / 'gradle/compat/1.20.1' / source / 'src/main/resources'
+                           for source in ('common', pins['loader'])]
+    owned_resources = {resource_path(name, pins) for base in resource_roots for name in resource_inventory(base)}
+    if pins['minecraft_version'] == '26.3':
+        owned_resources |= {f'data/spelunkery/recipe/brewing_{name}.json' for name in
+                            ('spelunkers_brew', 'dangersense_tonic', 'miners_tonic')}
     with ZipFile(artifact) as jar:
         entries = jar.namelist()
         files = set(entries)
@@ -66,11 +130,15 @@ def inspect(matrix, artifact=None):
                      'worldgen/SpelunkeryWorldgen', 'gameplay/SpelunkeryGameplayHelper',
                      'compat/jei/SpelunkeryJeiPlugin'):
             assert PACKAGE + name + '.class' in files, f'Missing mod class: {name}'
+        assert not any(name.startswith(PACKAGE + 'validation/') or 'spelunkery_port_tests' in name for name in files), 'Packaged port test fixture'
+        verify_data_formats(jar, pins)
         classes = [name for name in files if name.endswith('.class')]
         assert classes and all(name.startswith(PACKAGE) for name in classes), 'Bundled dependency classes'
         for name in files:
             if name.startswith(('assets/', 'data/')) and not name.endswith('/'):
                 assert name in owned_resources, f'Bundled external resource/datapack: {name}'
+                if pins['minecraft_version'] in ('1.20.1', '26.3'):
+                    assert re.fullmatch(r'[a-z0-9_./-]+', name), f'Invalid resource path: {name}'
             if name.endswith('.json'):
                 read_json(name)
         for name in classes:
@@ -85,6 +153,8 @@ def inspect(matrix, artifact=None):
             mixins = read_json(name)
             expected = next(json.loads((base / name).read_text()) for base in reversed(resource_roots)
                             if (base / name).is_file())
+            if pins['minecraft_version'] == '26.3' and name == 'spelunkery.fabric.mixins.json':
+                expected['mixins'] = [m for m in expected.get('mixins', []) if m != 'PotionBrewingMixin']
             assert mixins['required'] is True
             assert mixins['compatibilityLevel'] == 'JAVA_' + pins['java_version']
             assert mixins['package'] == expected['package']
@@ -94,7 +164,7 @@ def inspect(matrix, artifact=None):
                     cls = (mixins['package'] + '.' + mixin).replace('.', '/') + '.class'
                     assert cls in files, f'Missing mixin class: {cls}'
         if pins['loader'] == 'fabric':
-            assert 'META-INF/neoforge.mods.toml' not in files, 'Wrong loader metadata'
+            assert not {'META-INF/neoforge.mods.toml', 'META-INF/mods.toml'} & files, 'Wrong loader metadata'
             meta = read_json('fabric.mod.json')
             assert meta['id'] == MOD_ID and meta['version'] == root_pins['mod_version']
             assert meta['name'] == config['mod_name']
@@ -118,32 +188,43 @@ def inspect(matrix, artifact=None):
                 assert b'net/minecraft/class_' in jar.read(PACKAGE + 'Spelunkery.class'), 'Unremapped Fabric release'
         else:
             assert 'fabric.mod.json' not in files, 'Wrong loader metadata'
-            meta = jar.read('META-INF/neoforge.mods.toml').decode()
+            loader = pins['loader']
+            metadata_name = 'META-INF/mods.toml' if loader == 'forge' else 'META-INF/neoforge.mods.toml'
+            assert ({'META-INF/mods.toml', 'META-INF/neoforge.mods.toml'} & files) == {metadata_name}
+            meta = jar.read(metadata_name).decode()
             assert quoted(meta, 'modId') == MOD_ID and quoted(meta, 'version') == root_pins['mod_version']
             assert quoted(meta, 'displayName') == config['mod_name']
-            assert PACKAGE + 'neoforge/SpelunkeryNeoForge.class' in files
+            entrypoint = 'SpelunkeryForge' if loader == 'forge' else 'SpelunkeryNeoForge'
+            assert PACKAGE + f'{loader}/{entrypoint}.class' in files
             blocks = re.findall(r'\[\[dependencies\.' + re.escape(MOD_ID) + r'\]\](.*?)(?=\n\[|\Z)', meta, re.DOTALL)
             deps = {quoted(block, 'modId'): block for block in blocks}
-            assert set(deps) == {'minecraft', 'neoforge', 'architectury'}
+            assert set(deps) == {'minecraft', loader, 'architectury'}
             assert quoted(deps['minecraft'], 'versionRange') == '[' + pins['minecraft_version'] + ']'
-            for dep, pin in (('neoforge', 'neoforge_version'), ('architectury', 'architectury_api_version')):
+            for dep, pin in ((loader, loader + '_version'), ('architectury', 'architectury_api_version')):
                 assert quoted(deps[dep], 'versionRange') == '[' + pins[pin] + ',)'
-            assert all(quoted(block, 'type') == 'required' and quoted(block, 'side') == 'BOTH'
+            assert all((bool(re.search(r'^mandatory\s*=\s*true$', block, re.MULTILINE)) if loader == 'forge'
+                        else quoted(block, 'type') == 'required') and quoted(block, 'side') == 'BOTH'
                        for block in deps.values())
             if tomllib is not None:
                 tomllib.loads(meta)
-            icon = 'iconFile' if pins['minecraft_version'] == '26.2' else 'logoFile'
+            icon = 'iconFile' if pins['minecraft_version'] in ('26.2', '26.3') else 'logoFile'
             assert quoted(meta, icon) in files
-            assert quoted(meta, 'config') == 'spelunkery.mixins.json'
+            if loader == 'forge':
+                assert 'MixinConfigs: spelunkery.mixins.json' in jar.read('META-INF/MANIFEST.MF').decode()
+                assert quoted(meta, 'javaVersion') == '[17,)'
+                assert quoted(meta, 'loaderVersion') == '[47,)'
+            else:
+                assert quoted(meta, 'config') == 'spelunkery.mixins.json'
         for name in ('assets/spelunkery/lang/en_us.json', 'data/spelunkery/recipe/foundry.json',
                      'data/spelunkery/worldgen/biome/marble_caves.json',
                      'data/spelunkery/worldgen/biome/crystal_caverns.json',
                      'data/spelunkery/worldgen/biome/fungal_grottos.json',
                      'data/spelunkery/worldgen/biome/magma_vaults.json'):
+            name = resource_path(name, pins)
             assert name in files, f'Missing mod resource: {name}'
         assert jar.read('META-INF/services/mezz.jei.api.IModPlugin').decode().strip() == 'net.vg.spelunkery.compat.jei.SpelunkeryJeiPlugin'
         assert not any(name.endswith(('.jar', '.java')) for name in files), 'Embedded JAR or source archive'
-        for name in ['fabric.mod.json', 'META-INF/neoforge.mods.toml', *expected_mixins]:
+        for name in ['fabric.mod.json', 'META-INF/neoforge.mods.toml', 'META-INF/mods.toml', *expected_mixins]:
             if name in files:
                 assert b'${' not in jar.read(name), f'Unexpanded metadata: {name}'
     print(f'{matrix.stem}: release metadata, classes, mixins and resources OK')
@@ -153,6 +234,8 @@ def inspect(matrix, artifact=None):
 def inspect_existing(matrix, artifact):
     """Accept valid historical packaging without weakening the current matrix gate."""
     pins = properties(matrix)
+    if pins['loader'] == 'forge':
+        return inspect(matrix, artifact)
     version = properties(ROOT / 'gradle.properties')['mod_version']
     with ZipFile(artifact) as jar:
         files = set(jar.namelist())

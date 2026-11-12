@@ -107,3 +107,26 @@ Validation:
 ```
 
 Raw migration diaries do not belong here.
+
+## Proven 1.20.1 / 26.3 boundaries
+
+- 1.20.1 starts from the existing legacy source view. Its narrow delta is
+  `gradle/compat/1.20.1.gradle`; different recipe serializers, item NBT storage,
+  armor material and render-state access live in real compatibility Java files.
+  Forge owns its entrypoint, event bus, client hooks and brewing recipes under
+  `forge/`. Fabric's old brewing methods are static; shield bash uses its actual
+  successful-block callback. Registry namespaces and saved machine/item keys stay fixed.
+- 1.20.1 resources use plural data directories, pre-component recipe outputs,
+  wrapped number providers and enchantment predicates. Its two added diamond
+  feature resources preserve the 1.21 medium-diamond distribution under this
+  mod's namespace. Forge biome modifiers use Forge's directory and type IDs.
+- 26.3 retains the shared placement algorithms through explicit API substitutions
+  in `gradle/compat/26.3.gradle`. Normalize Windows line endings before matching
+  source anchors. Feature types register map codecs, biome sources
+  expose a resolver, and tools use native item property factories. Blocks no
+  longer provide dispatch codecs. Brewing uses three ordinary data recipes.
+- Parsed 26.3 conversion flattens configured features, rewrites block states and
+  placement offsets, and carries every loot condition/function into the new
+  condition/modifier representation. Slab state predicates become `match_block`.
+  Previously unknown crafting categories retain the older parser's `misc` fallback.
+  JAR verification checks these shapes; native world checks prove drops and processing.
